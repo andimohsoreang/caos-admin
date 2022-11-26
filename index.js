@@ -1,18 +1,14 @@
 const express = require('express')
 const app = express()
-const port = 3000
+const PORT = process.env.PORT || 3000
 
-app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
+app.set('view engine', 'ejs');
 
-app.get('/', function(req, res) {
-  res.render('pages/dashboard');
-});
+const web = require('./routes/web.js')
+app.use('/', web)
 
-app.get('/login', function(req, res) {
-  res.render('pages/login');
-});
+const api = require('./routes/api.js')
+app.use('/api', api)
 
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
-})
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
