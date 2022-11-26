@@ -9,4 +9,8 @@ router.get('/login',  (req, res) => {
     res.render('./pages/login');
 })
 
+router.get('/importdataset', (req,res) => {
+    res.render('./pages/ImportDataset')
+})
+
 module.exports = router
