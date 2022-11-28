@@ -16,10 +16,24 @@ module.exports = (sequelize, DataTypes) => {
   User.init({
     uuid: {
       type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4
+      defaultValue: DataTypes.UUIDV4,
+      unique: true
     },
-    name: DataTypes.STRING,
-    email: DataTypes.STRING,
+    name: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: { msg: 'Name is required' },
+        min: { args: 3, msg: 'Nama minimal 3 huruf' }
+      }
+    },
+    email: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: { msg: 'Email is required' },
+        isEmail: { msg: 'Must be a valid email' }
+      },
+      unique: true
+    },
     password: DataTypes.STRING
   }, {
     sequelize,

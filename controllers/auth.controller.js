@@ -2,6 +2,40 @@ const bcrypt = require('bcryptjs')
 const model = require('../models/index')
 
 module.exports = {
+    register: async (req, res) => {
+        // cek email
+        const userData = await model.User.findOne({ where: { email: req.body.email } })
+        if (userData != null) {
+            req.flash('alert', {hex: '#f3616d', color: 'danger', status: 'Failed'})
+            req.flash('message', 'Email sudah digunakan')
+            res.redirect('/register')
+            return
+        }
+        // enkripsi password
+        bcrypt.hash(req.body.password, 10, async (err, hash) => {
+            if (err) {
+                req.flash('alert', {hex: '#f3616d', color: 'danger', status: 'Failed'})
+                req.flash('message', 'Gagal membuat akun')
+                res.redirect('/register')
+                return
+            }
+            // buat user baru
+            await model.User.create({ 
+                name: req.body.name, 
+                email: req.body.email,
+                password: hash
+            }).then((result) => {
+                req.flash('alert', {hex: '#28ab55', color: 'success', status: 'Success'})
+                req.flash('message', `Akun ${result.name} berhasil dibuat`)
+                res.redirect('/login')
+            }).catch((err) => {
+                console.log(err)
+                req.flash('alert', {hex: '#f3616d', color: 'danger', status: 'Failed'})
+                req.flash('message', 'Gagal membuat akun')
+                res.redirect('/register')
+            })
+        })
+    },
     login: async (req, res) => {
         // cek email
         const userData = await model.User.findOne({ where: { email: req.body.email } })

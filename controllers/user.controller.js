@@ -7,7 +7,6 @@ module.exports = {
         const userData = await model.User.findOne({ where: { email: req.body.email } })
         if (userData === null) {
             // enkripsi password
-            let password = null
             bcrypt.hash(req.body.password, 10, async (err, hash) => {
                 if (err) {
                     return res.status(500).send({

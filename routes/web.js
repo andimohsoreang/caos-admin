@@ -13,9 +13,13 @@ router.get('/importdataset', (req, res) => {
 router.get('/login', verifyUser.loggedIn, (req, res) => {
     res.render('./pages/login')
 })
+router.get('/register', verifyUser.loggedIn, (req, res) => {
+    res.render('./pages/register')
+})
 
 // process
-router.post('/auth', authController.login)
+router.post('/auth/login', authController.login)
+router.post('/auth/register', authController.register)
 router.get('/logout', authController.logout)
 
 module.exports = router
