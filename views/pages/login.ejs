@@ -17,57 +17,15 @@
     <link rel="shortcut icon" href="images/favicon.svg" type="image/x-icon" />
     <link rel="shortcut icon" href="images/favicon.png" type="image/png" />
     <link rel="stylesheet" href="assets/css/auth.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css"
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css"
     />
+    <!-- spesific -->
+    <link rel="stylesheet" href="assets/extensions/toastify.css" />
     <!-- custom -->
     <link rel="stylesheet" href="assets/css/iconly.css" />
     <script src="assets/js/initTheme.js"></script>
   </head>
   <body>
-    <% if(message.length > 0){ %>
-      <div class="toast-container position-fixed top-0 end-0 p-3">
-        <div class="card-body">
-          <div
-            id="liveToast"
-            class="toast"
-            role="alert"
-            aria-live="assertive"
-            aria-atomic="true"
-          >
-            <div class="toast-header">
-              <svg
-                class="bd-placeholder-img rounded me-2"
-                width="20"
-                height="20"
-                xmlns="http://www.w3.org/2000/svg"
-                aria-hidden="true"
-                preserveAspectRatio="xMidYMid slice"
-                focusable="false"
-              >
-                <rect
-                  width="100%"
-                  height="100%"
-                  fill="<%= alert[0].hex %>"
-                ></rect>
-              </svg>
-              <strong class="me-auto text-<%= alert[0].color %>"> <%= alert[0].status %> </strong>
-              <small>Just now</small>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="toast"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div class="toast-body bg-light-<%= alert[0].color %>">
-              <%= message %>
-            </div>
-          </div>
-        </div>
-      </div>
-    <% } %>
     <div id="auth">
       <div class="row h-100">
         <div class="col-lg-5 col-12">
@@ -150,6 +108,18 @@
 <script src="assets/extensions/jquery.min.js"></script>
 <script src="assets/extensions/parsley.min.js"></script>
 <script src="assets/pages/parsley.js"></script>
-<script src="assets/pages/component-toasts.js"></script>
+<script src="assets/extensions/toastify.js"></script>
+<% if(message.length > 0){ %>
+  <script>
+    Toastify({
+      text: "<%= message %>",
+      duration: 3000,
+      close: true,
+      gravity: "top",
+      position: "right",
+      backgroundColor: "<%= alert[0].hex %>",
+    }).showToast()
+  </script>
+<% } %>
 </body>
 </html>
