@@ -38,7 +38,7 @@
                   <i class="bi bi-shield-lock"></i>
                 </div>
               </div>
-              <div class="form-check form-check-lg d-flex align-items-end">
+              <!-- <div class="form-check form-check-lg d-flex align-items-end">
                 <input
                   class="form-check-input me-2"
                   type="checkbox"
@@ -51,9 +51,17 @@
                 >
                   Keep me logged in
                 </label>
-              </div>
-              <button class="btn btn-primary btn-block btn-lg shadow-lg mt-5" type="submit">
+              </div> -->
+              <button class="btn btn-primary btn-block btn-lg shadow-lg mt-5" id="authBtn" type="submit">
                 Log in
+              </button>
+              <button class="btn btn-primary btn-block btn-lg shadow-lg mt-5 d-none" id="authBtnSpinner" type="button" disabled>
+                <span
+                  class="spinner-border spinner-border-sm"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
+                Loading...
               </button>
             </form>
             <div class="text-center mt-5 text-lg fs-4">
