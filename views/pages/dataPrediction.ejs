@@ -1,0 +1,49 @@
+<%- include('../partials/header'); %> <%- include('../partials/sidebar'); %>
+<div id="main">
+  <header class="mb-3">
+    <a href="#" class="burger-btn d-block d-xl-none">
+      <i class="bi bi-justify fs-3"></i>
+    </a>
+  </header>
+  <div class="page-heading">
+    <h3>Data Prediction</h3>
+  </div>
+  <section class="section">
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h5>Dataset</h5>
+        </div>
+      </div>
+      <div class="card-body">
+        <form action="#" method="post">
+          <div class="form-group">
+            <label for="basicInput">Nama</label>
+            <input
+              type="text"
+              class="form-control"
+              name="name"
+            />
+          </div>
+          <% for(const i of result) { %>
+            <div class="form-group">
+              <label for="<%= i.key.replace(/\W/g, '') %>"><%= i.key %></label>
+              <select name="<%= i.key.replace(/\W/g, '') %>" id="<%= i.key.replace(/\W/g, '') %>" class="form-select">
+                <% for(const j of i.value) { %>
+                <option value="<%= j %>"><%= j %></option>
+                <% } %>
+              </select>
+            </div>
+          <% } %>
+        </form>
+        <div class="mt-4">
+          <a href="/performance" class="btn btn-secondary">
+            <i class="bi bi-arrow-left-square me-1"></i>
+            Performance
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <%- include('../partials/footer'); %>
+</div>

@@ -8,16 +8,17 @@ const multipart = require('connect-multiparty');
 const multipartMiddleware = multipart();
 
 // pages
-router.get('/', verifyUser.isLogin,  (req, res) => {
-    res.render('./pages/dashboard')
-})
-router.get('/importdataset', adminController.importdataset)
 router.get('/login', verifyUser.loggedIn, (req, res) => {
     res.render('./pages/login')
 })
 router.get('/register', verifyUser.loggedIn, (req, res) => {
     res.render('./pages/register')
 })
+router.get('/', verifyUser.isLogin, adminController.dashboard)
+router.get('/importdataset', adminController.importdataset)
+router.get('/dataprocessing', adminController.dataprocessing)
+router.get('/performance', adminController.performance)
+router.get('/dataprediction', adminController.dataprediction)
 
 // process
 router.post('/auth/login', authController.login)

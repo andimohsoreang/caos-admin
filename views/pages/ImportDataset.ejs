@@ -31,9 +31,17 @@
                 <button
                   class="btn btn-primary"
                   type="submit"
-                  id="inputGroupFileAddon04"
+                  id="submitBtn"
                 >
                   Upload
+                </button>
+                <button class="btn btn-primary d-none" id="submitBtnSpinner" type="button" disabled>
+                  <span
+                    class="spinner-border spinner-border-sm"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                  Loading...
                 </button>
               </div>
             </fieldset>
@@ -55,10 +63,16 @@
                 <% for(var j=0; j < Object.keys(data[i]).length; j++) { %>
                   <td><%= data[i][Object.keys(data[i])[j]] %></td>
                 <% } %>
-            </tr>
+              </tr>
             <% } %>
           </tbody>
         </table>
+        <div class="text-end mt-3">
+          <a href="/dataprocessing" class="btn btn-secondary">
+            Data Processing
+            <i class="bi bi-arrow-right-square ms-1"></i>
+          </a>
+        </div>
       </div>
     </div>
   </section>

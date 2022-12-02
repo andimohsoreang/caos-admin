@@ -1,0 +1,38 @@
+<%- include('../partials/header'); %> <%- include('../partials/sidebar'); %>
+<div id="main">
+  <header class="mb-3">
+    <a href="#" class="burger-btn d-block d-xl-none">
+      <i class="bi bi-justify fs-3"></i>
+    </a>
+  </header>
+  <div class="page-heading ">
+    <h3>Performance</h3>
+  </div>
+  <section class="section">
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h5>Dataset</h5>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <label for="customRange1" class="form-label">Set Data Training</label>
+          <div>Training <span id="setDataTraining"><%= dataTrainingRange %></span> %</div>
+        </div>
+        <input type="range" class="form-range" id="performanceRange" value="<%= dataTrainingRange %>" min="0" max="100">
+        <div class="d-flex justify-content-between mt-3">
+          <a href="/dataprocessing" class="btn btn-secondary">
+            <i class="bi bi-arrow-left-square me-1"></i>
+              Data Processing
+          </a>
+          <a href="/dataprediction" class="btn btn-secondary">
+              Data Prediction
+            <i class="bi bi-arrow-right-square ms-1"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <%- include('../partials/footer'); %>
+</div>

@@ -23,6 +23,27 @@
 <script src="assets/extensions/toastify.js"></script>
 <script src="assets/extensions/simple-datatables.js"></script>
 <script src="assets/pages/simple-datatables.js"></script>
+<!-- custom -->
+<script>
+  const performanceRange = document.getElementById('performanceRange')
+  const setDataTraining = document.getElementById('setDataTraining')
+  performanceRange.addEventListener('input', () => {
+    setDataTraining.innerHTML = performanceRange.value
+  })
+</script>
+<script>
+  const submitBtn = document.getElementById('submitBtn')
+  const submitBtnSpinner = document.getElementById('submitBtnSpinner')
+
+  submitBtn.addEventListener('click', () => {
+      submitBtn.classList.toggle('d-none')
+      submitBtnSpinner.classList.toggle('d-none')
+      setTimeout(() => {
+          submitBtn.classList.toggle('d-none')
+          submitBtnSpinner.classList.toggle('d-none')
+      }, 3500)
+  })
+</script>
 <% if(message.length > 0){ %>
   <script>
     Toastify({

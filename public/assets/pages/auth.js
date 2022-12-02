@@ -1,11 +1,11 @@
-const authBtn = document.getElementById('authBtn')
-const authBtnSpinner = document.getElementById('authBtnSpinner')
+const submitBtn = document.getElementById('submitBtn')
+const submitBtnSpinner = document.getElementById('submitBtnSpinner')
 
-authBtn.addEventListener('click', () => {
-    authBtn.classList.toggle('d-none')
-    authBtnSpinner.classList.toggle('d-none')
+submitBtn.addEventListener('click', () => {
+    submitBtn.classList.toggle('d-none')
+    submitBtnSpinner.classList.toggle('d-none')
     setTimeout(() => {
-        authBtn.classList.toggle('d-none')
-        authBtnSpinner.classList.toggle('d-none')
+        submitBtn.classList.toggle('d-none')
+        submitBtnSpinner.classList.toggle('d-none')
     }, 3500)
 })
