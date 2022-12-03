@@ -19,12 +19,14 @@ router.get('/importdataset', adminController.importdataset)
 router.get('/dataprocessing', adminController.dataprocessing)
 router.get('/performance', adminController.performance)
 router.get('/dataprediction', adminController.dataprediction)
+router.get('/resultprediction', adminController.resultprediction)
 
 // process
 router.post('/auth/login', authController.login)
 router.post('/auth/register', authController.register)
 router.get('/logout', authController.logout)
-
 router.post('/uploaddataset', multipartMiddleware, uploadController.dataset)
+router.post('/processperformance', adminController.processperformance)
+router.post('/processprediction', adminController.processprediction)
 
 module.exports = router

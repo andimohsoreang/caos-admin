@@ -16,32 +16,32 @@
         </div>
       </div>
       <div class="card-body">
-        <form action="#" method="post">
+        <form action="processprediction" method="post" data-parsley-validate>
           <div class="form-group">
             <label for="basicInput">Nama</label>
             <input
               type="text"
               class="form-control"
               name="name"
+              data-parsley-required="true"
             />
           </div>
-          <% for(const i of result) { %>
+          <%  result.pop(); for(const i of result) { %>
             <div class="form-group">
               <label for="<%= i.key.replace(/\W/g, '') %>"><%= i.key %></label>
-              <select name="<%= i.key.replace(/\W/g, '') %>" id="<%= i.key.replace(/\W/g, '') %>" class="form-select">
-                <% for(const j of i.value) { %>
-                <option value="<%= j %>"><%= j %></option>
-                <% } %>
-              </select>
+              <input type="number" id="<%= i.key.replace(/\W/g, '') %>" name="<%= i.key.replace(/\W/g, '') %>" class="form-control" data-parsley-required="true" step="0.1">
             </div>
           <% } %>
+          <div class="mt-4 d-flex justify-content-between">
+            <a href="/performance" class="btn btn-secondary">
+              <i class="bi bi-arrow-left-square me-1"></i>
+              Performance
+            </a>
+            <button type="submit" class="btn btn-primary">
+              Prediksi
+            </button>
+          </div>
         </form>
-        <div class="mt-4">
-          <a href="/performance" class="btn btn-secondary">
-            <i class="bi bi-arrow-left-square me-1"></i>
-            Performance
-          </a>
-        </div>
       </div>
     </div>
   </section>
