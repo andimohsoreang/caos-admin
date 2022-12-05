@@ -33,10 +33,7 @@ router.get('/logout', authController.logout)
 router.post('/uploaddataset', multipartMiddleware, uploadController.dataset)
 router.post('/processperformance', adminController.processperformance)
 router.post('/processprediction', adminController.processprediction)
-<<<<<<< HEAD
 router.post('/article',articleController.insertArticle)
-=======
 router.post('/category/store', masterController.storecategory)
->>>>>>> 0f62434211961b645abc117e8fc609f6302d69d7
 
 module.exports = router
