@@ -34,6 +34,14 @@ module.exports = (sequelize, DataTypes) => {
       },
       unique: true
     },
+    role: {
+      type: DataTypes.STRING,
+      defaultValue: 'masyarakat'
+    },
+    status: {
+      type: DataTypes.STRING,
+      defaultValue: 'active'
+    },
     password: DataTypes.STRING
   }, {
     sequelize,

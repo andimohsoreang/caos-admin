@@ -71,5 +71,11 @@ module.exports = {
             res.clearCookie('secretName');
             res.redirect('/login');
         });
+    },
+    loginPage: (req, res) => {
+        res.render('./pages/login')
+    },
+    registerPage: (req, res) => {
+        res.render('./pages/register')
     }
 }
