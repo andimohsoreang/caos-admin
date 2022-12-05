@@ -9,7 +9,7 @@ app.use(express.static(__dirname + '/public'));
 app.set('view engine', 'ejs');
 
 // config data http
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({limit:'50mb', extended: false }))
 app.use(bodyParser.json())
 
 // config library session
