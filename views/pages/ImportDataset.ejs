@@ -1,0 +1,80 @@
+<%- include('../partials/header'); %> <%- include('../partials/sidebar'); %>
+<div id="main">
+  <header class="mb-3">
+    <a href="#" class="burger-btn d-block d-xl-none">
+      <i class="bi bi-justify fs-3"></i>
+    </a>
+  </header>
+  <div class="page-heading">
+    <h3>Import Dataset</h3>
+  </div>
+  <section class="section">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between">
+        <div>
+          <h5>Dataset</h5>
+          <small class="text-muted">CSV / XLSX / JSON</small>
+        </div>
+        <div>
+          <form action="/uploaddataset" method="post" enctype="multipart/form-data">
+            <fieldset>
+              <div class="input-group">
+                <input
+                  type="file"
+                  class="form-control"
+                  id="inputGroupFile04"
+                  aria-describedby="inputGroupFileAddon04"
+                  aria-label="Upload"
+                  name="dataset"
+                  required
+                />
+                <button
+                  class="btn btn-primary"
+                  type="submit"
+                  id="submitBtn"
+                >
+                  Upload
+                </button>
+                <button class="btn btn-primary d-none" id="submitBtnSpinner" type="button" disabled>
+                  <span
+                    class="spinner-border spinner-border-sm"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                  Loading...
+                </button>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+      </div>
+      <div class="card-body">
+        <table class="table table-striped" id="table1">
+          <thead>
+            <tr>
+              <% for(let i in data[0]) { %>
+                <th><%= i %></th>
+              <% } %>
+            </tr>
+          </thead>
+          <tbody>
+            <% for(let i=0; i < data.length; i++) { %>
+              <tr>
+                <% for(var j=0; j < Object.keys(data[i]).length; j++) { %>
+                  <td><%= data[i][Object.keys(data[i])[j]] %></td>
+                <% } %>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+        <div class="text-end mt-3">
+          <a href="/dataprocessing" class="btn btn-secondary">
+            Data Processing
+            <i class="bi bi-arrow-right-square ms-1"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <%- include('../partials/footer'); %>
+</div>

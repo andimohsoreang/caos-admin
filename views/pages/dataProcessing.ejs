@@ -1,0 +1,61 @@
+<%- include('../partials/header'); %> <%- include('../partials/sidebar'); %>
+<div id="main">
+  <header class="mb-3">
+    <a href="#" class="burger-btn d-block d-xl-none">
+      <i class="bi bi-justify fs-3"></i>
+    </a>
+  </header>
+  <div class="page-heading">
+    <h3>Data Processing</h3>
+  </div>
+  <section class="section">
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h5>Dataset</h5>
+        </div>
+      </div>
+      <div class="card-body">
+        <table class="table table-striped" id="table1">
+          <thead>
+            <tr>
+              <% if(data != '') { %>
+                <% for(let i=0; i < Object.keys(data[0]).length; i++) { %>
+                  <th class=""> <%= i == Object.keys(data[0]).length - 1 ? 'Label' : Object.keys(data[0])[i] %> </th>
+                <% } %>
+              <% } %>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="<%= Object.keys(data[0]).length - 1 %>" class="text-center">-- Atribut Pendukung --</td>
+              <td class="text-center">-- Label Target --</td>
+            </tr>
+            <% for(let i=0; i < data.length; i++) { %>
+              <tr>
+                <% const objLength = Object.keys(data[i]).length - 1; for(var j=0; j <= objLength; j++) { %>
+                  <td 
+                    class="<%= j == objLength ? 'table-primary' : 'table-warning' %>"
+                  >
+                    <%= `${data[i][Object.keys(data[i])[j]]}` %>
+                  </td>
+                <% } %>
+            </tr>
+            <% } %>
+          </tbody>
+        </table>
+        <div class="d-flex justify-content-between mt-3">
+          <a href="/importdataset" class="btn btn-secondary">
+            <i class="bi bi-arrow-left-square me-1"></i>
+            Import Dataset
+          </a>
+          <a href="/performance" class="btn btn-secondary">
+            Performance
+            <i class="bi bi-arrow-right-square ms-1"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <%- include('../partials/footer'); %>
+</div>

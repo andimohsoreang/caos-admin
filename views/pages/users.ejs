@@ -1,0 +1,55 @@
+<%- include('../partials/header'); %> <%- include('../partials/sidebar'); %>
+<div id="main">
+  <header class="mb-3">
+    <a href="#" class="burger-btn d-block d-xl-none">
+      <i class="bi bi-justify fs-3"></i>
+    </a>
+  </header>
+  <div class="page-heading">
+    <h3>Pengguna</h3>
+  </div>
+  <section class="section">
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h5>Daftar Pengguna</h5>
+        </div>
+      </div>
+      <div class="card-body">
+        <table class="table table-striped" id="table1">
+          <thead>
+            <tr>
+              <th>Nama</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Status</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for(user of data) { %>
+              <tr>
+                <td><%= user.name %></td>
+                <td><%= user.email %></td>
+                <td><%= user.role %></td>
+                <td><%= user.status %></td>
+                <td>
+                    <a href="#" class="btn icon btn-info">
+                        <i class="bi bi-info-circle"></i>
+                    </a>
+                    <a href="#" class="btn icon btn-success">
+                        <i class="bi bi-pencil-square"></i>
+                    </a>
+                    <a href="#" class="btn icon btn-danger">
+                        <i class="bi bi-trash"></i>
+                    </a>
+                </td>
+              </tr>              
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+  <%- include('../partials/footer'); %>
+</div>

@@ -1,0 +1,63 @@
+<footer>
+    <div class="footer clearfix mb-0 text-muted">
+      <div class="float-start">
+        <p>2021 &copy; Mazer</p>
+      </div>
+      <div class="float-end">
+        <p>
+          Crafted with
+          <span class="text-danger"><i class="bi bi-heart"></i></span> by
+          <a href="https://saugi.me">Saugi</a>
+        </p>
+      </div>
+    </div>
+  </footer>
+</div>
+</div>
+<!-- main -->
+<script src="assets/js/bootstrap.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="assets/extensions/jquery.min.js"></script>
+<!-- spesific -->
+<script src="assets/extensions/apexcharts.min.js"></script>
+<script src="assets/pages/dashboard.js"></script>
+<script src="assets/extensions/toastify.js"></script>
+<script src="assets/extensions/simple-datatables.js"></script>
+<script src="assets/pages/simple-datatables.js"></script>
+<script src="assets/extensions/parsley.min.js"></script>
+<script src="assets/pages/parsley.js"></script>
+<!-- custom -->
+<script>
+  const performanceRange = document.getElementById('performanceRange')
+  const setDataTraining = document.getElementById('setDataTraining')
+  performanceRange.addEventListener('input', () => {
+    setDataTraining.innerHTML = performanceRange.value
+  })
+</script>
+<script>
+  const submitBtn = document.getElementById('submitBtn')
+  const submitBtnSpinner = document.getElementById('submitBtnSpinner')
+
+  submitBtn.addEventListener('click', () => {
+      submitBtn.classList.toggle('d-none')
+      submitBtnSpinner.classList.toggle('d-none')
+      setTimeout(() => {
+          submitBtn.classList.toggle('d-none')
+          submitBtnSpinner.classList.toggle('d-none')
+      }, 3500)
+  })
+</script>
+<% if(message.length > 0){ %>
+  <script>
+    Toastify({
+      text: "<%= message %>",
+      duration: 3000,
+      close: true,
+      gravity: "top",
+      position: "right",
+      backgroundColor: "<%= alert[0].hex %>",
+    }).showToast()
+  </script>
+<% } %>
+</body>
+</html>
