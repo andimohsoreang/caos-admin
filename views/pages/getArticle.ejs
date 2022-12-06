@@ -1,0 +1,54 @@
+<%- include('../partials/header'); %> <%- include('../partials/sidebar'); %>
+<div id="main">
+    <header class="mb-3">
+        <a href="#" class="burger-btn d-block d-xl-none">
+          <i class="bi bi-justify fs-3"></i>
+        </a>
+      </header>
+      <div class="page-heading">
+        <h3>Daftar Artikel</h3>
+      </div>
+      <section class="section">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <h5>List Artikel</h5>
+                <a class="btn btn-primary" href="/insertarticle">Tambah</a>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped" id="table1">
+                    <thead>
+                        <tr>
+                            <th>Judul</th>
+                            <th>Kategori</th>
+                            <th>Waktu Dibuat</th>
+                            <th>Waktu Diubah</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% data.forEach((data)=>{%> 
+                        <tr>
+                            <td><%= data.title %> </td>
+                            <td><%= data.category %></td>
+                            <td><%= data.createdAt %></td>
+                            <td><%= data.updatedAt %></td>
+                            <td>
+                                <a href="#" class="btn icon btn-info">
+                                    <i class="bi bi-info-circle"></i>
+                                </a>
+                                <a href="#" class="btn icon btn-success">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                                <a href="#" class="btn icon btn-danger">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </td>   
+                            <%  }) %> 
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+      </section>
+</div>
+<%- include('../partials/footer'); %>

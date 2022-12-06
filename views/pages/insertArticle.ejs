@@ -11,7 +11,7 @@
             </div>
           </div>
           <div class="card-body">
-            <form action="article" method="post" data-parsley-validate id="formArticle">
+            <form action="insertarticle" method="post" data-parsley-validate id="formArticle">
               <div class="form-group">
                 <label for="basicInput">Judul</label>
                 <input
@@ -19,26 +19,34 @@
                   class="form-control"
                   name="title"
                   data-parsley-required="true"
-                />
+                 placeholder="Masukan Judul Disini"/>
               </div>
                 <div class="form-group">
-                  <label for="basicInput">Kategori</label>
+                  <label for="basicInput">Kategori</label >
                   <select name="category" id="category"  class="form-control" data-parsley-required="true" step="0.1">
                     <option value=""></option>
-                    <option value="Naruto">Naruto</option>
-                    <option value="Sasuke">Sasuke</option>
-                    <option value="Kakasi">Kakasi</option>
-                    <option value="Itachi">Itachi</option>
+                    <% data.forEach(data =>{ %> 
+                    <option value="<%= data.name %>"><%= data.name %> </option>
+                    <%  }) %> 
                     </select>
                 </div>
-                <p>Block some text to display options in poppovers</p>
+                <div class="form-group">
+                  <label for="basicInput">Pilih Cover</label >
+                    <input
+                    type="file"
+                    class="form-control"
+                    name="images"
+                    data-parsley-required="true"
+                   />
+                </div>
+                <p>Silahkan Masukan Artikel</p>
                 <div id="full" name ="bodyArticle">
                   <p>Hello World!</p>
-                  <p>Some initial <strong>bold</strong> text</p>
+                  <p>Silahkan Masukan <strong>Artikel</strong> Disini </p>
                   <p><br /></p>
                   </div>
               <div class="mt-4 d-flex justify-content-between">
-                <a href="/#" class="btn btn-secondary">
+                <a href="/getarticle" class="btn btn-secondary">
                   <i class="bi bi-arrow-left-square me-1"></i>
                   Daftar Artikel
                 </a>

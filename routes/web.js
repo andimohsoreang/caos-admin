@@ -10,6 +10,8 @@ const multipart = require('connect-multiparty');
 const multipartMiddleware = multipart();
 
 // -pages
+router.get('/insertarticle',articleController.article);
+router.get('/getarticle',articleController.getarticle);
 // --auth
 router.get('/login', verifyUser.loggedIn, authController.loginPage)
 router.get('/register', verifyUser.loggedIn, authController.registerPage)
@@ -24,7 +26,6 @@ router.get('/dataprocessing', adminController.dataprocessing)
 router.get('/performance', adminController.performance)
 router.get('/dataprediction', adminController.dataprediction)
 router.get('/resultprediction', adminController.resultprediction)
-router.get('/article',articleController.article);
 
 // process
 router.post('/auth/login', authController.login)
@@ -33,7 +34,7 @@ router.get('/logout', authController.logout)
 router.post('/uploaddataset', multipartMiddleware, uploadController.dataset)
 router.post('/processperformance', adminController.processperformance)
 router.post('/processprediction', adminController.processprediction)
-router.post('/article',articleController.insertArticle)
+router.post('/insertarticle',articleController.insertarticle)
 router.post('/category/store', masterController.storecategory)
 
 module.exports = router
