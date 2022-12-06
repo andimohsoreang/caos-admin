@@ -8,6 +8,9 @@ const masterController = require('../controllers/master.controller')
 const verifyUser = require('../middlewares/verify')
 const multipart = require('connect-multiparty');
 const multipartMiddleware = multipart();
+const userMiddleware = require('../middlewares/user.middleware');
+
+
 
 // -pages
 router.get('/insertarticle',articleController.article);
@@ -34,7 +37,7 @@ router.get('/logout', authController.logout)
 router.post('/uploaddataset', multipartMiddleware, uploadController.dataset)
 router.post('/processperformance', adminController.processperformance)
 router.post('/processprediction', adminController.processprediction)
-router.post('/insertarticle',articleController.insertarticle)
+router.post('/insertarticle', userMiddleware.validateImages,articleController.insertarticle)
 router.post('/category/store', masterController.storecategory)
 
 module.exports = router

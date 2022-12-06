@@ -11,7 +11,7 @@
             </div>
           </div>
           <div class="card-body">
-            <form action="insertarticle" method="post" data-parsley-validate id="formArticle">
+            <form action="insertarticle" method="post" data-parsley-validate id="formArticle" enctype="multipart/form-data">
               <div class="form-group">
                 <label for="basicInput">Judul</label>
                 <input
@@ -35,7 +35,7 @@
                     <input
                     type="file"
                     class="form-control"
-                    name="images"
+                    name="foto"
                     data-parsley-required="true"
                    />
                 </div>

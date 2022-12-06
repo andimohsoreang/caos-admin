@@ -1,4 +1,6 @@
 const model = require('../models/index');
+const fs = require('fs')
+const path = require('path');
 
 module.exports = {
     article: async(req,res)=>{
@@ -8,8 +10,16 @@ module.exports = {
         res.render('./pages/insertArticle',{data});
     },
     insertarticle : async(req,res) => {
-        console.log("oke");
         const {title,category,bodyArticle} = req.body;
+        const image = req.files.foto;
+        //image setting
+        const ext = path.extname(image.name);
+        const fileName = image.md5 + Math.floor(Date.now() / 1000) + ext;
+        const url = `${req.protocol}://${req.get("host")}/images/${fileName}`;
+        const newpath = `${__dirname}/../public/images/uploads/${fileName}`;
+        await image.mv(newpath);
+
+        // console.log(image);
         let finalSlug = title.replace(/[^a-zA-Z0-9]/g, ' ').replace(/\W+/g, '-').toLowerCase();
         if(finalSlug.endsWith('-')) finalSlug = finalSlug.slice(0,finalSlug.length -1);
         if(finalSlug.startsWith('-')) finalSlug = finalSlug.slice(1,finalSlug.length);
@@ -24,10 +34,10 @@ module.exports = {
             title,
             category,
             body : bodyArticle,
+            image_name : fileName,
             slug: finalSlug,
             id_user : data.id
         }).then((result)=>{
-            console.log("oke");
             req.flash('alert', {hex: '#28ab55', color: 'success', status: 'Success'})
             req.flash('message', `Artikel Berhasil Dibuat`)
             res.status(201);

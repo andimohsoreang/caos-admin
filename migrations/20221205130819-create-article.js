@@ -21,7 +21,7 @@ module.exports = {
       category: {
         type: Sequelize.STRING
       },
-      tag: {
+      image_name: {
         type: Sequelize.STRING
       },
       body: {

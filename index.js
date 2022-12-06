@@ -3,8 +3,10 @@ const app = express()
 const session = require('express-session');
 const flash = require('connect-flash');
 const bodyParser = require('body-parser')
+const fileUpload = require('express-fileupload');
 const PORT = process.env.PORT || 3000
 
+app.use(fileUpload());
 app.use(express.static(__dirname + '/public'));
 app.set('view engine', 'ejs');
 
