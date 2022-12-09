@@ -164,7 +164,7 @@ module.exports = {
   },
   categories: async (req, res) => {
     const data = await model.Category.findAll({
-      attributes: ["name", "description"],
+      attributes: ["uuid", "name", "description"],
     });
     res.render("./pages/categories", { data });
   },
@@ -190,6 +190,58 @@ module.exports = {
           status: "Failed",
         });
         req.flash("message", "Gagal menambahkan kategori");
+        res.redirect("/categories");
+      });
+  },
+  updateCategory: async (req, res) => {
+    let { name, description } = req.body;
+    const response = await model.Category.findOne({
+      where: {
+        uuid: req.params.uuid,
+      },
+    });
+    if (!response) {
+      req.flash("alert", {
+        hex: "#f3616d",
+        color: "danger",
+        status: "Failed",
+      });
+      req.flash("message", "Category tidak ditemukan");
+      res.redirect("/categories");
+    }
+    if (!name) name = response.name;
+    if (!description) description = response.description;
+
+    await model.Category.update(
+      {
+        name,
+        description,
+      },
+      {
+        where: {
+          uuid: req.params.uuid,
+        },
+      }
+    )
+      .then((result) => {
+        req.flash("alert", {
+          hex: "#28ab55",
+          color: "success",
+          status: "Success",
+        });
+        req.flash(
+          "message",
+          `Kategori dengan nama ${response.name} berhasil diupdate`
+        );
+        res.redirect("/categories");
+      })
+      .catch((result) => {
+        req.flash("alert", {
+          hex: "#f3616d",
+          color: "danger",
+          status: "Failed",
+        });
+        req.flash("message", "Category gagal diupdate");
         res.redirect("/categories");
       });
   },

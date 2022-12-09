@@ -41,6 +41,7 @@ router.post(
   articleController.insertarticle
 );
 router.post("/category/store", masterController.storecategory);
+router.post("/categories/update/:uuid", masterController.updateCategory);
 router.post("/users/store", masterController.storeUsers);
 router.post("/users/update/:uuid", masterController.updateUser);
 router.get("/users/delete/:uuid", masterController.deleteUser);
