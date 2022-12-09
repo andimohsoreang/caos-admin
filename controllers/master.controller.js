@@ -1,4 +1,5 @@
 const bcrypt = require("bcryptjs");
+const e = require("connect-flash");
 const model = require("../models/index");
 module.exports = {
   users: async (req, res) => {
@@ -62,13 +63,33 @@ module.exports = {
       });
       res.redirect("/users");
     }
-    if (!password) {
+
+    if (!name) name = response.name;
+
+    if (!email) email = response.email;
+
+    if (!role) role = response.role;
+
+    bcrypt.hash(password, 10, async (err, hash) => {
+      if (err) {
+        return req.flash("alert", {
+          hex: "#f3616d",
+          color: "danger",
+          status: "Failed",
+        });
+      }
+      if (!password) {
+        password = response.password;
+      } else {
+        password = hash;
+      }
+
       await model.User.update(
         {
           name,
           email,
           role,
-          password: response.password,
+          password,
         },
         {
           where: {
@@ -77,6 +98,7 @@ module.exports = {
         }
       )
         .then((result) => {
+          console.log("then");
           req.flash("alert", {
             hex: "#28ab55",
             color: "success",
@@ -87,6 +109,7 @@ module.exports = {
           res.redirect("/users");
         })
         .catch((result) => {
+          console.log("catch");
           console.log(result);
           req.flash("alert", {
             hex: "#f3616d",
@@ -95,51 +118,7 @@ module.exports = {
           });
           res.redirect("/users");
         });
-    } else {
-      bcrypt.hash(password, 10, async (err, hash) => {
-        if (err) {
-          return req.flash("alert", {
-            hex: "#f3616d",
-            color: "danger",
-            status: "Failed",
-          });
-        }
-        await model.User.update(
-          {
-            name,
-            email,
-            role,
-            password: hash,
-          },
-          {
-            where: {
-              uuid: req.params.uuid,
-            },
-          }
-        )
-          .then((result) => {
-            console.log("then");
-            req.flash("alert", {
-              hex: "#28ab55",
-              color: "success",
-              status: "Success",
-            });
-            req.flash("message", `Berhasil Update User`);
-            res.status(201);
-            res.redirect("/users");
-          })
-          .catch((result) => {
-            console.log("catch");
-            console.log(result);
-            req.flash("alert", {
-              hex: "#f3616d",
-              color: "danger",
-              status: "Gagal Update users baru",
-            });
-            res.redirect("/users");
-          });
-      });
-    }
+    });
   },
   deleteUser: async (req, res) => {
     const response = await model.User.findOne({
@@ -157,7 +136,6 @@ module.exports = {
     }
 
     // await model.User.
-
   },
   categories: async (req, res) => {
     const data = await model.Category.findAll({

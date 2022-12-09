@@ -113,9 +113,6 @@
       </div>
       <!-- modal edit -->
       <% for(user of data) { %>
-
-
-
         <div class="modal fade" id="editUsersModal<%= user.uuid %>" tabindex=" -1" role="dialog"
           aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered modal-dialog-centered modal-dialog-scrollable" role="document">
@@ -132,17 +129,15 @@
                 <div class="modal-body">
                   <div class="mb-3">
                     <label class="form-label">Nama</label>
-                    <input type="text" class="form-control" name="names" data-parsley-required="true"
-                      value="<%= user.name %>">
+                    <input type="text" class="form-control" name="name" value="<%= user.name %>">
                   </div>
                   <div class="mb-3">
                     <label class="form-label">Email</label>
-                    <input type="email" class="form-control" name="email" data-parsley-required="true"
-                      value="<%= user.email %>">
+                    <input type="email" class="form-control" name="email" value="<%= user.email %>">
                   </div>
                   <div class="mb-3">
                     <label for="basicInput">Role</label>
-                    <select name="role" id="role" class="form-control" data-parsley-required="true" step="0.1">
+                    <select name="role" id="role" class="form-control" step="0.1">
                       <option value="<%= user.role%>"></option>
                       <option value="admin">Admin</option>
                       <option value="masyarakat">Masyarakat</option>
