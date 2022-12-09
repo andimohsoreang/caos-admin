@@ -104,13 +104,14 @@ module.exports = {
             color: "success",
             status: "Success",
           });
-          req.flash("message", `Berhasil Update User`);
+          req.flash(
+            "message",
+            `Berhasil Update User dengan nama ${response.name}`
+          );
           res.status(201);
           res.redirect("/users");
         })
         .catch((result) => {
-          console.log("catch");
-          console.log(result);
           req.flash("alert", {
             hex: "#f3616d",
             color: "danger",
@@ -134,8 +135,32 @@ module.exports = {
       });
       res.redirect("/users");
     }
-
-    // await model.User.
+    await model.User.destroy({
+      where: {
+        uuid: response.uuid,
+      },
+    })
+      .then((result) => {
+        req.flash("alert", {
+          hex: "#28ab55",
+          color: "success",
+          status: "Success",
+        });
+        req.flash(
+          "message",
+          `Berhasil Hapus User dengan nama ${response.name}`
+        );
+        res.status(200);
+        res.redirect("/users");
+      })
+      .catch((result) => {
+        req.flash("alert", {
+          hex: "#f3616d",
+          color: "danger",
+          status: "Gagal Hapus users",
+        });
+        res.redirect("/users");
+      });
   },
   categories: async (req, res) => {
     const data = await model.Category.findAll({
