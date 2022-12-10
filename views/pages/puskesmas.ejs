@@ -20,33 +20,33 @@
                         <table class="table table-striped" id="table1">
                             <thead>
                                 <tr>
-                                    <th>Puskesmas</th>
-                                    <th>Deskripsi</th>
+                                    <th>Nama</th>
+                                    <th>Alamat</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>
-                                        Posyandu
-                                    </td>
-                                    <td>
-                                        Deskripsi
-                                    </td>
-                                    <td>
-                                        <a href="#" class="btn icon btn-info">
-                                            <i class="bi bi-info-circle"></i>
-                                        </a>
-                                        <a href="#" class="btn icon btn-success" data-bs-toggle="modal"
-                                            data-bs-target="#editCategoryModal">
-                                            <i class="bi bi-pencil-square"></i>
-                                        </a>
-                                        <a href="#" class="btn icon btn-danger" data-bs-toggle="modal"
-                                            data-bs-target="#deleteModalCategory">
-                                            <i class="bi bi-trash"></i>
-                                        </a>
-                                    </td>
-                                </tr>
+                                <% data.forEach((data)=>{ %>
+                                    <tr>
+                                        <td>
+                                            <%= data.nama %>
+                                        </td>
+                                        <td>
+                                            <%= data.alamat %>
+
+                                        </td>
+                                        <td>
+                                            <a href="#" class="btn icon btn-success" data-bs-toggle="modal"
+                                                data-bs-target="#editPuskesmasModal<%= data.uuid %>">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </a>
+                                            <a href="#" class="btn icon btn-danger" data-bs-toggle="modal"
+                                                data-bs-target="#deleteModalPuskes<%= data.uuid %>">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <%}) %>
                             </tbody>
                         </table>
                     </div>
@@ -65,17 +65,15 @@
                                 <i data-feather="x"></i>
                             </button>
                         </div>
-                        <form action="/category/store" method="post" data-parsley-validate>
+                        <form action="/puskesmas/store" method="post" data-parsley-validate>
                             <div class="modal-body">
                                 <div class="mb-3">
                                     <label class="form-label">Nama Puskesmas</label>
-                                    <input type="text" class="form-control" name="name" placeholder="cth: Gaya Hidup"
-                                        data-parsley-required="true">
+                                    <input type="text" class="form-control" name="nama" data-parsley-required="true">
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label">Deskripsi</label>
-                                    <textarea name="description" class="form-control" rows="3"
-                                        placeholder="Opsional"></textarea>
+                                    <label class="form-label">Alamat</label>
+                                    <input type="text" class="form-control" name="alamat" data-parsley-required="true">
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -92,77 +90,87 @@
                     </div>
                 </div>
             </div>
-            <div class="modal fade" id="editCategoryModal" tabindex="-1" role="dialog"
-                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-dialog-centered modal-dialog-scrollable"
-                    role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalCenterTitle">
-                                Edit Puskesmas
-                            </h5>
-                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                <i data-feather="x"></i>
-                            </button>
-                        </div>
-                        <form action="/categories/update" methodst" data-parsley-validate>
-                            <div class="modal-body">
-                                <div class="mb-3">
-                                    <label class="form-label">Nama Puskesmas</label>
-                                    <input type="text" class="form-control" name="name" placeholder="cth: Gaya Hidup"
-                                        value="">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Deskripsi</label>
-                                    <textarea name="description" class="form-control" rows="3" value=""></textarea>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
-                                    <i class="bx bx-x d-block d-sm-none"></i>
-                                    <span class="d-none d-sm-block">Close</span>
-                                </button>
-                                <button type="submit" class="btn btn-primary ml-1">
-                                    <i class="bx bx-check d-block d-sm-none"></i>
-                                    <span class="d-none d-sm-block">Accept</span>
+
+            <% for(user of data) { %>
+
+                <div class="modal fade" id="editPuskesmasModal<%= user.uuid %>" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-dialog-centered modal-dialog-scrollable"
+                        role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalCenterTitle">
+                                    Edit Puskesmas
+                                </h5>
+                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                    <i data-feather="x"></i>
                                 </button>
                             </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <!-- delete modal -->
-            <div class="modal fade" id="deleteModalCategory" tabindex=" -1" role="dialog"
-                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-dialog-centered modal-dialog-scrollable"
-                    role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalCenterTitle">
-                                Hapus Puskesmas
-                            </h5>
-                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                <i data-feather="x"></i>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="mb-3">
-                                <p>Apakah Anda Yakin Menghapus Puskesmas Ini?</p>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
-                                <i class="bx bx-x d-block d-sm-none"></i>
-                                <span class="d-none d-sm-block">Close</span>
-                            </button>
-                            <button type="submit" class="btn btn-primary ml-1">
-                                <i class="bx bx-check d-block d-sm-none"></i>
-                                <a href="/categories/delete/" class="d-none d-sm-block text-white">Accept</a>
-                                <!-- <span class=""></span> -->
-                            </button>
+                            <form action="/puskesmas/update/<%= user.uuid %> " method="post" data-parsley-validate>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label class="form-label">Nama Puskesmas</label>
+                                        <input type="text" class="form-control" name="nama" value="<%= user.nama %> ">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Alamat</label>
+                                        <input type="text" class="form-control" name="alamat"
+                                            value="<%= user.alamat %> ">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                                        <i class="bx bx-x d-block d-sm-none"></i>
+                                        <span class="d-none d-sm-block">Close</span>
+                                    </button>
+                                    <button type="submit" class="btn btn-primary ml-1">
+                                        <i class="bx bx-check d-block d-sm-none"></i>
+                                        <span class="d-none d-sm-block">Accept</span>
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
-            </div>
-            <%- include('../partials/footer'); %>
+                <% } %>
+
+                    <!-- delete modal -->
+                    <% for(user of data) { %>
+
+                        <div class="modal fade" id="deleteModalPuskes<%= user.uuid%>" tabindex=" -1" role="dialog"
+                            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-dialog-centered modal-dialog-scrollable"
+                                role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalCenterTitle">
+                                            Hapus Puskesmas
+                                        </h5>
+                                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                            <i data-feather="x"></i>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <p>Apakah Anda Yakin Menghapus Puskesmas Ini?</p>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                                            <i class="bx bx-x d-block d-sm-none"></i>
+                                            <span class="d-none d-sm-block">Close</span>
+                                        </button>
+                                        <button type="submit" class="btn btn-primary ml-1">
+                                            <i class="bx bx-check d-block d-sm-none"></i>
+                                            <a href="/puskesmas/delete/<%= user.uuid %> "
+                                                class="d-none d-sm-block text-white">Accept</a>
+                                            <!-- <span class=""></span> -->
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <% } %>
+
+                            <%- include('../partials/footer'); %>
         </div>

@@ -46,6 +46,7 @@ router.post(
   userMiddleware.validateImages,
   articleController.insertarticle
 );
+
 router.post("/category/store", masterController.storecategory);
 router.post("/categories/update/:uuid", masterController.updateCategory);
 router.get("/categories/delete/:uuid", masterController.deleteCategory);
@@ -53,5 +54,13 @@ router.get("/categories/delete/:uuid", masterController.deleteCategory);
 router.post("/users/store", masterController.storeUsers);
 router.post("/users/update/:uuid", masterController.updateUser);
 router.get("/users/delete/:uuid", masterController.deleteUser);
+
+router.post("/puskesmas/store", puskesmasController.storePuskesmas);
+router.post("/puskesmas/update/:uuid", puskesmasController.updatePuskesmas);
+router.get("/puskesmas/delete/:uuid", puskesmasController.deletePuskesmas);
+
+router.post("/posyandu/store", posyanduController.storePosyandu);
+router.post("/posyandu/update/:uuid", posyanduController.updatePosyandu);
+router.get("/posyandu/delete/:uuid", posyanduController.deletePosyandu);
 
 module.exports = router;
