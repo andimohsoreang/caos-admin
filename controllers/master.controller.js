@@ -1,5 +1,4 @@
 const bcrypt = require("bcryptjs");
-const e = require("connect-flash");
 const model = require("../models/index");
 module.exports = {
   users: async (req, res) => {
@@ -242,6 +241,47 @@ module.exports = {
           status: "Failed",
         });
         req.flash("message", "Category gagal diupdate");
+        res.redirect("/categories");
+      });
+  },
+  deleteCategory: async (req, res) => {
+    const response = await model.Category.findOne({
+      where: {
+        uuid: req.params.uuid,
+      },
+    });
+    if (!response) {
+      req.flash("alert", {
+        hex: "#f3616d",
+        color: "danger",
+        status: "Kategori tidak ditemukan",
+      });
+      res.redirect("/categories");
+    }
+    await model.Category.destroy({
+      where: {
+        uuid: response.uuid,
+      },
+    })
+      .then((result) => {
+        req.flash("alert", {
+          hex: "#28ab55",
+          color: "success",
+          status: "Success",
+        });
+        req.flash(
+          "message",
+          `Berhasil Hapus Kategori dengan nama ${response.name}`
+        );
+        res.status(200);
+        res.redirect("/categories");
+      })
+      .catch((result) => {
+        req.flash("alert", {
+          hex: "#f3616d",
+          color: "danger",
+          status: "Gagal Hapus Kategori",
+        });
         res.redirect("/categories");
       });
   },

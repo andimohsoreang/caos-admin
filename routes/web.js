@@ -4,6 +4,9 @@ const authController = require("../controllers/auth.controller");
 const uploadController = require("../controllers/upload.controller");
 const adminController = require("../controllers/admin.controller");
 const articleController = require("../controllers/article.controller");
+const puskesmasController = require("../controllers/puskesmas.controller");
+const posyanduController = require("../controllers/posyandu.controller");
+
 const masterController = require("../controllers/master.controller");
 const verifyUser = require("../middlewares/verify");
 const multipart = require("connect-multiparty");
@@ -13,6 +16,9 @@ const userMiddleware = require("../middlewares/user.middleware");
 // -pages
 router.get("/insertarticle", articleController.article);
 router.get("/getarticle", articleController.getarticle);
+router.get("/puskesmas", puskesmasController.getPuskesmas);
+router.get("/posyandu", posyanduController.getPosyandu);
+
 // --auth
 router.get("/login", verifyUser.loggedIn, authController.loginPage);
 router.get("/register", verifyUser.loggedIn, authController.registerPage);
@@ -42,6 +48,8 @@ router.post(
 );
 router.post("/category/store", masterController.storecategory);
 router.post("/categories/update/:uuid", masterController.updateCategory);
+router.get("/categories/delete/:uuid", masterController.deleteCategory);
+
 router.post("/users/store", masterController.storeUsers);
 router.post("/users/update/:uuid", masterController.updateUser);
 router.get("/users/delete/:uuid", masterController.deleteUser);
