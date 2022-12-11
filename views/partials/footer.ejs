@@ -25,7 +25,9 @@
 <script src="assets/extensions/simple-datatables.js"></script>
 <script src="assets/pages/simple-datatables.js"></script>
 <script src="assets/extensions/parsley.min.js"></script>
+<script src="assets/extensions/quill.min.js"></script>
 <script src="assets/pages/parsley.js"></script>
+<script src="assets/pages/quill.js"></script>
 <!-- custom -->
 <script>
   const performanceRange = document.getElementById('performanceRange')
@@ -91,5 +93,11 @@
     }).showToast()
   </script>
 <% } %>
+<script>
+  $("#formArticle").on("submit", function () {
+    var hvalue = $('#full').html();
+    $(this).append("<textarea name='bodyArticle' style='display:none'>"+hvalue+"</textarea>");
+   });
+</script>
 </body>
 </html>

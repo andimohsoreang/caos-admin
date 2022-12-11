@@ -1,0 +1,54 @@
+<%- include('../partials/header'); %>
+  <%- include('../partials/sidebar'); %>
+    <div id="main">
+      <div class="page-heading">
+        <h3>Masukan Artikel</h3>
+      </div>
+      <section class="section">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h5>Silahkan Masukan Artikel</h5>
+            </div>
+          </div>
+          <div class="card-body">
+            <form action="insertarticle" method="post" data-parsley-validate id="formArticle"
+              enctype="multipart/form-data">
+              <div class="form-group">
+                <label for="basicInput">Judul</label>
+                <input type="text" class="form-control" name="title" data-parsley-required="true"
+                  placeholder="Masukan Judul Disini" />
+              </div>
+              <div class="form-group">
+                <label for="basicInput">Kategori</label>
+                <select name="category" id="category" class="form-control" data-parsley-required="true" step="0.1">
+                  <option value=""></option>
+                  <% data.forEach(data=>{ %>
+                    <option value="<%= data.name %>">
+                      <%= data.name %>
+                    </option>
+                    <% }) %>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="basicInput">Pilih Cover</label>
+                <input type="file" class="form-control" name="foto" data-parsley-required="true" />
+              </div>
+              <p>Silahkan Masukan Artikel</p>
+              <div id="full" name="bodyArticle">
+              </div>
+              <div class="mt-4 d-flex justify-content-between">
+                <a href="/getarticle" class="btn btn-secondary">
+                  <i class="bi bi-arrow-left-square me-1"></i>
+                  Daftar Artikel
+                </a>
+                <button type="submit" class="btn btn-primary">
+                  Submit
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+    </div>
+    <%- include('../partials/footer'); %>

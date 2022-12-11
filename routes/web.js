@@ -7,12 +7,22 @@ const masterController = require('../controllers/master.controller')
 const verifyUser = require('../middlewares/verify')
 const masterMiddleware = require('../middlewares/master.middleware.js')
 const multipart = require('connect-multiparty');
+const articleController = require("../controllers/article.controller");
+const puskesmasController = require("../controllers/puskesmas.controller");
+const posyanduController = require("../controllers/posyandu.controller");
+
 const multipartMiddleware = multipart();
+const userMiddleware = require("../middlewares/user.middleware");
 
 // -pages
+router.get("/insertarticle", articleController.article);
+router.get("/getarticle", articleController.getarticle);
+router.get("/puskesmas", puskesmasController.getPuskesmas);
+router.get("/posyandu", posyanduController.getPosyandu);
+
 // --auth
-router.get('/login', verifyUser.loggedIn, authController.loginPage)
-router.get('/register', verifyUser.loggedIn, authController.registerPage)
+router.get("/login", verifyUser.loggedIn, authController.loginPage);
+router.get("/register", verifyUser.loggedIn, authController.registerPage);
 // --admin
 router.get('/', verifyUser.isLogin, adminController.dashboard)
 router.get('/growth', adminController.growth)
@@ -42,4 +52,25 @@ router.post('/predicttest', adminController.predicttest)
 router.post('/category/store', masterController.storecategory)
 router.post('/toddler/store', masterMiddleware.getProvKabKec, masterController.storeToddler)
 
-module.exports = router
+router.post("/category/store", masterController.storecategory);
+router.post("/categories/update/:uuid", masterController.updateCategory);
+router.get("/categories/delete/:uuid", masterController.deleteCategory);
+
+router.post("/users/store", masterController.storeUsers);
+router.post("/users/update/:uuid", masterController.updateUser);
+router.get("/users/editstatus/:uuid", masterController.editStatusUser);
+router.get("/users/delete/:uuid", masterController.deleteUser);
+
+router.post("/puskesmas/store", puskesmasController.storePuskesmas);
+router.post("/puskesmas/update/:uuid", puskesmasController.updatePuskesmas);
+router.get("/puskesmas/delete/:uuid", puskesmasController.deletePuskesmas);
+
+router.post("/posyandu/store", posyanduController.storePosyandu);
+router.post("/posyandu/update/:uuid", posyanduController.updatePosyandu);
+router.get("/posyandu/delete/:uuid", posyanduController.deletePosyandu);
+
+router.post("/insertarticle", userMiddleware.validateImages, articleController.insertarticle);
+router.get("/getarticle/delete/:uuid", articleController.deleteArticle);
+router.get("/getarticle/:slug", articleController.getDetailArticle);
+
+module.exports = router;

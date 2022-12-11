@@ -1,0 +1,99 @@
+<%- include('../partials/header'); %>
+    <%- include('../partials/sidebar'); %>
+        <div id="main">
+            <header class="mb-3">
+                <a href="#" class="burger-btn d-block d-xl-none">
+                    <i class="bi bi-justify fs-3"></i>
+                </a>
+            </header>
+            <div class="page-heading">
+                <h3>Daftar Artikel</h3>
+            </div>
+            <section class="section">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <h5>List Artikel</h5>
+                        <a class="btn btn-primary" href="/insertarticle">Tambah</a>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped" id="table1">
+                            <thead>
+                                <tr>
+                                    <th>Judul</th>
+                                    <th>Kategori</th>
+                                    <th>Waktu Dibuat</th>
+                                    <th>Waktu Diubah</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% data.forEach((data)=>{%>
+                                    <tr>
+                                        <td>
+                                            <%= data.title %>
+                                        </td>
+                                        <td>
+                                            <%= data.category %>
+                                        </td>
+                                        <td>
+                                            <%= data.createdAt %>
+                                        </td>
+                                        <td>
+                                            <%= data.updatedAt %>
+                                        </td>
+                                        <td>
+                                            <a href="/getarticle/<%= data.slug %>" class="btn icon btn-info">
+                                                <i class="bi bi-info-circle"></i>
+                                            </a>
+                                            <a href="#" class="btn icon btn-success">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </a>
+                                            <button class="btn icon btn-danger" data-bs-toggle="modal"
+                                                data-bs-target="#deleteModalArticle<%= data.uuid %>">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </td>
+                                        <% }) %>
+                                    </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+            <% for(user of data) { %>
+
+                <div class="modal fade" id="deleteModalArticle<%= user.uuid%>" tabindex=" -1" role="dialog"
+                    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-dialog-centered modal-dialog-scrollable"
+                        role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalCenterTitle">
+                                    Hapus Article
+                                </h5>
+                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                    <i data-feather="x"></i>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <p>Apakah Anda Yakin Menghapus Article Ini?</p>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                                    <i class="bx bx-x d-block d-sm-none"></i>
+                                    <span class="d-none d-sm-block">Close</span>
+                                </button>
+                                <button type="submit" class="btn btn-primary ml-1">
+                                    <i class="bx bx-check d-block d-sm-none"></i>
+                                    <a href="/getarticle/delete/<%= user.uuid %>"
+                                        class="d-none d-sm-block text-white">Accept</a>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <% } %>
+                    <%- include('../partials/footer'); %>
+        </div>

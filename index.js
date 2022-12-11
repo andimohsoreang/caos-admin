@@ -3,13 +3,15 @@ const app = express()
 const session = require('express-session');
 const flash = require('connect-flash');
 const bodyParser = require('body-parser')
+const fileUpload = require('express-fileupload');
 const PORT = process.env.PORT || 3000
 
+app.use(fileUpload());
 app.use(express.static(__dirname + '/public'));
 app.set('view engine', 'ejs');
 
 // config data http
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({limit:'50mb', extended: false }))
 app.use(bodyParser.json())
 
 // config library session
@@ -39,8 +41,8 @@ app.use('/api', api)
 app.use((req, res, next) => {
     res.status(404);
     if (req.accepts('html')) {
-      res.render('./errors/404');
-      return;
+      const baseUrl = `${req.protocol}://${req.headers.host}`
+      return res.render('./errors/404', { baseUrl });
     }
 })
 
