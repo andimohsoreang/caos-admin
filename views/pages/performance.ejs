@@ -20,7 +20,7 @@
           <label for="customRange1" class="form-label">Set Data Training</label>
           <div>Training <span id="setDataTraining"><%= dataTrainingRange %></span> %</div>
         </div>
-        <form action="processperformance" method="post">
+        <form action="training" method="post">
           <input type="range" class="form-range" id="performanceRange" name="performanceRange" value="<%= dataTrainingRange %>" min="0" max="99">
           <div class="d-flex justify-content-between mt-3">
             <a href="/dataprocessing" class="btn btn-secondary">

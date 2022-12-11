@@ -22,7 +22,7 @@
           <div>Tinggi Badan : <%= data[data.length-1].tinggi_badan %> </div>
           <div>Usia : <%= data[data.length-1].usia %> Bulan </div>
           <div>Indikasi : <%= data[data.length-1].label == 1 ? 'Stunting' : 'Normal' %></div>
-          <div>Akurasi : <%= data[data.length-1].akurasi %> %</div>
+          <div>Akurasi : <%= data[data.length-1].akurasi %></div>
         <% } else { %>
           <div>No Data Found</div>
         <% } %>
@@ -55,7 +55,7 @@
                 <td><%= data[i].berat_badan %></td>
                 <td><%= data[i].tinggi_badan %></td>
                 <td><%= data[i].usia %></td>
-                <td><%= data[i].akurasi %> %</td>
+                <td><%= data[i].akurasi %></td>
                 <td>
                   <span class="badge bg-light-<%= data[i].label == 1 ? 'danger' : 'success' %>">
                     <%= data[i].label == 1 ? 'Stunting' : 'Normal' %>

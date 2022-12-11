@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index"
+    "start": "nodemon index",
+    "migrate:up": "npx sequelize-cli db:migrate",
+    "migrate:undo:all": "npx sequelize-cli db:migrate:undo:all",
+    "seed:all": "npx sequelize-cli db:seed:all"
   },
   "repository": {
     "type": "git",
@@ -17,10 +20,12 @@
   },
   "homepage": "https://github.com/andimohsoreang/caos-admin#readme",
   "dependencies": {
+    "@tensorflow/tfjs-node": "^4.1.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.1",
     "connect-flash": "^0.1.1",
     "connect-multiparty": "^2.2.0",
+    "decision-tree": "^0.3.7",
     "ejs": "^3.1.8",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
@@ -29,6 +34,7 @@
     "mysql": "^2.18.1",
     "mysql2": "^2.3.3",
     "nodemon": "^2.0.20",
+    "scikitjs": "^1.24.0",
     "sequelize": "^6.25.8",
     "uuid": "^9.0.0",
     "xlsx": "^0.18.5"

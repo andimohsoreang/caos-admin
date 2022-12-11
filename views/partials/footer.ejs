@@ -35,6 +35,38 @@
   })
 </script>
 <script>
+  $('#formCardBtn').on('click', () => {
+    $('#formCardBtn').removeClass('opacity-50')
+    $('#tableCardBtn').removeClass('border border-bottom-0')
+    $('#formCardBtn').addClass('border border-bottom-0')
+    $('#tableCardBtn').addClass('opacity-50')
+    $('#tableCard').addClass('d-none')
+    $('#formCard').removeClass('d-none')
+  })
+  $('#tableCardBtn').on('click', () => {
+    $('#tableCardBtn').removeClass('opacity-50')
+    $('#tableCardBtn').addClass('border border-bottom-0')
+    $('#formCardBtn').removeClass('border border-bottom-0')
+    $('#formCardBtn').addClass('opacity-50')
+    $('#tableCard').removeClass('d-none')
+    $('#formCard').addClass('d-none')
+  })
+  $('#kab').on('change', () => {
+    const idKab = $('#kab').find(":selected").val()
+    $.ajax ({
+        url : `https://fachiri.github.io/api-wilayah-indonesia/api/districts/${idKab}.json`,
+        method : "GET",
+        success : (result) => {
+          let rows = []
+          for (const i of result) {
+            rows.push(`<option value='${i.id}'>${i.name}</option>`)
+          }
+          $("#kec").html(rows.join(''));
+        }
+    });
+  })
+</script>
+<script>
   const submitBtn = document.getElementById('submitBtn')
   const submitBtnSpinner = document.getElementById('submitBtnSpinner')
 

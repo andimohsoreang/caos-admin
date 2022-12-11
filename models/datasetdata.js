@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
     tinggi_badan: DataTypes.INTEGER,
     usia: DataTypes.INTEGER,
     label: DataTypes.INTEGER,
-    akurasi: DataTypes.INTEGER
+    akurasi: DataTypes.FLOAT
   }, {
     sequelize,
     modelName: 'DatasetData',

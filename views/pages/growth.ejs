@@ -6,40 +6,36 @@
     </a>
   </header>
   <div class="page-heading">
-    <h3>Pengguna</h3>
+    <h3>Perkembangan Balita</h3>
   </div>
   <section class="section">
     <div class="card">
       <div class="card-header">
-        <h5>Daftar Pengguna</h5>
+        <div>
+          <h5>Daftar Balita</h5>
+        </div>
       </div>
       <div class="card-body">
         <table class="table table-striped" id="table1">
           <thead>
             <tr>
               <th>Nama</th>
-              <th>Email</th>
-              <th>Role</th>
-              <th>Status</th>
+              <th>Tanggal Lahir</th>
+              <th>Puskesmas</th>
+              <th>Posyandu</th>
               <th>Aksi</th>
             </tr>
           </thead>
           <tbody>
-            <% for(user of data) { %>
+            <% for(toddler of data) { %>
               <tr>
-                <td><%= user.name %></td>
-                <td><%= user.email %></td>
-                <td><%= user.role %></td>
-                <td><%= user.status %></td>
+                <td><%= toddler.name %></td>
+                <td><%= toddler.birth %></td>
+                <td><%= toddler.puskesmas %></td>
+                <td><%= toddler.posyandu %></td>
                 <td>
-                    <a href="#" class="btn icon btn-info">
-                        <i class="bi bi-info-circle"></i>
-                    </a>
-                    <a href="#" class="btn icon btn-success">
-                        <i class="bi bi-pencil-square"></i>
-                    </a>
-                    <a href="#" class="btn icon btn-danger">
-                        <i class="bi bi-trash"></i>
+                    <a href="/growth/<%= toddler.uuid %>" class="btn icon btn-success">
+                        <i class="bi bi-graph-up"></i>
                     </a>
                 </td>
               </tr>              
