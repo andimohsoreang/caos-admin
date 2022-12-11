@@ -49,10 +49,21 @@
                         data-bs-target="#editUsersModal<%= user.uuid %>">
                         <i class="bi bi-pencil-square"></i>
                       </a>
-                      <a href="#" class="btn icon btn-danger" data-bs-toggle="modal"
-                        data-bs-target="#deleteModalCenter<%= user.uuid %>">
-                        <i class="bi bi-trash"></i>
-                      </a>
+                      <% if (user.status==="active" ) { %>
+                        <a href="#" class="btn icon btn-warning" data-bs-toggle="modal"
+                          data-bs-target="#editStatusModalCenter<%= user.uuid %>">
+                          <i class="bi bi-person-dash"></i>
+                        </a>
+                        <% }else{%>
+                          <a href="#" class="btn icon btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#editStatusModalCenter<%= user.uuid %>">
+                            <i class="bi bi-person-dash"></i>
+                          </a>
+                          <%} %>
+                            <a href="#" class="btn icon btn-danger" data-bs-toggle="modal"
+                              data-bs-target="#deleteModalCenter<%= user.uuid %>">
+                              <i class="bi bi-trash"></i>
+                            </a>
                     </td>
                   </tr>
                   <% } %>
@@ -173,7 +184,7 @@
                 <div class="modal-content">
                   <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalCenterTitle">
-                      Hapus Users
+                      Edit Status Users
                     </h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                       <i data-feather="x"></i>
@@ -199,5 +210,44 @@
               </div>
             </div>
             <% } %>
-              <%- include('../partials/footer'); %>
+              <% for(user of data) { %>
+                <div class="modal fade" id="editStatusModalCenter<%= user.uuid %>" tabindex=" -1" role="dialog"
+                  aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered modal-dialog-centered modal-dialog-scrollable"
+                    role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">
+                          Hapus Users
+                        </h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                          <i data-feather="x"></i>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="mb-3">
+                          <% if (user.status==="active" ) { %>
+                            <p>Apakah Anda Yakin Menonaktifkan User ini Ini?</p>
+                            <% }else{%>
+                              <p>Apakah Anda Yakin Mengaktifkan User Ini?</p>
+
+                              <%}%>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                          <i class="bx bx-x d-block d-sm-none"></i>
+                          <span class="d-none d-sm-block">Close</span>
+                        </button>
+                        <button type="submit" class="btn btn-primary ml-1">
+                          <i class="bx bx-check d-block d-sm-none"></i>
+                          <a href="/users/editstatus/<%= user.uuid %>" class="d-none d-sm-block text-white">Accept</a>
+                          <!-- <span class=""></span> -->
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <% } %>
+                  <%- include('../partials/footer'); %>
     </div>

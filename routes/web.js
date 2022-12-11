@@ -53,6 +53,7 @@ router.get("/categories/delete/:uuid", masterController.deleteCategory);
 
 router.post("/users/store", masterController.storeUsers);
 router.post("/users/update/:uuid", masterController.updateUser);
+router.get("/users/editstatus/:uuid", masterController.editStatusUser);
 router.get("/users/delete/:uuid", masterController.deleteUser);
 
 router.post("/puskesmas/store", puskesmasController.storePuskesmas);
@@ -62,5 +63,8 @@ router.get("/puskesmas/delete/:uuid", puskesmasController.deletePuskesmas);
 router.post("/posyandu/store", posyanduController.storePosyandu);
 router.post("/posyandu/update/:uuid", posyanduController.updatePosyandu);
 router.get("/posyandu/delete/:uuid", posyanduController.deletePosyandu);
+
+router.get("/getarticle/delete/:uuid", articleController.deleteArticle);
+router.get("/getarticle/:slug", articleController.getDetailArticle);
 
 module.exports = router;

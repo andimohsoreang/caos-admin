@@ -1,4 +1,5 @@
 const bcrypt = require("bcryptjs");
+const { response } = require("express");
 const model = require("../models/index");
 module.exports = {
   users: async (req, res) => {
@@ -283,6 +284,52 @@ module.exports = {
           status: "Gagal Hapus Kategori",
         });
         res.redirect("/categories");
+      });
+  },
+  editStatusUser: async (req, res) => {
+    let statusUpdate;
+    let dump;
+    const data = await model.User.findOne({
+      where: {
+        uuid: req.params.uuid,
+      },
+    });
+    if (data.status === "active") {
+      statusUpdate = "inactive";
+      dump = "Menonaktifkan";
+    } else {
+      statusUpdate = "active";
+      dump = "Mengaktifkan";
+    }
+
+    await model.User.update(
+      {
+        status: statusUpdate,
+      },
+      {
+        where: { uuid: req.params.uuid },
+      }
+    )
+      .then((result) => {
+        req.flash("alert", {
+          hex: "#28ab55",
+          color: "success",
+          status: "Success",
+        });
+        req.flash("message", `Berhasil ${dump} akun dengan nama ${data.name}`);
+        res.redirect("/users");
+      })
+      .catch((result) => {
+        req.flash("alert", {
+          hex: "#f3616d",
+          color: "danger",
+          status: "Failed",
+        });
+        req.flash(
+          "message",
+          `Gagal gagal ${dump} akun dengan nama ${data.name}`
+        );
+        res.redirect("/users");
       });
   },
 };
