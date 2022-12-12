@@ -53,13 +53,13 @@ module.exports = {
         res.status(201);
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
         req.flash("alert", {
           hex: "#f3616d",
           color: "danger",
           status: "Failed",
         });
-        req.flash("message", "Gagal membuat Artikel");
+        req.flash("message", error.message);
         res.status(400);
       });
     res.redirect("/insertarticle");
@@ -98,6 +98,7 @@ module.exports = {
         color: "danger",
         status: "Article tidak ditemukan",
       });
+      res.status(404);
       res.redirect("/categories");
     }
     await model.Article.destroy({

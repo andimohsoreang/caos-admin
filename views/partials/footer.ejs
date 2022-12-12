@@ -1,17 +1,17 @@
 <footer>
-    <div class="footer clearfix mb-0 text-muted">
-      <div class="float-start">
-        <p>2021 &copy; Mazer</p>
-      </div>
-      <div class="float-end">
-        <p>
-          Crafted with
-          <span class="text-danger"><i class="bi bi-heart"></i></span> by
-          <a href="https://saugi.me">Saugi</a>
-        </p>
-      </div>
+  <div class="footer clearfix mb-0 text-muted">
+    <div class="float-start">
+      <p>2021 &copy; Mazer</p>
     </div>
-  </footer>
+    <div class="float-end">
+      <p>
+        Crafted with
+        <span class="text-danger"><i class="bi bi-heart"></i></span> by
+        <a href="https://saugi.me">Saugi</a>
+      </p>
+    </div>
+  </div>
+</footer>
 </div>
 </div>
 <!-- main -->
@@ -41,15 +41,15 @@
   const submitBtnSpinner = document.getElementById('submitBtnSpinner')
 
   submitBtn.addEventListener('click', () => {
+    submitBtn.classList.toggle('d-none')
+    submitBtnSpinner.classList.toggle('d-none')
+    setTimeout(() => {
       submitBtn.classList.toggle('d-none')
       submitBtnSpinner.classList.toggle('d-none')
-      setTimeout(() => {
-          submitBtn.classList.toggle('d-none')
-          submitBtnSpinner.classList.toggle('d-none')
-      }, 3500)
+    }, 3500)
   })
 </script>
-<% if(message.length > 0){ %>
+<% if(message.length> 0){ %>
   <script>
     Toastify({
       text: "<%= message %>",
@@ -60,12 +60,28 @@
       backgroundColor: "<%= alert[0].hex %>",
     }).showToast()
   </script>
-<% } %>
-<script>
-  $("#formArticle").on("submit", function () {
-    var hvalue = $('#full').html();
-    $(this).append("<textarea name='bodyArticle' style='display:none'>"+hvalue+"</textarea>");
-   });
-</script>
-</body>
-</html>
+  <% } %>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+      crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+    <script>
+      $('#summernote').summernote({
+        placeholder: 'Hello stand alone ui',
+        tabsize: 2,
+        height: 120,
+        toolbar: [
+          ['style', ['style']],
+          ['font', ['bold', 'underline', 'clear']],
+          ['color', ['color']],
+          ['para', ['ul', 'ol', 'paragraph']],
+          ['table', ['table']],
+          ['insert', ['link', 'picture', 'video']],
+          ['view', ['fullscreen', 'codeview', 'help']]
+        ]
+      });
+    </script>
+
+    </body>
+
+    </html>
