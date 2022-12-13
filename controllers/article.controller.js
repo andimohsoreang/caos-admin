@@ -128,4 +128,19 @@ module.exports = {
         res.redirect("/getarticle");
       });
   },
+  editArticle: async (req, res) => {
+    const data = await model.Article.findAll({
+      where: {
+        slug: req.params.slug,
+      },
+    });
+
+    const category = await model.Category.findAll({
+      attributes: ["name"],
+    });
+    // console.log(category);
+    res.locals.category = "asd";
+    console.log(res.locals.category);
+    res.render("./pages/editArticle", { data });
+  },
 };

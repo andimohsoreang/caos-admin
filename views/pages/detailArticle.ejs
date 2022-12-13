@@ -1,4 +1,35 @@
-<% data.forEach(data=> { %>
-    <%- data.body %>
-        <div id="cok"></div>
-        <% }) %>
+<%- include('../partials/header'); %>
+    <%- include('../partials/sidebar'); %>
+        <% data.forEach(data=> { %>
+            <div id="main">
+                <header class="mb-3">
+                    <a href="#" class="burger-btn d-block d-xl-none">
+                        <i class="bi bi-justify fs-3"></i>
+                    </a>
+                </header>
+                <div class="page-heading">
+                    <h3>Artikel</h3>
+                </div>
+                <section class="section d-flex  ">
+                    <div class="card col-9 col-lg-8 justify-content-between">
+                        <div class="card-header ">
+                            <a class="btn btn-primary" href="/getarticle">Kembali</a>
+                            <a class="btn btn-primary" href="/insertarticle">Tambah</a>
+                        </div>
+                    </div>
+                    <div class="card col-3 col-lg-3 ms-5 align-items-center">
+                        <div class="card-body py-7 px-0 ">
+                            <img src="../public/uploads/<%= data.image_name %>" alt="">
+                        </div>
+                    </div>
+                </section>
+                <section>
+                    <div class="card">
+                        <div class="card-body">
+                            <%- data.body %>
+                        </div>
+                    </div>
+                </section>
+                <%- include('../partials/footer'); %>
+            </div>
+            <% }) %>

@@ -1,6 +1,5 @@
 "use strict";
 const { Model } = require("sequelize");
-const puskesmas = require("./puskesmas");
 module.exports = (sequelize, DataTypes) => {
   class Posyandu extends Model {
     /**
@@ -9,7 +8,13 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      console.log(models);
+      Posyandu.belongsTo(models.Puskesmas, {
+        foreignKey: "id_puskesmas",
+      });
+      models.Puskesmas.hasMany(Posyandu, {
+        foreignKey: "id_puskesmas",
+      });
     }
   }
   Posyandu.init(

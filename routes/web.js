@@ -14,8 +14,6 @@ const multipartMiddleware = multipart();
 const userMiddleware = require("../middlewares/user.middleware");
 
 // -pages
-router.get("/insertarticle", articleController.article);
-router.get("/getarticle", articleController.getarticle);
 router.get("/puskesmas", puskesmasController.getPuskesmas);
 router.get("/posyandu", posyanduController.getPosyandu);
 
@@ -65,6 +63,9 @@ router.post("/posyandu/update/:uuid", posyanduController.updatePosyandu);
 router.get("/posyandu/delete/:uuid", posyanduController.deletePosyandu);
 
 router.get("/getarticle/delete/:uuid", articleController.deleteArticle);
+router.get("/getarticle", articleController.getarticle);
 router.get("/getarticle/:slug", articleController.getDetailArticle);
+router.get("/insertarticle", articleController.article);
+router.get("/editarticle/:slug", articleController.editArticle);
 
 module.exports = router;

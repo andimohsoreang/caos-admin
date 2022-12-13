@@ -9,7 +9,6 @@ module.exports = {
   },
   storePuskesmas: async (req, res) => {
     const { nama, alamat } = req.body;
-
     await model.Puskesmas.create({
       nama,
       alamat,
