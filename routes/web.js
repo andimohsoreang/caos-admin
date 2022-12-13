@@ -26,6 +26,7 @@ router.get("/register", verifyUser.loggedIn, authController.registerPage);
 // --admin
 router.get('/', verifyUser.isLogin, adminController.dashboard)
 router.get('/growth', adminController.growth)
+router.get('/measurement', adminController.measurement)
 // ---master
 router.get('/users', masterController.users)
 router.get('/toddlers', masterController.toddlers)

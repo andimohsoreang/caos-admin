@@ -5,16 +5,34 @@ module.exports = {
     const data = await model.Posyandus.findAll({
       attributes: ["uuid", "nama", "alamat"],
     });
-    res.render("./pages/posyandu", { data });
+    const puskesmas = await model.Puskesmas.findAll({
+      attributes: ["uuid", "nama"],
+    });
+    res.render("./pages/posyandu", { data, puskesmas });
   },
   storePosyandu: async (req, res) => {
-    const { nama, alamat } = req.body;
-
+    const { nama, alamat, id_puskesmas } = req.body;
+    let idPuskes
+    await model.Puskesmas.findOne({ where: {uuid: id_puskesmas}})
+      .then((result) => {
+        idPuskes = result.id
+      })
+      .catch((err) => {
+        console.log(err)
+        req.flash("alert", {
+          hex: "#f3616d",
+          color: "danger",
+          status: "Failed",
+        });
+        req.flash("message", "Gagal Menambahkan Posyandu");
+        res.redirect("/posyandu");
+      })
     await model.Posyandus.create({
       nama,
       alamat,
+      id_puskesmas: idPuskes
     })
-      .then((result) => {
+      .then(() => {
         req.flash("alert", {
           hex: "#28ab55",
           color: "success",
@@ -25,7 +43,7 @@ module.exports = {
         res.redirect("/posyandu");
       })
       .catch((err) => {
-        console.log(error);
+        console.log(err);
         req.flash("alert", {
           hex: "#f3616d",
           color: "danger",

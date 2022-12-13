@@ -67,11 +67,20 @@
                                 <i data-feather="x"></i>
                             </button>
                         </div>
-                        <form action="/posyandu/store" method="post" data-parsley-validate>
+                        <form action="posyandu/store" method="post" data-parsley-validate>
                             <div class="modal-body">
                                 <div class="mb-3">
                                     <label class="form-label">Nama Posyandu</label>
                                     <input type="text" class="form-control" name="nama" data-parsley-required="true">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Puskesmas</label>
+                                    <select name="id_puskesmas" class="form-select" data-parsley-minLength="2" data-parsley-error-message="Pilih Puskesmas">
+                                        <option value="0"></option>
+                                        <% for(i of puskesmas) { %>
+                                            <option value="<%= i.uuid %>"><%= i.nama %></option>
+                                        <% } %>
+                                    </select>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Alamat</label>

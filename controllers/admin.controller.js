@@ -247,7 +247,7 @@ module.exports = {
         let attributes = Object.keys(train[0])
         let label = attributes.pop()
 
-        let dt = new DecisionTree(label, attributes);
+        let dt = new scikitjs.DecisionTree(label, attributes);
         dt.train(train);
 
         // save x, y test and model train
@@ -285,8 +285,8 @@ module.exports = {
         const result = lr.predict([[+Usia, +Berat, +Tinggi, +JK]])
         const akurasi = lr.score(xTest, yTest)
         
-        await model.DatasetData.create({ 
-            name: name, 
+        await model.DatasetData.create({
+            name: name,
             berat_badan: Berat,
             tinggi_badan: Tinggi,
             usia: Usia,
@@ -305,7 +305,16 @@ module.exports = {
     growth: async (req, res) => {
         const data = await model.Toddler.findAll({
             attributes: ['uuid' ,'name', 'birth', 'puskesmas', 'posyandu']
-        });
+        })
         res.render('./pages/growth', { data })
+    },
+    measurement: async (req, res) => {
+        const data = await model.Measurement.findAll({
+            attributes: ['uuid' ,'date', 'bb', 'tb']
+        })
+        const toddlers = await model.Toddler.findAll({
+            attributes: ['uuid' ,'name']
+        })
+        res.render('./pages/measurement', { data, toddlers })
     }
 }
