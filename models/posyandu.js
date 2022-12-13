@@ -1,6 +1,5 @@
 "use strict";
 const { Model } = require("sequelize");
-const puskesmas = require("./puskesmas");
 module.exports = (sequelize, DataTypes) => {
   class Posyandu extends Model {
     /**
@@ -9,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      
     }
   }
   Posyandu.init(

@@ -393,7 +393,7 @@ module.exports = {
           status: "Success",
         });
         req.flash("message", `Berhasil ${dump} akun dengan nama ${data.name}`);
-        res.redirect("/users");
+        res.status(200).redirect("/users");
       })
       .catch((result) => {
         req.flash("alert", {
@@ -405,7 +405,7 @@ module.exports = {
           "message",
           `Gagal gagal ${dump} akun dengan nama ${data.name}`
         );
-        res.redirect("/users");
+        res.status(400).redirect("/users");
       });
   },
 };
