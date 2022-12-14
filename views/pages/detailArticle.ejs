@@ -1,35 +1,48 @@
 <%- include('../partials/header'); %>
-    <%- include('../partials/sidebar'); %>
+    <%# include('../partials/sidebar'); %>
         <% data.forEach(data=> { %>
-            <div id="main">
-                <header class="mb-3">
-                    <a href="#" class="burger-btn d-block d-xl-none">
-                        <i class="bi bi-justify fs-3"></i>
-                    </a>
-                </header>
-                <div class="page-heading">
-                    <h3>Artikel</h3>
-                </div>
-                <section class="section d-flex  ">
-                    <div class="card col-9 col-lg-8 justify-content-between">
-                        <div class="card-header ">
-                            <a class="btn btn-primary" href="/getarticle">Kembali</a>
-                            <a class="btn btn-primary" href="/insertarticle">Tambah</a>
-                        </div>
-                    </div>
-                    <div class="card col-3 col-lg-3 ms-5 align-items-center">
-                        <div class="card-body py-7 px-0 ">
-                            <img src="../public/uploads/<%= data.image_name %>" alt="">
-                        </div>
-                    </div>
-                </section>
-                <section>
-                    <div class="card">
-                        <div class="card-body">
-                            <%- data.body %>
-                        </div>
-                    </div>
-                </section>
-                <%- include('../partials/footer'); %>
+            <header class="mb-3">
+                <a href="#" class="burger-btn d-block d-xl-none">
+                    <i class="bi bi-justify fs-3"></i>
+                </a>
+            </header>
+            <div class="page-heading">
+                <h3>Detail Artikel</h3>
             </div>
-            <% }) %>
+            <section class="section ">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between">
+                            <a href="/getarticle" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left-square me-1"></i>
+                                Daftar Artikel
+                            </a>
+                        </div>
+                    </div>
+            </section>
+            <section>
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="justify-content-center">Judul : <%= data.title %>
+                        </h5>
+                        <h5 class="justify-content-center">Penulis : Ajul Ganteng
+                        </h5>
+                        <%- data.body %>
+                            <div class="mt-4 d-flex justify-content-between">
+                                <a href="/getarticle" class="btn btn-secondary">
+                                    <i class="bi bi-arrow-left-square me-1"></i>
+                                    Daftar Artikel
+                                </a>
+                            </div>
+                    </div>
+
+                </div>
+            </section>
+            <%- include('../partials/footer'); %>
+                <% }) %>
+
+                    <style>
+                        body {
+                            margin: 25px;
+                        }
+                    </style>

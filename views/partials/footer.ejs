@@ -55,16 +55,16 @@
   })
   $('#kab').on('change', () => {
     const idKab = $('#kab').find(":selected").val()
-    $.ajax ({
-        url : `https://fachiri.github.io/api-wilayah-indonesia/api/districts/${idKab}.json`,
-        method : "GET",
-        success : (result) => {
-          let rows = []
-          for (const i of result) {
-            rows.push(`<option value='${i.id}'>${i.name}</option>`)
-          }
-          $("#kec").html(rows.join(''));
+    $.ajax({
+      url: `https://fachiri.github.io/api-wilayah-indonesia/api/districts/${idKab}.json`,
+      method: "GET",
+      success: (result) => {
+        let rows = []
+        for (const i of result) {
+          rows.push(`<option value='${i.id}'>${i.name}</option>`)
         }
+        $("#kec").html(rows.join(''));
+      }
     });
   })
 </script>
@@ -101,7 +101,7 @@
       $('#summernote').summernote({
         placeholder: 'Tulis Artikel Disini...',
         tabsize: 2,
-        height: 120,
+        height: 1000,
         toolbar: [
           ['style', ['style']],
           ['font', ['bold', 'underline', 'clear']],

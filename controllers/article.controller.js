@@ -4,7 +4,7 @@ const path = require("path");
 
 module.exports = {
   article: async (req, res) => {
-    const data = await model.Article.findAll();
+    const data = await model.Category.findAll();
     res.render("./pages/insertArticle", { data });
   },
   insertarticle: async (req, res) => {
@@ -140,5 +140,59 @@ module.exports = {
     res.locals.category = "asd";
     console.log(res.locals.category);
     res.render("./pages/editArticle", { data });
+  },
+
+  editArticlePut: async (req, res) => {
+    const { title, body } = req.body;
+    let imageFix;
+    const image = req.files.foto;
+    const ext = path.extname(image.name);
+    const fileName = image.md5 + Math.floor(Date.now() / 1000) + ext;
+    const url = `${req.protocol}://${req.get("host")}/images/${fileName}`;
+    const newpath = `${__dirname}/../public/images/uploads/${fileName}`;
+    await image.mv(newpath);
+
+    const data = await model.Article.findOne({
+      where: {
+        slug: req.params.slug,
+      },
+    });
+    if (!image) {
+      imageFix = data.image_name;
+    }
+    imageFix = fileName;
+    await model.Article.update(
+      {
+        title,
+        body,
+        image_name: imageFix,
+      },
+      {
+        where: {
+          slug: data.slug,
+        },
+      }
+    )
+      .then((result) => {
+        req.flash("alert", {
+          hex: "#28ab55",
+          color: "success",
+          status: "Success",
+        });
+        req.flash(
+          "message",
+          `Berhasil Update Article dengan Judul ${data.title}`
+        );
+        res.status(200);
+        res.redirect("/getarticle");
+      })
+      .catch((result) => {
+        req.flash("alert", {
+          hex: "#f3616d",
+          color: "danger",
+          status: result.message,
+        });
+        res.redirect("/getarticle");
+      });
   },
 };
