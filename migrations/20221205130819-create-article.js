@@ -21,9 +21,6 @@ module.exports = {
       category: {
         type: Sequelize.STRING,
       },
-      id_category: {
-        type: Sequelize.INTEGER,
-      },
       image_name: {
         type: Sequelize.STRING,
       },
@@ -43,7 +40,7 @@ module.exports = {
       },
     });
   },
-  async down(queryterface, Sequelize) {
+  async down(queryInterface, Sequelize) {
     await queryInterface.dropTable("Articles");
   },
 };
