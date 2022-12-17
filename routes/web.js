@@ -30,6 +30,8 @@ router.get('/measurement', adminController.measurement)
 // ---master
 router.get('/users', masterController.users)
 router.get('/toddlers', masterController.toddlers)
+router.get("/toddler/edit/:uuid", masterController.editToddlerPage);
+router.post("/toddler/edit/:uuid", masterMiddleware.getProvKabKec, masterController.editToddler);
 router.get('/categories', masterController.categories)
 // ---algorithm
 router.get('/importdataset', adminController.importdataset)
@@ -73,5 +75,7 @@ router.get("/posyandu/delete/:uuid", posyanduController.deletePosyandu);
 router.post("/insertarticle", userMiddleware.validateImages, articleController.insertarticle);
 router.get("/getarticle/delete/:uuid", articleController.deleteArticle);
 router.get("/getarticle/:slug", articleController.getDetailArticle);
+
+router.post("/measurement/store", adminController.storeMeasurement);
 
 module.exports = router;

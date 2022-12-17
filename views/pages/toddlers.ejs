@@ -37,7 +37,7 @@
                       <a href="#" class="btn icon btn-info">
                           <i class="bi bi-info-circle"></i>
                       </a>
-                      <a href="#" class="btn icon btn-success">
+                      <a href="toddler/edit/<%= toddler.uuid %>" class="btn icon btn-success">
                           <i class="bi bi-pencil-square"></i>
                       </a>
                       <a href="#" class="btn icon btn-danger">
@@ -60,6 +60,14 @@
             <div class="mb-3">
               <label class="form-label">Nama Balita</label>
               <input type="text" class="form-control" name="name" data-parsley-required="true">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Jenis Kelamin</label>
+              <select class="form-select" name="jk" id="jk" data-parsley-maxLength="1" data-parsley-error-message="Pilih Jenis Kelamin">
+                <option value="00" hidden></option>
+                <option value="L">Laki-laki</option>
+                <option value="P">Perempuan</option>
+              </select>
             </div>
             <div class="mb-3">
               <label class="form-label">Tanggal Lahir</label>
@@ -94,16 +102,19 @@
               <label class="form-label">Puskesmas</label>
               <select class="form-select" name="puskesmas" data-parsley-minLength="2" data-parsley-error-message="Pilih Puskesmas">
                 <option value="0"></option>
-                <option value="Puskes A">Puskes A</option>
-                <option value="Puskes B">Puskes B</option>
+                <% for(i of puskesmas) { %>
+                  <option value="<%= i.nama %>"> <%= i.nama %> </option>
+                <% } %>
               </select>
             </div>
+
             <div class="mb-3">
               <label class="form-label">Posyandu</label>
               <select class="form-select" name="posyandu" data-parsley-minLength="2" data-parsley-error-message="Pilih Posyandu">
                 <option value="0"></option>
-                <option value="Posyandu A">Posyandu A</option>
-                <option value="Posyandu B">Posyandu B</option>
+                <% for(i of posyandu) { %>
+                  <option value="<%= i.nama %>"> <%= i.nama %> </option>
+                <% } %>
               </select>
             </div>
             <div class="text-end">

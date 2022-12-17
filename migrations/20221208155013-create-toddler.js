@@ -18,6 +18,9 @@ module.exports = {
       name: {
         type: Sequelize.STRING
       },
+      jk: {
+        type: Sequelize.STRING
+      },
       birth: {
         type: Sequelize.DATEONLY
       },

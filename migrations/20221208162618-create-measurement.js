@@ -13,7 +13,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       date: {
-        type: Sequelize.DATE
+        type: Sequelize.DATEONLY
       },
       bb: {
         type: Sequelize.FLOAT
@@ -24,11 +24,20 @@ module.exports = {
       bbu: {
         type: Sequelize.STRING
       },
+      zbbu: {
+        type: Sequelize.FLOAT
+      },
       tbu: {
         type: Sequelize.STRING
       },
+      ztbu: {
+        type: Sequelize.FLOAT
+      },
       bbtb: {
         type: Sequelize.STRING
+      },
+      zbbtb: {
+        type: Sequelize.FLOAT
       },
       lila: {
         type: Sequelize.FLOAT

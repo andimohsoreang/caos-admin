@@ -1,3 +1,4 @@
+const dirname = `${__dirname}/..`
 const { existsSync, writeFile } = require('fs')
 const xlsx = require('xlsx')
 const datasetConfig = require(`${__dirname}/../config/dataset.json`)
@@ -7,6 +8,7 @@ const { splitData } = require('../utils')
 const tf = require('@tensorflow/tfjs')
 const scikitjs = require('scikitjs')
 scikitjs.setBackend(tf)
+const anthropometricTable = require(`${dirname}/public/assets/standar-antropometri.json`)
 const readFileDataset = () => {
     const path = __dirname + '/../public/uploads/' + datasetConfig.fileName
     let data = []
@@ -57,6 +59,113 @@ const getUnique = (array) => {
         }
     }
     return uniqueArray;
+}
+const getZscore = (type, age, bb, tb, method, jk) => {
+    let obj, x, dividend, divisor, quotient, result, rangeAge
+    
+    switch (type) {
+        case 'BBU':
+            rangeAge = '0-60'
+            x = bb
+            y = age
+            jsonKey = 'Umur'
+            break;
+        case 'TBU':
+            x = tb
+            y = age
+            jsonKey = 'Umur'
+            if (age == 24) {
+                if (method == 'telentang') {
+                    type = 'PBU'
+                    rangeAge = '0-24'
+                } else {
+                    rangeAge = '24-60'
+                }
+            } else if (age < 24) {
+                type = 'PBU'
+                rangeAge = '0-24'
+            } else {
+                rangeAge = '24-60'
+            }
+            break;
+        case 'BBTB':
+            x = bb
+            y = tb
+            if (age < 24 && (tb > 45.0 && tb < 110.0)) {
+                type = 'BBPB'
+                jsonKey = 'Panjang Badan'
+                rangeAge = '0-24'
+            } else {
+                jsonKey = 'Tinggi Badan'
+                rangeAge = '24-60'
+            }
+            break;
+        default:
+            return false
+    }
+
+    const key = `${type}.${jk}.${rangeAge}`
+    obj = anthropometricTable[key].find(e => e[jsonKey] == y)
+    dividend = x - obj.Median
+    
+    if (x < obj.Median) {
+        divisor = obj.Median - obj['-1sd']
+    } else {
+        divisor = obj['+1sd'] - obj.Median
+    }
+
+    quotient = dividend / divisor
+    result = getCategoty(type, quotient)
+
+    return { zs: quotient, status: result }
+}
+const getCategoty = (type, quotient) => {
+    let status
+    switch (type) {
+        case 'BBU':
+            if (quotient < -3) {
+                status = 'Berat Badan Sangat Kurang (severely underweight)'
+            } else if (quotient <= -2) {
+                status = 'Berat badan kurang (underweight)'
+            } else if (quotient <= 1) {
+                status = 'Berat badan normal'
+            } else {
+                status = 'Risiko Berat badan lebih'
+            }
+            break;
+        case 'TBU':
+        case 'PBU':
+            if (quotient < -3) {
+                status = 'Sangat pendek (severely stunted)'
+            } else if (quotient <= -2) {
+                status = 'Pendek (stunted)'
+            } else if (quotient <= 3) {
+                status = 'Normal'
+            } else {
+                status = 'Tinggi'
+            }
+            break;
+        case 'BBPB':
+        case 'BBTB':
+            if (quotient < -3) {
+                status = 'Gizi buruk (severely wasted)'
+            } else if (quotient <= -2) {
+                status = 'Gizi kurang (wasted)'
+            } else if (quotient <= 1) {
+                status = 'Gizi baik (normal)'
+            } else if (quotient <= 2) {
+                status = 'Berisiko gizi lebih (possible risk of overweight)'
+            } else if (quotient <= 3) {
+                status = 'Gizi lebih (overweight)'
+            } else {
+                status = 'Obesitas (obese)'
+            }
+            break
+    
+        default:
+            break;
+    }
+    return status
 }
 
 module.exports = {
@@ -310,11 +419,43 @@ module.exports = {
     },
     measurement: async (req, res) => {
         const data = await model.Measurement.findAll({
-            attributes: ['uuid' ,'date', 'bb', 'tb']
+            attributes: ['uuid' ,'date', 'current_age', 'bb', 'tb', 'bbu', 'zbbu', 'tbu', 'ztbu', 'bbtb', 'zbbtb']
         })
         const toddlers = await model.Toddler.findAll({
             attributes: ['uuid' ,'name']
         })
         res.render('./pages/measurement', { data, toddlers })
+    },
+    storeMeasurement: async (req, res) => {
+        const { uuid, date, age, bb, tb, method, lila, lika, peb, vitamin } = req.body
+        const { id, jk } = await model.Toddler.findOne({ where: { uuid: uuid } })
+        if ((age < 24 && method === 'berdiri') || (age > 24 && method === 'telentang')) {
+            req.flash('alert', {hex: '#f3616d', color: 'danger', status: 'Failed'})
+            req.flash('message', 'Terjadi kesalahan dalam pengukuran!')
+            return res.redirect(`${baseUrl}/measurement`)
+        }
+        const bbu = getZscore('BBU', +age, +bb, +tb, method, jk)
+        const tbu = getZscore('TBU', +age, +bb, +tb, method, jk)
+        const bbtb = getZscore('BBTB', +age, +bb, +tb, method, jk)
+        await model.Measurement.create({
+            date, bb, tb,
+            bbu: bbu.status,
+            tbu: tbu.status,
+            bbtb: bbtb.status,
+            zbbu: bbu.zs.toFixed(2),
+            ztbu: tbu.zs.toFixed(2),
+            zbbtb: bbtb.zs.toFixed(2),
+            lila, lika, peb, method, vitamin,
+            current_age: age,
+            id_toddler: id
+        }).then(() => {
+            req.flash('alert', {hex: '#28ab55', color: 'success', status: 'Success'})
+            req.flash('message', 'Data berhasil ditambahkan!')
+        }).catch((err) => {
+            console.log(err)
+            req.flash('alert', {hex: '#f3616d', color: 'danger', status: 'Failed'})
+            req.flash('message', 'Gagal menambahkan data!')
+        })
+        res.redirect(`${baseUrl}/measurement`)
     }
 }

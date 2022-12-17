@@ -29,8 +29,10 @@ app.use(flash());
 app.use((req, res, next) => {
     res.locals.alert = req.flash("alert");
     res.locals.message = req.flash("message");
+    baseUrl = `${req.protocol}://${req.headers.host}`
     next();
 });
+
 
 const web = require('./routes/web.js')
 app.use('/', web)
@@ -41,7 +43,6 @@ app.use('/api', api)
 app.use((req, res, next) => {
     res.status(404);
     if (req.accepts('html')) {
-      const baseUrl = `${req.protocol}://${req.headers.host}`
       return res.render('./errors/404', { baseUrl });
     }
 })

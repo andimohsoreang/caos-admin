@@ -15,19 +15,21 @@
 </div>
 </div>
 <!-- main -->
-<script src="assets/js/bootstrap.js"></script>
-<script src="assets/js/app.js"></script>
-<script src="assets/extensions/jquery.min.js"></script>
+<script src="<%= baseUrl %>/assets/js/bootstrap.js"></script>
+<script src="<%= baseUrl %>/assets/js/app.js"></script>
+<script src="<%= baseUrl %>/assets/extensions/jquery.min.js"></script>
 <!-- spesific -->
-<script src="assets/extensions/apexcharts.min.js"></script>
-<script src="assets/pages/dashboard.js"></script>
-<script src="assets/extensions/toastify.js"></script>
-<script src="assets/extensions/simple-datatables.js"></script>
-<script src="assets/pages/simple-datatables.js"></script>
-<script src="assets/extensions/parsley.min.js"></script>
-<script src="assets/extensions/quill.min.js"></script>
-<script src="assets/pages/parsley.js"></script>
-<script src="assets/pages/quill.js"></script>
+<script src="<%= baseUrl %>/assets/extensions/apexcharts.min.js"></script>
+<script src="<%= baseUrl %>/assets/pages/dashboard.js"></script>
+<script src="<%= baseUrl %>/assets/extensions/toastify.js"></script>
+<script src="<%= baseUrl %>/assets/extensions/simple-datatables.js"></script>
+<script src="<%= baseUrl %>/assets/pages/simple-datatables.js"></script>
+<script src="<%= baseUrl %>/assets/extensions/parsley.min.js"></script>
+<script src="<%= baseUrl %>/assets/extensions/quill.min.js"></script>
+<script src="<%= baseUrl %>/assets/pages/parsley.js"></script>
+<script src="<%= baseUrl %>/assets/pages/quill.js"></script>
+<script src="<%= baseUrl %>/assets/extensions/choices.js"></script>
+<script src="<%= baseUrl %>/assets/pages/choices.js"></script>
 <!-- custom -->
 <script>
   const performanceRange = document.getElementById('performanceRange')
@@ -65,8 +67,20 @@
           }
           $("#kec").html(rows.join(''));
         }
-    });
+    })
   })
+  const idKec = $('#kec').find(":selected")
+  if (idKec != '0' && idKec != undefined) {
+    const idKab2 = $('#kab').find(":selected").val()
+    $.ajax ({
+        url : `https://fachiri.github.io/api-wilayah-indonesia/api/districts/${idKab2}.json`,
+        method : "GET",
+        success : (result) => {
+          const district = result.find(e => e.name == idKec.val())
+          idKec.attr('value', district.id)
+        }
+    });
+  }
 </script>
 <script>
   const submitBtn = document.getElementById('submitBtn')

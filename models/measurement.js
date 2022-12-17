@@ -16,13 +16,20 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Measurement.init({
-    uuid: DataTypes.STRING,
-    date: DataTypes.DATE,
+    uuid: {
+      type: DataTypes.STRING,
+      defaultValue: DataTypes.UUIDV4,
+      unique: true,
+    },
+    date: DataTypes.DATEONLY,
     bb: DataTypes.FLOAT,
     tb: DataTypes.FLOAT,
     bbu: DataTypes.STRING,
+    zbbu: DataTypes.FLOAT,
     tbu: DataTypes.STRING,
+    ztbu: DataTypes.FLOAT,
     bbtb: DataTypes.STRING,
+    zbbtb: DataTypes.FLOAT,
     lila: DataTypes.FLOAT,
     lika: DataTypes.FLOAT,
     peb: DataTypes.STRING,
