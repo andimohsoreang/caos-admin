@@ -11,7 +11,6 @@ module.exports = (sequelize, DataTypes) => {
       // Article.hasOne(models.Category, {
       //   foreignKey: "id_category",
       // });
-
       // Article.belongsTo(models.Category, {
       //   foreignKey: "id_category",
       // });
@@ -28,7 +27,8 @@ module.exports = (sequelize, DataTypes) => {
       slug: DataTypes.STRING,
       category: DataTypes.STRING,
       image_name: DataTypes.STRING,
-      body: DataTypes.TEXT,
+      url: DataTypes.STRING,
+      body: DataTypes.TEXT("medium"),
       id_user: DataTypes.INTEGER,
     },
     {

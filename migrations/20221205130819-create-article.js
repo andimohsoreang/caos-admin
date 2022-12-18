@@ -24,8 +24,11 @@ module.exports = {
       image_name: {
         type: Sequelize.STRING,
       },
+      url: {
+        type: Sequelize.STRING,
+      },
       body: {
-        type: Sequelize.TEXT("long"),
+        type: Sequelize.TEXT("medium"),
       },
       id_user: {
         type: Sequelize.INTEGER,

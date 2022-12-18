@@ -13,9 +13,16 @@ module.exports = {
     //image setting
     const ext = path.extname(image.name);
     const fileName = image.md5 + Math.floor(Date.now() / 1000) + ext;
-    const url = `${req.protocol}://${req.get("host")}/images/${fileName}`;
+    const image_url = `${req.protocol}://${req.get("host")}/images/${fileName}`;
     const newpath = `${__dirname}/../public/images/uploads/${fileName}`;
     await image.mv(newpath);
+
+    // Hitung jumlah byte yang dibutuhkan untuk menyimpan teks
+    const byteLength = Buffer.byteLength(bodyArticle, "utf8");
+
+    // Konversi byte ke MB dengan membagi dengan 1.000.000
+    const sizeInMb = byteLength / 1000000;
+    console.log(`Ukuran teks: ${sizeInMb} MB`);
 
     // console.log(image);
     let finalSlug = title
@@ -27,6 +34,7 @@ module.exports = {
     if (finalSlug.startsWith("-"))
       finalSlug = finalSlug.slice(1, finalSlug.length);
 
+    // console.log(url);
     const data = await model.User.findOne({
       where: {
         uuid: req.session.userid,
@@ -38,6 +46,7 @@ module.exports = {
       category,
       body: bodyArticle,
       image_name: fileName,
+      url: image_url,
       slug: finalSlug,
       id_user: data.id,
     })
@@ -132,10 +141,6 @@ module.exports = {
         slug: req.params.slug,
       },
     });
-
-    const category = await model.Category.findAll({
-      attributes: ["name"],
-    });
     // console.log(category);
     res.locals.category = "asd";
     console.log(res.locals.category);
@@ -148,7 +153,6 @@ module.exports = {
     const image = req.files.foto;
     const ext = path.extname(image.name);
     const fileName = image.md5 + Math.floor(Date.now() / 1000) + ext;
-    const url = `${req.protocol}://${req.get("host")}/images/${fileName}`;
     const newpath = `${__dirname}/../public/images/uploads/${fileName}`;
     await image.mv(newpath);
 
@@ -161,11 +165,13 @@ module.exports = {
       imageFix = data.image_name;
     }
     imageFix = fileName;
+    const url = `${req.protocol}://${req.get("host")}/images/${imageFix}`;
     await model.Article.update(
       {
         title,
         body,
         image_name: imageFix,
+        image_url: url,
       },
       {
         where: {

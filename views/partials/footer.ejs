@@ -99,6 +99,7 @@
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
     <script>
       $('#summernote').summernote({
+        maximumImageFileSize: 599 * 1024,
         placeholder: 'Tulis Artikel Disini...',
         tabsize: 2,
         height: 1000,
@@ -113,7 +114,11 @@
         ]
       });
     </script>
-
+    <script>
+      function preview() {
+        frame.src = URL.createObjectURL(event.target.files[0]);
+      }
+    </script>
     </body>
 
     </html>
