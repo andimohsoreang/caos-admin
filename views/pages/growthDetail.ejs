@@ -1,0 +1,216 @@
+<%- include('../partials/header'); %> <%- include('../partials/sidebar'); %>
+<div id="main">
+  <header class="mb-3">
+    <a href="#" class="burger-btn d-block d-xl-none">
+      <i class="bi bi-justify fs-3"></i>
+    </a>
+  </header>
+  <div class="page-heading">
+    <h3>Perkembangan Balita</h3>
+    <h6><%= name %></h6>
+  </div>
+  <section class="section">
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h5>Berat Badan</h5>
+        </div>
+      </div>
+      <div class="card-body">
+        <canvas id="line"></canvas>
+      </div>
+    </div>
+  </section>
+  <%- include('../partials/footer'); %>
+  <script src="<%= baseUrl %>/assets/extensions/chart.min.js"></script>
+  <script>
+      $.ajax ({
+        url : '<%= baseUrl %>/api/growth/<%= uuid %>',
+        method : "GET",
+          success : (res) => {
+            const data = res.data
+            let labels = []
+            let bb = []
+            let median = []
+            let min1sd = []
+            let min2sd = []
+            let min3sd = []
+            let plus1sd = []
+            let plus2sd = []
+            let plus3sd = []
+            
+            for (let i = 0; i < data.length; i++) {
+              labels.push(data[i].date)
+              bb.push(data[i].bb)
+              median.push(data[i].rekombbu)
+              min1sd.push(data[i].bbumin1sd)
+              min2sd.push(data[i].bbumin2sd)
+              min3sd.push(data[i].bbumin3sd)
+              plus1sd.push(data[i].bbuplus1sd)
+              plus2sd.push(data[i].bbuplus2sd)
+              plus3sd.push(data[i].bbuplus3sd)
+            }
+            const line = document.getElementById("line").getContext("2d")
+            // var gradient = line.createLinearGradient(0, 0, 0, 400)
+            // gradient.addColorStop(0, "rgba(50, 69, 209,1)")
+            // gradient.addColorStop(1, "rgba(265, 177, 249,0)")
+
+            // var gradient2 = line.createLinearGradient(0, 0, 0, 400)
+            // gradient2.addColorStop(0, "rgba(255, 91, 92,1)")
+            // gradient2.addColorStop(1, "rgba(265, 177, 249,0)")
+
+            const myline = new Chart(line, {
+            type: "line",
+            data: {
+                labels,
+                datasets: [
+                  {
+                      label: "BB",
+                      data: bb,
+                      backgroundColor: "rgba(50, 69, 209,.6)",
+                      borderWidth: 3,
+                      borderColor: "rgba(63,82,227,1)",
+                      pointBorderWidth: 0,
+                      pointBorderColor: "transparent",
+                      pointRadius: 3,
+                      pointBackgroundColor: "transparent",
+                      pointHoverBackgroundColor: "rgba(63,82,227,1)",
+                  },
+                  {
+                      label: "-3 SD",
+                      data: min3sd,
+                      backgroundColor: "rgba(253, 183, 90,.5)",
+                      borderWidth: 3,
+                      borderColor: "rgba(253, 183, 90,.5)",
+                      pointBorderWidth: 0,
+                      pointBorderColor: "transparent",
+                      pointRadius: 3,
+                      pointBackgroundColor: "transparent",
+                      pointHoverBackgroundColor: "rgba(63,82,227,1)",
+                  },
+                  {
+                      label: "-2 SD",
+                      data: min2sd,
+                      backgroundColor: "rgba(253, 183, 90,.5)",
+                      borderWidth: 3,
+                      borderColor: "rgba(253, 183, 90,.5)",
+                      pointBorderWidth: 0,
+                      pointBorderColor: "transparent",
+                      pointRadius: 3,
+                      pointBackgroundColor: "transparent",
+                      pointHoverBackgroundColor: "rgba(63,82,227,1)",
+                  },
+                  {
+                      label: "-1 SD",
+                      data: min1sd,
+                      backgroundColor: "rgba(253, 183, 90,.5)",
+                      borderWidth: 3,
+                      borderColor: "rgba(253, 183, 90,.5)",
+                      pointBorderWidth: 0,
+                      pointBorderColor: "transparent",
+                      pointRadius: 3,
+                      pointBackgroundColor: "transparent",
+                      pointHoverBackgroundColor: "rgba(63,82,227,1)",
+                  },
+                  {
+                      label: "Median",
+                      data: median,
+                      backgroundColor: "rgba(245, 40, 145, .6)",
+                      borderWidth: 3,
+                      borderColor: "rgba(245, 40, 145, .6)",
+                      pointBorderWidth: 0,
+                      pointBorderColor: "transparent",
+                      pointRadius: 3,
+                      pointBackgroundColor: "transparent",
+                      pointHoverBackgroundColor: "rgba(63,82,227,1)",
+                  },
+                  {
+                      label: "+1 SD",
+                      data: plus1sd,
+                      backgroundColor: "rgba(253, 183, 90,.5)",
+                      borderWidth: 3,
+                      borderColor: "rgba(253, 183, 90,.5)",
+                      pointBorderWidth: 0,
+                      pointBorderColor: "transparent",
+                      pointRadius: 3,
+                      pointBackgroundColor: "transparent",
+                      pointHoverBackgroundColor: "rgba(63,82,227,1)",
+                  },
+                  {
+                      label: "+2 SD",
+                      data: plus2sd,
+                      backgroundColor: "rgba(253, 183, 90,.5)",
+                      borderWidth: 3,
+                      borderColor: "rgba(253, 183, 90,.5)",
+                      pointBorderWidth: 0,
+                      pointBorderColor: "transparent",
+                      pointRadius: 3,
+                      pointBackgroundColor: "transparent",
+                      pointHoverBackgroundColor: "rgba(63,82,227,1)",
+                  },
+                  {
+                      label: "+3 SD",
+                      data: plus3sd,
+                      backgroundColor: "rgba(253, 183, 90,.5)",
+                      borderWidth: 3,
+                      borderColor: "rgba(253, 183, 90,.5)",
+                      pointBorderWidth: 0,
+                      pointBorderColor: "transparent",
+                      pointRadius: 3,
+                      pointBackgroundColor: "transparent",
+                      pointHoverBackgroundColor: "rgba(63,82,227,1)",
+                  }
+                ],
+            },
+            options: {
+                responsive: true,
+                layout: {
+                padding: {
+                    top: 10,
+                },
+                },
+                tooltips: {
+                intersect: false,
+                titleFontFamily: "Helvetica",
+                titleMarginBottom: 10,
+                xPadding: 10,
+                yPadding: 10,
+                cornerRadius: 3,
+                },
+                legend: {
+                display: true,
+                },
+                scales: {
+                yAxes: [
+                    {
+                    gridLines: {
+                        display: true,
+                        drawBorder: true,
+                    },
+                    ticks: {
+                        display: true,
+                    },
+                    },
+                ],
+                xAxes: [
+                    {
+                    gridLines: {
+                        drawBorder: false,
+                        display: false,
+                    },
+                    ticks: {
+                        display: false,
+                    },
+                    },
+                ],
+                },
+            },
+            })
+          },
+          error: (status) => {
+            alert(status)
+          }
+        })
+  </script>
+</div>
+

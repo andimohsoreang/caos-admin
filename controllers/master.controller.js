@@ -88,7 +88,7 @@ module.exports = {
         res.render('./pages/toddlers', { data, regencies, url, idProv, puskesmas, posyandu })
     },
   storeToddler: async (req, res) => {
-    const { nik, name, birth, address, prov, kab, kec, puskesmas, posyandu } = req.body
+    const { nik, name, birth, address, prov, kab, kec, puskesmas, posyandu, jk } = req.body
     await model.Toddler.create({
         nik, name, jk, birth, address, prov, kab, kec, puskesmas, posyandu
     }).then(() => {

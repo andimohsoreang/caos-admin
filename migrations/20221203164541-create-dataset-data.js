@@ -25,10 +25,13 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       label: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       akurasi: {
         type: Sequelize.FLOAT
+      },
+      proba: {
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,

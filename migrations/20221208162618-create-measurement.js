@@ -27,16 +27,25 @@ module.exports = {
       zbbu: {
         type: Sequelize.FLOAT
       },
+      rekombbu: {
+        type: Sequelize.FLOAT
+      },
       tbu: {
         type: Sequelize.STRING
       },
       ztbu: {
         type: Sequelize.FLOAT
       },
+      rekomtbu: {
+        type: Sequelize.FLOAT
+      },
       bbtb: {
         type: Sequelize.STRING
       },
       zbbtb: {
+        type: Sequelize.FLOAT
+      },
+      rekombbtb: {
         type: Sequelize.FLOAT
       },
       lila: {
@@ -56,6 +65,12 @@ module.exports = {
       },
       current_age: {
         type: Sequelize.INTEGER
+      },
+      predict_proba: {
+        type: Sequelize.FLOAT
+      },
+      predict_result: {
+        type: Sequelize.FLOAT
       },
       id_toddler: {
         type: Sequelize.INTEGER

@@ -20,13 +20,12 @@
           <div class="card-body">
             <form action="predict" method="post" data-parsley-validate>
               <div class="form-group">
-                <label for="basicInput">Nama</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  name="name"
-                  data-parsley-required="true"
-                />
+                <label class="form-label">Pilih Balita</label>
+                <select name="name" class="form-select choices">
+                <% for(toddler of toddlers) { %>
+                  <option value="<%= toddler.name %>"><%= toddler.name %></option>
+                <% } %>
+                </select>
               </div>
               <% result.pop(); for(const i of result) { %>
                 <% if(i.value.length < 10) { %>

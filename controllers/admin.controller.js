@@ -117,7 +117,7 @@ const getZscore = (type, age, bb, tb, method, jk) => {
     quotient = dividend / divisor
     result = getCategoty(type, quotient)
 
-    return { zs: quotient, status: result }
+    return { zs: quotient, status: result, rekom: obj.Median }
 }
 const getCategoty = (type, quotient) => {
     let status
@@ -213,7 +213,11 @@ module.exports = {
             attributes: ['name', 'berat_badan', 'tinggi_badan', 'usia', 'label', 'akurasi']
         });
 
-        res.render('./pages/dataPrediction', { result, data })
+        const toddlers = await model.Toddler.findAll({
+            attributes: ['uuid', 'name']
+        });
+
+        res.render('./pages/dataPrediction', { result, data, toddlers })
     },
     datapredictiontest: async (req, res) => {
         const dataset = readFileDataset()
@@ -315,12 +319,12 @@ module.exports = {
             })
             res.redirect('/performance')
     },
-    resultprediction: async (req, res) => {
-        const data = await model.DatasetData.findAll({
-            attributes: ['name', 'berat_badan', 'tinggi_badan', 'usia', 'label', 'akurasi']
-        });
-        res.render('./pages/resultPrediction', { data })
-    },
+    // resultprediction: async (req, res) => {
+    //     const data = await model.DatasetData.findAll({
+    //         attributes: ['name', 'berat_badan', 'tinggi_badan', 'usia', 'label', 'akurasi']
+    //     });
+    //     res.render('./pages/resultPrediction', { data })
+    // },
     processprediction: async (req, res) => {
         const { name, Berat: BB, Tinggi: TB, Usia: AGE } = req.body
         const { modelTrain, xTest, yTest, akurasi } = datasetConfig
@@ -347,27 +351,7 @@ module.exports = {
     },
     training: async (req, res) => {
         const split = req.body.performanceRange / 100
-        const dataset = readFileDataset()
-        dataset.sort(() => Math.random() - 0.5)
-        const n = Math.round(dataset.length * split);
-        const train = dataset.slice(0,n);
-        const test = dataset.slice(n);
-
-        let attributes = Object.keys(train[0])
-        let label = attributes.pop()
-
-        let dt = new scikitjs.DecisionTree(label, attributes);
-        dt.train(train);
-
-        // save x, y test and model train
-        datasetConfig.test = test
-        // datasetConfig.akurasi = akurasi
-        datasetConfig.modelTrain = dt.toJSON()
-        writeFile(datasetPath, JSON.stringify(datasetConfig), (err) => {
-            if (err) {
-                console.log('An error has occurred ', err)
-            }
-        })
+        
 
         // save new performanceRange
         await model.Dataset.update({ dataTrainingRange: req.body.performanceRange }, { where: { id: 1 } })
@@ -384,25 +368,57 @@ module.exports = {
     predict: async (req, res) => {
         const { name, Berat, Tinggi, Usia, JK } = req.body
 
-        const lr = new scikitjs.DecisionTreeClassifier()
+        const lr = new scikitjs.KNeighborsCla1ssifier(3)
         const dataset = readFileDataset()
-        const split = 0.2
+        const split = 0.3
         const train = splitData(dataset);
         let [xTrain, xTest, yTrain, yTest] = scikitjs.trainTestSplit(train.attributes, train.labels, split)
         
-        lr.fit(xTrain, yTrain)
-        const result = lr.predict([[+Usia, +Berat, +Tinggi, +JK]])
-        const akurasi = lr.score(xTest, yTest)
+        await lr.fit(xTrain, yTrain)
+        let result = lr.predict([[+Usia, +Berat, +Tinggi, +JK]])
+        let accuracy = lr.score(xTest, yTest)
+        let proba = lr.predictProba([[+Usia, +Berat, +Tinggi, +JK]])
+
+        console.log(proba.arraySync())
         
+        result = `${result}`
+        accuracy = `${accuracy}`
+        proba = `${proba}`
+
+        console.log(result)
+        console.log(accuracy)
+        
+
+        return
+
+        // let tmp
+        // tmp = result.replace('Tensor\n    ', '')
+        // tmp = tmp.replace('[', '')
+        // tmp = tmp.replace(']', '')
+        // result = tmp
+        // accuracy = accuracy.replace('Tensor\n    ', '')
+        // tmp = proba.replace('Tensor\n    ', '')
+        // tmp = tmp.replace('\n     ', '')
+        // tmp = tmp.replace('\n     ', '')
+        // tmp = tmp.replace('\n     ', '')
+        // tmp = tmp.replace('\n     ', '')
+        // tmp = tmp.replace('\n     ', '')
+        // proba = tmp.replace('\n     ', '')
+
+        // console.log(accuracy)
+        // console.log(proba)
+        return
+
         await model.DatasetData.create({
             name: name,
             berat_badan: Berat,
             tinggi_badan: Tinggi,
             usia: Usia,
-            label: result,
-            akurasi: akurasi
+            label: `${result}`,
+            akurasi: `${accuracy}`,
+            proba: `${proba}`
         }).then((result) => {
-            req.flash('alert', {hex: '#28ab55', color: 'success', status: 'Success'})
+            req.flash('alert', {heproba: '#28ab55', color: 'success', status: 'Success'})
             req.flash('message', `Prediksi ${result.name} Berhasil!`)
         }).catch((err) => {
             console.log(err)
@@ -416,6 +432,21 @@ module.exports = {
             attributes: ['uuid' ,'name', 'birth', 'puskesmas', 'posyandu']
         })
         res.render('./pages/growth', { data })
+    },
+    growthDetail: async (req, res) => {
+        const uuid = req.params.uuid
+        const { id, name } = await model.Toddler.findOne({
+            where: { uuid }
+        })
+        const result = await model.Measurement.findAll({
+            where: {
+                id_toddler: id
+            },
+            raw: true,
+            attributes: ['bb' ,'tb', 'bb', 'rekombbu' ,'rekomtbu', 'rekombbtb']
+        })
+        const data = JSON.stringify(result)
+        res.render('./pages/growthDetail', { data, name, uuid })
     },
     measurement: async (req, res) => {
         const data = await model.Measurement.findAll({
@@ -442,9 +473,12 @@ module.exports = {
             bbu: bbu.status,
             tbu: tbu.status,
             bbtb: bbtb.status,
-            zbbu: bbu.zs.toFixed(2),
-            ztbu: tbu.zs.toFixed(2),
-            zbbtb: bbtb.zs.toFixed(2),
+            zbbu: bbu.zs,
+            ztbu: tbu.zs,
+            zbbtb: bbtb.zs,
+            rekombbu: bbu.rekom,
+            rekomtbu: tbu.rekom,
+            rekombbtb: bbtb.rekom,
             lila, lika, peb, method, vitamin,
             current_age: age,
             id_toddler: id
