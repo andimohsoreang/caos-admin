@@ -5,212 +5,295 @@
       <i class="bi bi-justify fs-3"></i>
     </a>
   </header>
-  <div class="page-heading">
-    <h3>Perkembangan Balita</h3>
-    <h6><%= name %></h6>
+  <div class="page-heading d-flex justify-content-between">
+    <div>
+      <h3>Perkembangan Balita</h3>
+      <h6><%= name %></h6>
+    </div>
+    <div>
+      <button class="btnBBTU btn btn-primary border mx-1 disabled" type="button" data-bs-toggle="collapse" data-bs-target="#bbuCard" data-bs-parent="#graphGroup">BB/U</button>
+      <button class="btnBBTU btn btn-light border mx-1" type="button" data-bs-toggle="collapse" data-bs-target="#tbuCard" data-bs-parent="#graphGroup">TB/U</button>
+      <button class="btnBBTU btn btn-light border mx-1" type="button" data-bs-toggle="collapse" data-bs-target="#bbtbCard" data-bs-parent="#graphGroup">BB/TB</button>
+    </div>
   </div>
-  <section class="section">
-    <div class="card">
+  <section id="graphGroup" class="section">
+    <div class="card collapse show" id="bbuCard">
       <div class="card-header">
-        <div>
-          <h5>Berat Badan</h5>
-        </div>
+        <h5 class="card-title">Berat Badan Berdasarkan Umur</h5>
       </div>
       <div class="card-body">
-        <canvas id="line"></canvas>
+        <canvas id="lineChartBBU"></canvas>
+      </div>
+    </div>
+    <div class="card collapse" id="tbuCard">
+      <div class="card-header">
+        <h5 class="card-title">Tinggi Badan Berdasarkan Umur</h5>
+      </div>
+      <div class="card-body">
+        <canvas id="lineChartTBU"></canvas>
+      </div>
+    </div>
+    <div class="card collapse" id="bbtbCard">
+      <div class="card-header">
+        <h5 class="card-title">Berat Badan Berdasarkan Tinggi Badan</h5>
+      </div>
+      <div class="card-body">
+        <canvas id="lineChartBBTB"></canvas>
       </div>
     </div>
   </section>
   <%- include('../partials/footer'); %>
   <script src="<%= baseUrl %>/assets/extensions/chart.min.js"></script>
   <script>
-      $.ajax ({
-        url : '<%= baseUrl %>/api/growth/<%= uuid %>',
-        method : "GET",
-          success : (res) => {
-            const data = res.data
-            let labels = []
-            let bb = []
-            let median = []
-            let min1sd = []
-            let min2sd = []
-            let min3sd = []
-            let plus1sd = []
-            let plus2sd = []
-            let plus3sd = []
-            
-            for (let i = 0; i < data.length; i++) {
-              labels.push(data[i].date)
-              bb.push(data[i].bb)
-              median.push(data[i].rekombbu)
-              min1sd.push(data[i].bbumin1sd)
-              min2sd.push(data[i].bbumin2sd)
-              min3sd.push(data[i].bbumin3sd)
-              plus1sd.push(data[i].bbuplus1sd)
-              plus2sd.push(data[i].bbuplus2sd)
-              plus3sd.push(data[i].bbuplus3sd)
-            }
-            const line = document.getElementById("line").getContext("2d")
-            // var gradient = line.createLinearGradient(0, 0, 0, 400)
-            // gradient.addColorStop(0, "rgba(50, 69, 209,1)")
-            // gradient.addColorStop(1, "rgba(265, 177, 249,0)")
+    $('.btnBBTU').on('click', (e) => {
+      $('.collapse').collapse('hide');
+      $(e.target)
+        .addClass('btn-primary disabled')
+        .removeClass('btn-light')
+        .siblings('.btn-primary')
+        .removeClass('btn-primary disabled')
+    })
 
-            // var gradient2 = line.createLinearGradient(0, 0, 0, 400)
-            // gradient2.addColorStop(0, "rgba(255, 91, 92,1)")
-            // gradient2.addColorStop(1, "rgba(265, 177, 249,0)")
+    $.ajax ({
+      url : '<%= baseUrl %>/api/growth/<%= uuid %>',
+      method : "GET",
+        success : (res) => {
+          const data = res.data
+          let labels = []
+          let bb = []
+          let tb = []
+          // bbu
+          let bbumedian = []
+          let bbumin1sd = []
+          let bbumin2sd = []
+          let bbumin3sd = []
+          let bbuplus1sd = []
+          let bbuplus2sd = []
+          let bbuplus3sd = []
+          // tbu
+          let tbumedian = []
+          let tbumin1sd = []
+          let tbumin2sd = []
+          let tbumin3sd = []
+          let tbuplus1sd = []
+          let tbuplus2sd = []
+          let tbuplus3sd = []
+          // bbtb
+          let bbtbmedian = []
+          let bbtbmin1sd = []
+          let bbtbmin2sd = []
+          let bbtbmin3sd = []
+          let bbtbplus1sd = []
+          let bbtbplus2sd = []
+          let bbtbplus3sd = []
+          
+          for (let i = 0; i < data.length; i++) {
+            labels.push(data[i].date)
+            bb.push(data[i].bb)
+            tb.push(data[i].tb)
+            // bbu
+            bbumin3sd.push(data[i].bbumin3sd)
+            bbumin2sd.push(data[i].bbumin2sd)
+            bbumin1sd.push(data[i].bbumin1sd)
+            bbumedian.push(data[i].rekombbu)
+            bbuplus1sd.push(data[i].bbuplus1sd)
+            bbuplus2sd.push(data[i].bbuplus2sd)
+            bbuplus3sd.push(data[i].bbuplus3sd)
+            // tbu
+            tbumin3sd.push(data[i].tbumin3sd)
+            tbumin2sd.push(data[i].tbumin2sd)
+            tbumin1sd.push(data[i].tbumin1sd)
+            tbumedian.push(data[i].rekomtbu)
+            tbuplus1sd.push(data[i].tbuplus1sd)
+            tbuplus2sd.push(data[i].tbuplus2sd)
+            tbuplus3sd.push(data[i].tbuplus3sd)
+            // bbtb
+            bbtbmin3sd.push(data[i].bbtbmin3sd)
+            bbtbmin2sd.push(data[i].bbtbmin2sd)
+            bbtbmin1sd.push(data[i].bbtbmin1sd)
+            bbtbmedian.push(data[i].rekombbtb)
+            bbtbplus1sd.push(data[i].bbtbplus1sd)
+            bbtbplus2sd.push(data[i].bbtbplus2sd)
+            bbtbplus3sd.push(data[i].bbtbplus3sd)
+          }
 
-            const myline = new Chart(line, {
+          const getDatasets = (label1, data1, min3sd, min2sd, min1sd, median, plus1sd, plus2sd, plus3sd) => {
+            return [
+                {
+                    label: label1,
+                    data: data1,
+                    backgroundColor: "rgba(50, 69, 209,.6)",
+                    borderWidth: 3,
+                    borderColor: "rgba(63,82,227,1)",
+                    pointBorderWidth: 0,
+                    pointBorderColor: "transparent",
+                    pointRadius: 3,
+                    pointBackgroundColor: "transparent",
+                    pointHoverBackgroundColor: "rgba(63,82,227,1)",
+                },
+                {
+                    label: "-3 SD",
+                    data: min3sd,
+                    backgroundColor: "rgba(253, 183, 90,.5)",
+                    borderWidth: 3,
+                    borderColor: "rgba(253, 183, 90,.5)",
+                    pointBorderWidth: 0,
+                    pointBorderColor: "transparent",
+                    pointRadius: 3,
+                    pointBackgroundColor: "transparent",
+                    pointHoverBackgroundColor: "rgba(63,82,227,1)",
+                },
+                {
+                    label: "-2 SD",
+                    data: min2sd,
+                    backgroundColor: "rgba(253, 183, 90,.5)",
+                    borderWidth: 3,
+                    borderColor: "rgba(253, 183, 90,.5)",
+                    pointBorderWidth: 0,
+                    pointBorderColor: "transparent",
+                    pointRadius: 3,
+                    pointBackgroundColor: "transparent",
+                    pointHoverBackgroundColor: "rgba(63,82,227,1)",
+                },
+                {
+                    label: "-1 SD",
+                    data: min1sd,
+                    backgroundColor: "rgba(253, 183, 90,.5)",
+                    borderWidth: 3,
+                    borderColor: "rgba(253, 183, 90,.5)",
+                    pointBorderWidth: 0,
+                    pointBorderColor: "transparent",
+                    pointRadius: 3,
+                    pointBackgroundColor: "transparent",
+                    pointHoverBackgroundColor: "rgba(63,82,227,1)",
+                },
+                {
+                    label: "Median",
+                    data: median,
+                    backgroundColor: "rgba(245, 40, 145, .6)",
+                    borderWidth: 3,
+                    borderColor: "rgba(245, 40, 145, .6)",
+                    pointBorderWidth: 0,
+                    pointBorderColor: "transparent",
+                    pointRadius: 3,
+                    pointBackgroundColor: "transparent",
+                    pointHoverBackgroundColor: "rgba(63,82,227,1)",
+                },
+                {
+                    label: "+1 SD",
+                    data: plus1sd,
+                    backgroundColor: "rgba(253, 183, 90,.5)",
+                    borderWidth: 3,
+                    borderColor: "rgba(253, 183, 90,.5)",
+                    pointBorderWidth: 0,
+                    pointBorderColor: "transparent",
+                    pointRadius: 3,
+                    pointBackgroundColor: "transparent",
+                    pointHoverBackgroundColor: "rgba(63,82,227,1)",
+                },
+                {
+                    label: "+2 SD",
+                    data: plus2sd,
+                    backgroundColor: "rgba(253, 183, 90,.5)",
+                    borderWidth: 3,
+                    borderColor: "rgba(253, 183, 90,.5)",
+                    pointBorderWidth: 0,
+                    pointBorderColor: "transparent",
+                    pointRadius: 3,
+                    pointBackgroundColor: "transparent",
+                    pointHoverBackgroundColor: "rgba(63,82,227,1)",
+                },
+                {
+                    label: "+3 SD",
+                    data: plus3sd,
+                    backgroundColor: "rgba(253, 183, 90,.5)",
+                    borderWidth: 3,
+                    borderColor: "rgba(253, 183, 90,.5)",
+                    pointBorderWidth: 0,
+                    pointBorderColor: "transparent",
+                    pointRadius: 3,
+                    pointBackgroundColor: "transparent",
+                    pointHoverBackgroundColor: "rgba(63,82,227,1)",
+                }
+              ]
+          }
+
+          const options = {
+            responsive: true,
+            layout: {
+            padding: {
+                top: 10,
+            },
+            },
+            tooltips: {
+            intersect: false,
+            titleFontFamily: "Helvetica",
+            titleMarginBottom: 10,
+            xPadding: 10,
+            yPadding: 10,
+            cornerRadius: 3,
+            },
+            legend: {
+            display: true,
+            },
+            scales: {
+            yAxes: [
+                {
+                gridLines: {
+                    display: true,
+                    drawBorder: true,
+                },
+                ticks: {
+                    display: true,
+                },
+                },
+            ],
+            xAxes: [
+                {
+                gridLines: {
+                    drawBorder: false,
+                    display: false,
+                },
+                ticks: {
+                    display: false,
+                },
+                },
+            ],
+            },
+          }
+
+          const lineChartBBU = document.getElementById("lineChartBBU").getContext("2d")
+          const lineChartTBU = document.getElementById("lineChartTBU").getContext("2d")
+          const lineChartBBTB = document.getElementById("lineChartBBTB").getContext("2d")
+          new Chart(lineChartBBU, {
             type: "line",
             data: {
                 labels,
-                datasets: [
-                  {
-                      label: "BB",
-                      data: bb,
-                      backgroundColor: "rgba(50, 69, 209,.6)",
-                      borderWidth: 3,
-                      borderColor: "rgba(63,82,227,1)",
-                      pointBorderWidth: 0,
-                      pointBorderColor: "transparent",
-                      pointRadius: 3,
-                      pointBackgroundColor: "transparent",
-                      pointHoverBackgroundColor: "rgba(63,82,227,1)",
-                  },
-                  {
-                      label: "-3 SD",
-                      data: min3sd,
-                      backgroundColor: "rgba(253, 183, 90,.5)",
-                      borderWidth: 3,
-                      borderColor: "rgba(253, 183, 90,.5)",
-                      pointBorderWidth: 0,
-                      pointBorderColor: "transparent",
-                      pointRadius: 3,
-                      pointBackgroundColor: "transparent",
-                      pointHoverBackgroundColor: "rgba(63,82,227,1)",
-                  },
-                  {
-                      label: "-2 SD",
-                      data: min2sd,
-                      backgroundColor: "rgba(253, 183, 90,.5)",
-                      borderWidth: 3,
-                      borderColor: "rgba(253, 183, 90,.5)",
-                      pointBorderWidth: 0,
-                      pointBorderColor: "transparent",
-                      pointRadius: 3,
-                      pointBackgroundColor: "transparent",
-                      pointHoverBackgroundColor: "rgba(63,82,227,1)",
-                  },
-                  {
-                      label: "-1 SD",
-                      data: min1sd,
-                      backgroundColor: "rgba(253, 183, 90,.5)",
-                      borderWidth: 3,
-                      borderColor: "rgba(253, 183, 90,.5)",
-                      pointBorderWidth: 0,
-                      pointBorderColor: "transparent",
-                      pointRadius: 3,
-                      pointBackgroundColor: "transparent",
-                      pointHoverBackgroundColor: "rgba(63,82,227,1)",
-                  },
-                  {
-                      label: "Median",
-                      data: median,
-                      backgroundColor: "rgba(245, 40, 145, .6)",
-                      borderWidth: 3,
-                      borderColor: "rgba(245, 40, 145, .6)",
-                      pointBorderWidth: 0,
-                      pointBorderColor: "transparent",
-                      pointRadius: 3,
-                      pointBackgroundColor: "transparent",
-                      pointHoverBackgroundColor: "rgba(63,82,227,1)",
-                  },
-                  {
-                      label: "+1 SD",
-                      data: plus1sd,
-                      backgroundColor: "rgba(253, 183, 90,.5)",
-                      borderWidth: 3,
-                      borderColor: "rgba(253, 183, 90,.5)",
-                      pointBorderWidth: 0,
-                      pointBorderColor: "transparent",
-                      pointRadius: 3,
-                      pointBackgroundColor: "transparent",
-                      pointHoverBackgroundColor: "rgba(63,82,227,1)",
-                  },
-                  {
-                      label: "+2 SD",
-                      data: plus2sd,
-                      backgroundColor: "rgba(253, 183, 90,.5)",
-                      borderWidth: 3,
-                      borderColor: "rgba(253, 183, 90,.5)",
-                      pointBorderWidth: 0,
-                      pointBorderColor: "transparent",
-                      pointRadius: 3,
-                      pointBackgroundColor: "transparent",
-                      pointHoverBackgroundColor: "rgba(63,82,227,1)",
-                  },
-                  {
-                      label: "+3 SD",
-                      data: plus3sd,
-                      backgroundColor: "rgba(253, 183, 90,.5)",
-                      borderWidth: 3,
-                      borderColor: "rgba(253, 183, 90,.5)",
-                      pointBorderWidth: 0,
-                      pointBorderColor: "transparent",
-                      pointRadius: 3,
-                      pointBackgroundColor: "transparent",
-                      pointHoverBackgroundColor: "rgba(63,82,227,1)",
-                  }
-                ],
+                datasets: getDatasets("BB", bb, bbumin3sd, bbumin2sd, bbumin1sd, bbumedian, bbuplus1sd, bbuplus2sd, bbuplus3sd)
             },
-            options: {
-                responsive: true,
-                layout: {
-                padding: {
-                    top: 10,
-                },
-                },
-                tooltips: {
-                intersect: false,
-                titleFontFamily: "Helvetica",
-                titleMarginBottom: 10,
-                xPadding: 10,
-                yPadding: 10,
-                cornerRadius: 3,
-                },
-                legend: {
-                display: true,
-                },
-                scales: {
-                yAxes: [
-                    {
-                    gridLines: {
-                        display: true,
-                        drawBorder: true,
-                    },
-                    ticks: {
-                        display: true,
-                    },
-                    },
-                ],
-                xAxes: [
-                    {
-                    gridLines: {
-                        drawBorder: false,
-                        display: false,
-                    },
-                    ticks: {
-                        display: false,
-                    },
-                    },
-                ],
-                },
+            options
+          })
+          new Chart(lineChartTBU, {
+            type: "line",
+            data: {
+                labels,
+                datasets: getDatasets("TB", tb, tbumin3sd, tbumin2sd, tbumin1sd, tbumedian, tbuplus1sd, tbuplus2sd, tbuplus3sd)
             },
-            })
-          },
-          error: (status) => {
-            alert(status)
-          }
-        })
+            options
+          })
+          new Chart(lineChartBBTB, {
+            type: "line",
+            data: {
+                labels,
+                datasets: getDatasets("BB", bb, bbtbmin3sd, bbtbmin2sd, bbtbmin1sd, bbtbmedian, bbtbplus1sd, bbtbplus2sd, bbtbplus3sd)
+            },
+            options
+          })
+        },
+        error: (status) => {
+          alert(status)
+        }
+      })
   </script>
 </div>
 
