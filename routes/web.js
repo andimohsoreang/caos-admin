@@ -22,22 +22,6 @@ router.get("/posyandu", posyanduController.getPosyandu);
 router.get("/login", verifyUser.loggedIn, authController.loginPage);
 router.get("/register", verifyUser.loggedIn, authController.registerPage);
 // --admin
-<<<<<<< HEAD
-router.get("/", verifyUser.isLogin, adminController.dashboard);
-router.get("/growth", adminController.growth);
-router.get("/measurement", adminController.measurement);
-// ---master
-router.get("/users", masterController.users);
-router.get("/toddlers", masterController.toddlers);
-router.get("/categories", masterController.categories);
-// ---algorithm
-router.get("/importdataset", adminController.importdataset);
-router.get("/dataprocessing", adminController.dataprocessing);
-router.get("/performance", adminController.performance);
-router.get("/dataprediction", adminController.dataprediction);
-router.get("/resultprediction", adminController.resultprediction);
-router.get("/testpredict", adminController.datapredictiontest);
-=======
 router.get('/', verifyUser.isLogin, adminController.dashboard)
 router.get('/growth', adminController.growth)
 router.get('/growth/:uuid', adminController.growthDetail)
@@ -56,7 +40,6 @@ router.get('/performance', adminController.performance)
 router.get('/dataprediction', adminController.dataprediction)
 // router.get('/resultprediction', adminController.resultprediction)
 router.get('/testpredict', adminController.datapredictiontest)
->>>>>>> 31424d1d4b4d702c61afd96b64c8d35d1ec6dfe3
 
 // process
 router.post("/auth/login", authController.login);

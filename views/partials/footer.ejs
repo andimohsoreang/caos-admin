@@ -18,6 +18,7 @@
 <script src="<%= baseUrl %>/assets/js/bootstrap.js"></script>
 <script src="<%= baseUrl %>/assets/js/app.js"></script>
 <script src="<%= baseUrl %>/assets/extensions/jquery.min.js"></script>
+
 <!-- spesific -->
 <script src="<%= baseUrl %>/assets/extensions/apexcharts.min.js"></script>
 <script src="<%= baseUrl %>/assets/pages/dashboard.js"></script>
@@ -30,6 +31,8 @@
 <script src="<%= baseUrl %>/assets/pages/quill.js"></script>
 <script src="<%= baseUrl %>/assets/extensions/choices.js"></script>
 <script src="<%= baseUrl %>/assets/pages/choices.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+
 <!-- custom -->
 <script>
   const performanceRange = document.getElementById('performanceRange')
@@ -61,6 +64,7 @@
       url: `https://fachiri.github.io/api-wilayah-indonesia/api/districts/${idKab}.json`,
       method: "GET",
       success: (result) => {
+        console.log(result);
         let rows = []
         for (const i of result) {
           rows.push(`<option value='${i.id}'>${i.name}</option>`)
@@ -72,13 +76,13 @@
   const idKec = $('#kec').find(":selected")
   if (idKec != '0' && idKec != undefined) {
     const idKab2 = $('#kab').find(":selected").val()
-    $.ajax ({
-        url : `https://fachiri.github.io/api-wilayah-indonesia/api/districts/${idKab2}.json`,
-        method : "GET",
-        success : (result) => {
-          const district = result.find(e => e.name == idKec.val())
-          idKec.attr('value', district.id)
-        }
+    $.ajax({
+      url: `https://fachiri.github.io/api-wilayah-indonesia/api/districts/${idKab2}.json`,
+      method: "GET",
+      success: (result) => {
+        const district = result.find(e => e.name == idKec.val())
+        idKec.attr('value', district.id)
+      }
     });
   }
 </script>
@@ -107,10 +111,6 @@
     }).showToast()
   </script>
   <% } %>
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-      crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
     <script>
       $('#summernote').summernote({
         maximumImageFileSize: 599 * 1024,

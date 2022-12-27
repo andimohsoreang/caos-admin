@@ -141,14 +141,17 @@ module.exports = {
         slug: req.params.slug,
       },
     });
+    const categories = await model.Category.findAll({
+      attributes: ["name"],
+    });
     // console.log(category);
     res.locals.category = "asd";
     console.log(res.locals.category);
-    res.render("./pages/editArticle", { data });
+    res.render("./pages/editArticle", { data, categories });
   },
 
   editArticlePut: async (req, res) => {
-    const { title, body } = req.body;
+    const { title, body, category } = req.body;
     let imageFix;
     const image = req.files.foto;
     const ext = path.extname(image.name);
@@ -170,6 +173,7 @@ module.exports = {
       {
         title,
         body,
+        category,
         image_name: imageFix,
         image_url: url,
       },

@@ -12,13 +12,17 @@ module.exports = {
   },
   storePosyandu: async (req, res) => {
     const { nama, alamat, id_puskesmas } = req.body;
-    let idPuskes
-    await model.Puskesmas.findOne({ where: {uuid: id_puskesmas}})
+    let idPuskes;
+    await model.Puskesmas.findOne({
+      where: {
+        uuid: id_puskesmas,
+      },
+    })
       .then((result) => {
-        idPuskes = result.id
+        idPuskes = result.id;
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err);
         req.flash("alert", {
           hex: "#f3616d",
           color: "danger",
@@ -26,11 +30,11 @@ module.exports = {
         });
         req.flash("message", "Gagal Menambahkan Posyandu");
         res.redirect("/posyandu");
-      })
+      });
     await model.Posyandus.create({
       nama,
       alamat,
-      id_puskesmas: idPuskes
+      id_puskesmas: idPuskes,
     })
       .then(() => {
         req.flash("alert", {
