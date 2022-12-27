@@ -35,6 +35,12 @@ module.exports = (sequelize, DataTypes) => {
         len: { args: [3, 50], msg: 'Nama minimal 3 huruf' }
       }
     },
+    jk: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: { msg: 'Jenis Kelamin is required' }
+      }
+    },
     birth: { 
       type: DataTypes.DATEONLY,
       validate: {

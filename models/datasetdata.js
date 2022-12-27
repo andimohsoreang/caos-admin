@@ -23,8 +23,9 @@ module.exports = (sequelize, DataTypes) => {
     berat_badan: DataTypes.INTEGER,
     tinggi_badan: DataTypes.INTEGER,
     usia: DataTypes.INTEGER,
-    label: DataTypes.INTEGER,
-    akurasi: DataTypes.FLOAT
+    label: DataTypes.STRING,
+    akurasi: DataTypes.STRING,
+    proba: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'DatasetData',
