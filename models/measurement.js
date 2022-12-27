@@ -33,15 +33,17 @@ module.exports = (sequelize, DataTypes) => {
     bbtb: DataTypes.STRING,
     zbbtb: DataTypes.FLOAT,
     rekombbtb: DataTypes.FLOAT,
-    predict_proba: DataTypes.FLOAT,
+    predict_proba_x: DataTypes.FLOAT,
+    predict_proba_y: DataTypes.FLOAT,
     predict_result: DataTypes.FLOAT,
     predict_accuracy: DataTypes.FLOAT,
-    lila: DataTypes.FLOAT,
-    lika: DataTypes.FLOAT,
-    peb: DataTypes.STRING,
     method: DataTypes.STRING,
     vitamin: DataTypes.STRING,
     current_age: DataTypes.INTEGER,
+    editable: {
+      type: DataTypes.CHAR,
+      defaultValue: 'y',
+    },
     id_toddler: DataTypes.INTEGER
   }, {
     sequelize,

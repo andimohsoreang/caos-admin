@@ -5,125 +5,147 @@
       <i class="bi bi-justify fs-3"></i>
     </a>
   </header>
-  <div class="page-heading">
+  <div class="page-heading d-flex justify-content-between">
     <h3>Pengukuran</h3>
+    <div class="d-xxl-none d-block">
+      <button class="btnCard btn btn-primary border mx-1 disabled" type="button" data-bs-toggle="collapse" data-bs-target="#tableCard" data-bs-parent="#measurementGroup">Daftar Pengukuran</button>
+      <button class="btnCard btn btn-light border mx-1" type="button" data-bs-toggle="collapse" data-bs-target="#formCard" data-bs-parent="#measurementGroup">Tambah Data</button>
+      <button class="btnCard btn btn-light border mx-1" type="button" data-bs-toggle="collapse" data-bs-target="#submitReportCard" data-bs-parent="#measurementGroup">Submit Laporan</button>
+    </div>
   </div>
-  <section class="section mt-xxl-0 mt-4">
-    <div class="position-relative">
-      <div class="d-flex align-items-center d-xxl-none d-block" style="position: absolute; top: -2.8rem;">
-        <a id="tableCardBtn" class="bg-white text-dark px-3 py-2 rounded cursor-pointer border border-bottom-0"><span class="fs-6 fw-bold">Daftar Pengukuran</span></a>
-        <a id="formCardBtn" class="bg-white text-dark px-3 py-2 rounded opacity-50 cursor-pointer"><span class="fs-6 fw-bold">Tambah Data</span></a>
-      </div>
-      <div class="row">
-        <div class="col-xxl-8 col-12">
-          <div id="tableCard" class="card">
-            <div class="card-header d-xxl-block d-none">
-              <h5>Daftar Pengukuran</h5>
-            </div>
-            <div class="card-body pt-xxl-0 pt-4">
-              <table class="table table-striped" id="table1">
-                <thead>
+  <section id="measurementGroup" class="section mt-xxl-0 mt-4">
+    <div class="row">
+      <div class="col-xxl-8 col-12">
+        <div id="tableCard" class="card collapse show">
+          <div class="card-header">
+            <h5>Daftar Pengukuran</h5>
+          </div>
+          <div class="card-body">
+            <table class="table table-striped" id="table1">
+              <thead>
+                <tr>
+                  <th>Tanggal</th>
+                  <th>Umur</th>
+                  <th>BB</th>
+                  <th>TB</th>
+                  <th>BB/U</th>
+                  <th>TB/U</th>
+                  <th>BB/TB</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% for(measure of data) { %>
                   <tr>
-                    <th>Tanggal</th>
-                    <th>Umur</th>
-                    <th>BB</th>
-                    <th>TB</th>
-                    <th>BB/U</th>
-                    <th>TB/U</th>
-                    <th>BB/TB</th>
-                    <th>Aksi</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <% for(measure of data) { %>
-                    <tr>
-                      <td><%= measure.date %></td>
-                      <td><%= measure.current_age %></td>
-                      <td><%= measure.bb %></td>
-                      <td><%= measure.tb %></td>
-                      <td><%= measure.bbu %></td>
-                      <td><%= measure.tbu %></td>
-                      <td><%= measure.bbtb %></td>
-                      <td>
-                          <a href="/measurenment/<%= measure.uuid %>" class="btn icon btn-success">
-                              <i class="bi bi-info-circle"></i>
-                          </a>
-                      </td>
-                    </tr>              
-                  <% } %>
-                </tbody>
-              </table>
-            </div>
+                    <td><%= measure.date %></td>
+                    <td><%= measure.current_age %></td>
+                    <td><%= measure.bb %></td>
+                    <td><%= measure.tb %></td>
+                    <td><%= measure.bbu %></td>
+                    <td><%= measure.tbu %></td>
+                    <td><%= measure.bbtb %></td>
+                    <td>
+                        <a href="/measurement/<%= measure.uuid %>" class="btn icon btn-success">
+                            <i class="bi bi-info-circle"></i>
+                        </a>
+                        <a href="/measurement/edit/<%= measure.uuid %>" class="btn icon btn-info">
+                          <i class="bi bi-pencil-square"></i>
+                        </a>
+                    </td>
+                  </tr>              
+                <% } %>
+              </tbody>
+            </table>
           </div>
         </div>
-        <div class="col-xxl-4 col-12">
-          <div id="formCard" class="card d-xxl-block d-none">
-            <div class="card-header d-xxl-block d-none">
-              <h5>Tambah Data</h5>
-            </div>
-            <div class="card-body pt-xxl-0 pt-4">
-              <form action="measurement/store" method="post" data-parsley-validate>
-                <div class="mb-3">
-                  <label class="form-label">Pilih Balita</label>
-                  <select name="uuid" class="form-select choices">
-                  <% for(toddler of toddlers) { %>
-                    <option value="<%= toddler.uuid %>"><%= toddler.name %></option>
-                  <% } %>
-                  </select>
+      </div>
+      <div class="col-xxl-4 col-12">
+        <div id="formCard" class="card collapse">
+          <div class="card-header">
+            <h5>Tambah Data</h5>
+          </div>
+          <div class="card-body">
+            <form action="measurement/store" method="post" data-parsley-validate>
+              <div class="mb-3">
+                <label class="form-label">Pilih Balita</label>
+                <select name="uuid" class="form-select choices">
+                <% for(toddler of toddlers) { %>
+                  <option value="<%= toddler.uuid %>"><%= `${toddler.name} (${toddler.jk})` %></option>
+                <% } %>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Tanggal Pengukuran</label>
+                <input type="date" class="form-control" name="date" data-parsley-required="true">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Umur</label>
+                <input type="number" class="form-control" name="age" data-parsley-required="true">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Berat Badan</label>
+                <input type="number" class="form-control" name="bb" data-parsley-required="true" step="0.1">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Tinggi Badan</label>
+                <input type="number" class="form-control" name="tb" data-parsley-required="true" step="0.5">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Cara Ukur Tinggi Badan</label>
+                <div>
+                  <input type="radio" class="btn-check" name="method" id="methodBerdiri" autocomplete="off" data-parsley-required="true" value="berdiri" />
+                  <label class="btn btn-outline-dark" for="methodBerdiri">Berdiri</label>
+                  <input type="radio" class="btn-check" name="method" id="Terlentang" autocomplete="off" value="telentang" />
+                  <label class="btn btn-outline-dark" for="Terlentang">Telentang</label>
                 </div>
-                <div class="mb-3">
-                  <label class="form-label">Tanggal Pengukuran</label>
-                  <input type="date" class="form-control" name="date" data-parsley-required="true">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Vitamin A ()</label>
+                <div>
+                  <input type="radio" class="btn-check" name="vitamin" id="vitaminYa" autocomplete="off" data-parsley-required="true" value="Ya" />
+                  <label class="btn btn-outline-dark" for="vitaminYa">Ya</label>
+                  <input type="radio" class="btn-check" name="vitamin" id="Tidak" autocomplete="off" value="Tidak" />
+                  <label class="btn btn-outline-dark" for="Tidak">Tidak</label>
                 </div>
-                <div class="mb-3">
-                  <label class="form-label">Umur</label>
-                  <input type="number" class="form-control" name="age" data-parsley-required="true">
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">Berat Badan</label>
-                  <input type="number" class="form-control" name="bb" data-parsley-required="true" step="0.1">
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">Tinggi Badan</label>
-                  <input type="number" class="form-control" name="tb" data-parsley-required="true" step="0.5">
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">LiLa</label>
-                  <input type="number" class="form-control" name="lila" data-parsley-required="true" step="0.1">
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">Lingkar Kepala</label>
-                  <input type="number" class="form-control" name="lika" data-parsley-required="true" step="0.1">
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">Pitting Edema Bilateral</label>
-                  <input type="number" class="form-control" name="peb" data-parsley-required="true" step="0.1">
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">Cara Ukur Tinggi Badan</label>
-                  <div>
-                    <input type="radio" class="btn-check" name="method" id="methodBerdiri" autocomplete="off" data-parsley-required="true" value="berdiri" />
-                    <label class="btn btn-outline-dark" for="methodBerdiri">Berdiri</label>
-                    <input type="radio" class="btn-check" name="method" id="Terlentang" autocomplete="off" value="telentang" />
-                    <label class="btn btn-outline-dark" for="Terlentang">Telentang</label>
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">Vitamin A ()</label>
-                  <div>
-                    <input type="radio" class="btn-check" name="vitamin" id="vitaminYa" autocomplete="off" data-parsley-required="true" value="Ya" />
-                    <label class="btn btn-outline-dark" for="vitaminYa">Ya</label>
-                    <input type="radio" class="btn-check" name="vitamin" id="Tidak" autocomplete="off" value="Tidak" />
-                    <label class="btn btn-outline-dark" for="Tidak">Tidak</label>
-                  </div>
-                </div>
+              </div>
 
-                <div class="text-end">
-                  <button type="submit" class="btn btn-primary">
-                    Submit
-                  </button>
-                </div>
-              </form>
+              <div class="text-end">
+                <button type="submit" class="btn btn-primary">
+                  Submit
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-xxl-4 col-12">
+        <div id="submitReportCard" class="card collapse">
+          <div class="card-header">
+            <h5>Submit Laporan</h5>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-6">
+                <label for="month" class="form-label">Bulan</label>
+                <select id="month" class="form-select">
+                  <option value="01" <%= month == '01' ? 'selected' : '' %> >Januari</option>
+                  <option value="02" <%= month == '02' ? 'selected' : '' %> >Februari</option>
+                  <option value="03" <%= month == '03' ? 'selected' : '' %> >Maret</option>
+                  <option value="04" <%= month == '04' ? 'selected' : '' %> >April</option>
+                  <option value="05" <%= month == '05' ? 'selected' : '' %> >Mei</option>
+                  <option value="06" <%= month == '06' ? 'selected' : '' %> >Juni</option>
+                  <option value="07" <%= month == '07' ? 'selected' : '' %> >Juli</option>
+                  <option value="08" <%= month == '08' ? 'selected' : '' %> >Agustus</option>
+                  <option value="09" <%= month == '09' ? 'selected' : '' %> >September</option>
+                  <option value="10" <%= month == '10' ? 'selected' : '' %> >Oktober</option>
+                  <option value="11" <%= month == '11' ? 'selected' : '' %> >November</option>
+                  <option value="12" <%= month == '12' ? 'selected' : '' %> >Desember</option>
+                </select>
+              </div>
+              <div class="col-6">
+                <label for="year" class="form-label">Tahun</label>
+                <input id="year" type="number" class="form-control" value="<%= year %>">
+              </div>
             </div>
           </div>
         </div>
@@ -131,4 +153,15 @@
     </div>
   </section>
   <%- include('../partials/footer'); %>
+  <script>
+    $('.btnCard').on('click', (e) => {
+      $('.collapse').collapse('hide');
+      $(e.target)
+        .addClass('btn-primary disabled')
+        .removeClass('btn-light')
+        .siblings('.btnCard')
+        .removeClass('btn-primary disabled')
+      console.log(e.target)
+    })
+  </script>
 </div>

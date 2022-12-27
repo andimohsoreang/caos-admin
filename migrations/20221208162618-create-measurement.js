@@ -48,15 +48,6 @@ module.exports = {
       rekombbtb: {
         type: Sequelize.FLOAT
       },
-      lila: {
-        type: Sequelize.FLOAT
-      },
-      lika: {
-        type: Sequelize.FLOAT
-      },
-      peb: {
-        type: Sequelize.STRING
-      },
       method: {
         type: Sequelize.STRING
       },
@@ -66,11 +57,20 @@ module.exports = {
       current_age: {
         type: Sequelize.INTEGER
       },
-      predict_proba: {
+      predict_proba_x: {
+        type: Sequelize.FLOAT
+      },
+      predict_proba_y: {
         type: Sequelize.FLOAT
       },
       predict_result: {
         type: Sequelize.FLOAT
+      },
+      predict_accuracy: {
+        type: Sequelize.FLOAT
+      },
+      editable: {
+        type: Sequelize.CHAR(1)
       },
       id_toddler: {
         type: Sequelize.INTEGER

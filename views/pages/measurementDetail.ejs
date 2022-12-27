@@ -1,0 +1,105 @@
+<%- include('../partials/header'); %> <%- include('../partials/sidebar'); %>
+<div id="main">
+  <header class="mb-3">
+    <a href="#" class="burger-btn d-block d-xl-none">
+      <i class="bi bi-justify fs-3"></i>
+    </a>
+  </header>
+  <div class="page-heading">
+    <h3>Detail Pengukuran</h3>
+    <h5><%= data.Toddler.name %> (<%= data.Toddler.jk %>)</h5>
+  </div>
+  <section class="section mt-4">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-8">
+            <h6>Detail</h6>
+            <div class="row">
+              <div class="col-4">Tanggal Pengukuran</div>
+              <div class="col-8"><%= data.date %></div>
+            </div>
+            <div class="row">
+              <div class="col-4">Umur</div>
+              <div class="col-8"><%= data.current_age %> Bulan</div>
+            </div>
+            <div class="row">
+              <div class="col-4">Berat Badan</div>
+              <div class="col-8"><%= data.bb %> kg</div>
+            </div>
+            <div class="row">
+              <div class="col-4">Tinggi Badan</div>
+              <div class="col-8"><%= data.tb %> cm</div>
+            </div>
+            <div class="row">
+              <div class="col-4">Status Gizi BB/U</div>
+              <div class="col-8"><%= data.bbu %></div>
+            </div>
+            <div class="row">
+              <div class="col-4">Status Gizi TB/U</div>
+              <div class="col-8"><%= data.tbu %></div>
+            </div>
+            <div class="row">
+              <div class="col-4">Status Gizi BB/TB</div>
+              <div class="col-8"><%= data.bbtb %></div>
+            </div>
+            <div class="row">
+              <div class="col-4">Vitamin</div>
+              <div class="col-8"><%= data.vitamin %></div>
+            </div>
+            <br>
+            <h6>Prediksi</h6>
+            <div class="row">
+              <div class="col-4">Hasil Prediksi</div>
+              <div class="col-8"><%= data.predict_result %></div>
+            </div>
+            <div class="row">
+              <div class="col-4">Probabilitas[0]</div>
+              <div class="col-8"><%= data.predict_proba_x %></div>
+            </div>
+            <div class="row">
+              <div class="col-4">Probabilitas[1]</div>
+              <div class="col-8"><%= data.predict_proba_y %></div>
+            </div>
+            <div class="row">
+              <div class="col-4">Akurasi</div>
+              <div class="col-8"><%= data.predict_accuracy %></div>
+            </div>
+            <br>
+            <h6>Rekomendasi</h6>
+            <div class="row">
+              <div class="col-4">Berat Badan (BB/U)</div>
+              <div class="col-8"><%= data.rekombbu%> kg</div>
+            </div>
+            <div class="row">
+              <div class="col-4">Tinggi Badan (TB/U)</div>
+              <div class="col-8"><%= data.rekomtbu %> cm</div>
+            </div>
+            <div class="row">
+              <div class="col-4">Berat Badan (BB/TB)</div>
+              <div class="col-8"><%= data.rekombbtb %> kg</div>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="border p-3 rounded">
+              <h6>Keterangan</h6>
+              <div class="row">
+                <div class="col-3 fw-bold">BB/U</div>
+                <div class="col-9">Berat Badan Berdasarkan Umur</div>
+              </div>
+              <div class="row">
+                <div class="col-3 fw-bold">TB/U</div>
+                <div class="col-9">Tinggi Badan Berdasarkan Umur</div>
+              </div>
+              <div class="row">
+                <div class="col-3 fw-bold">BB/TB</div>
+                <div class="col-9">Berat Badan Berdasarkan Tinggi Badan</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <%- include('../partials/footer'); %>
+</div>

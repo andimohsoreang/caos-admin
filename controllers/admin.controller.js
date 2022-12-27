@@ -4,6 +4,7 @@ const xlsx = require('xlsx')
 const datasetConfig = require(`${__dirname}/../config/dataset.json`)
 const datasetPath = `${__dirname}/../config/dataset.json`
 const model = require('../models/index')
+const algorithm = require('../helpers/algorithm.helper')
 const { splitData } = require('../utils')
 const tf = require('@tensorflow/tfjs')
 const scikitjs = require('scikitjs')
@@ -387,26 +388,23 @@ module.exports = {
 
         console.log(result)
         console.log(accuracy)
-        
 
-        return
+        let tmp
+        tmp = result.replace('Tensor\n    ', '')
+        tmp = tmp.replace('[', '')
+        tmp = tmp.replace(']', '')
+        result = tmp
+        accuracy = accuracy.replace('Tensor\n    ', '')
+        tmp = proba.replace('Tensor\n    ', '')
+        tmp = tmp.replace('\n     ', '')
+        tmp = tmp.replace('\n     ', '')
+        tmp = tmp.replace('\n     ', '')
+        tmp = tmp.replace('\n     ', '')
+        tmp = tmp.replace('\n     ', '')
+        proba = tmp.replace('\n     ', '')
 
-        // let tmp
-        // tmp = result.replace('Tensor\n    ', '')
-        // tmp = tmp.replace('[', '')
-        // tmp = tmp.replace(']', '')
-        // result = tmp
-        // accuracy = accuracy.replace('Tensor\n    ', '')
-        // tmp = proba.replace('Tensor\n    ', '')
-        // tmp = tmp.replace('\n     ', '')
-        // tmp = tmp.replace('\n     ', '')
-        // tmp = tmp.replace('\n     ', '')
-        // tmp = tmp.replace('\n     ', '')
-        // tmp = tmp.replace('\n     ', '')
-        // proba = tmp.replace('\n     ', '')
-
-        // console.log(accuracy)
-        // console.log(proba)
+        console.log(accuracy)
+        console.log(proba)
         return
 
         await model.DatasetData.create({
@@ -435,30 +433,34 @@ module.exports = {
     },
     growthDetail: async (req, res) => {
         const uuid = req.params.uuid
-        const { id, name } = await model.Toddler.findOne({
+        const { name } = await model.Toddler.findOne({
             where: { uuid }
         })
-        const result = await model.Measurement.findAll({
-            where: {
-                id_toddler: id
-            },
-            raw: true,
-            attributes: ['bb' ,'tb', 'bb', 'rekombbu' ,'rekomtbu', 'rekombbtb']
-        })
-        const data = JSON.stringify(result)
-        res.render('./pages/growthDetail', { data, name, uuid })
+        res.render('./pages/growthDetail', { name, uuid })
     },
     measurement: async (req, res) => {
+        const date = new Date().toLocaleDateString().split('/')
+        const month = date[0]
+        const year = date[2]
         const data = await model.Measurement.findAll({
             attributes: ['uuid' ,'date', 'current_age', 'bb', 'tb', 'bbu', 'zbbu', 'tbu', 'ztbu', 'bbtb', 'zbbtb']
         })
         const toddlers = await model.Toddler.findAll({
-            attributes: ['uuid' ,'name']
+            attributes: ['uuid' ,'name', 'jk']
         })
-        res.render('./pages/measurement', { data, toddlers })
+        res.render('./pages/measurement', { data, toddlers, month, year })
+    },
+    measurementDetail: async (req, res) => {
+        const uuid = req.params.uuid
+        const data = await model.Measurement.findOne({
+            where: { uuid },
+            include: model.Toddler
+        })
+        res.render('./pages/measurementDetail', { data })
+        
     },
     storeMeasurement: async (req, res) => {
-        const { uuid, date, age, bb, tb, method, lila, lika, peb, vitamin } = req.body
+        const { uuid, date, age, bb, tb, method, vitamin } = req.body
         const { id, jk } = await model.Toddler.findOne({ where: { uuid: uuid } })
         if ((age < 24 && method === 'berdiri') || (age > 24 && method === 'telentang')) {
             req.flash('alert', {hex: '#f3616d', color: 'danger', status: 'Failed'})
@@ -468,6 +470,7 @@ module.exports = {
         const bbu = getZscore('BBU', +age, +bb, +tb, method, jk)
         const tbu = getZscore('TBU', +age, +bb, +tb, method, jk)
         const bbtb = getZscore('BBTB', +age, +bb, +tb, method, jk)
+        const { predict_result, predict_accuracy, predict_proba_x, predict_proba_y } = await algorithm.prediction(+bb, +tb, +age, jk == 'L' ? 1 : 0, splitData(readFileDataset()))
         await model.Measurement.create({
             date, bb, tb,
             bbu: bbu.status,
@@ -479,9 +482,13 @@ module.exports = {
             rekombbu: bbu.rekom,
             rekomtbu: tbu.rekom,
             rekombbtb: bbtb.rekom,
-            lila, lika, peb, method, vitamin,
+            method, vitamin,
             current_age: age,
-            id_toddler: id
+            id_toddler: id,
+            predict_result,
+            predict_accuracy,
+            predict_proba_x,
+            predict_proba_y
         }).then(() => {
             req.flash('alert', {hex: '#28ab55', color: 'success', status: 'Success'})
             req.flash('message', 'Data berhasil ditambahkan!')

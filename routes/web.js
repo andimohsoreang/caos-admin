@@ -28,6 +28,7 @@ router.get('/', verifyUser.isLogin, adminController.dashboard)
 router.get('/growth', adminController.growth)
 router.get('/growth/:uuid', adminController.growthDetail)
 router.get('/measurement', adminController.measurement)
+router.get('/measurement/:uuid', adminController.measurementDetail)
 // ---master
 router.get('/users', masterController.users)
 router.get('/toddlers', masterController.toddlers)
