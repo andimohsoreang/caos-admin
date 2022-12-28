@@ -30,24 +30,25 @@ app.use(
 );
 app.use(flash());
 app.use((req, res, next) => {
-    res.locals.alert = req.flash("alert");
-    res.locals.message = req.flash("message");
-    baseUrl = `${req.protocol}://${req.headers.host}`
-    next();
+  res.locals.alert = req.flash("alert");
+  res.locals.message = req.flash("message");
+  baseUrl = `${req.protocol}://${req.headers.host}`;
+  next();
 });
 
-
-const web = require('./routes/web.js')
-app.use('/', web)
+const web = require("./routes/web.js");
+app.use("/", web);
 
 const api = require("./routes/api.js");
 app.use("/api", api);
 
 app.use((req, res, next) => {
-    res.status(404);
-    if (req.accepts('html')) {
-      return res.render('./errors/404', { baseUrl });
-    }
-})
+  res.status(404);
+  if (req.accepts("html")) {
+    return res.render("./errors/404", { baseUrl });
+  }
+});
 
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`))
+app.listen(PORT, () =>
+  console.log(`Server running on http://localhost:${PORT}`)
+);

@@ -22,24 +22,30 @@ router.get("/posyandu", posyanduController.getPosyandu);
 router.get("/login", verifyUser.loggedIn, authController.loginPage);
 router.get("/register", verifyUser.loggedIn, authController.registerPage);
 // --admin
-router.get('/', verifyUser.isLogin, adminController.dashboard)
-router.get('/growth', adminController.growth)
-router.get('/growth/:uuid', adminController.growthDetail)
-router.get('/measurement', adminController.measurement)
-router.get('/measurement/:uuid', adminController.measurementDetail)
+router.get("/", verifyUser.isLogin, adminController.dashboard);
+router.get("/growth", adminController.growth);
+router.get("/growth/:uuid", adminController.growthDetail);
+router.get("/measurement", adminController.measurement);
+router.get("/measurement/:uuid", adminController.measurementDetail);
 // ---master
-router.get('/users', masterController.users)
-router.get('/toddlers', masterController.toddlers)
+router.get("/users", masterController.users);
+router.get("/toddlers", masterController.toddlers);
 router.get("/toddler/edit/:uuid", masterController.editToddlerPage);
-router.post("/toddler/edit/:uuid", masterMiddleware.getProvKabKec, masterController.editToddler);
-router.get('/categories', masterController.categories)
+router.post(
+  "/toddler/edit/:uuid",
+  masterMiddleware.getProvKabKec,
+  masterController.editToddler
+);
+router.get("/toddlers/delete/:uuid", masterController.deleteToddlerPage);
+
+router.get("/categories", masterController.categories);
 // ---algorithm
-router.get('/importdataset', adminController.importdataset)
-router.get('/dataprocessing', adminController.dataprocessing)
-router.get('/performance', adminController.performance)
-router.get('/dataprediction', adminController.dataprediction)
+router.get("/importdataset", adminController.importdataset);
+router.get("/dataprocessing", adminController.dataprocessing);
+router.get("/performance", adminController.performance);
+router.get("/dataprediction", adminController.dataprediction);
 // router.get('/resultprediction', adminController.resultprediction)
-router.get('/testpredict', adminController.datapredictiontest)
+router.get("/testpredict", adminController.datapredictiontest);
 
 // process
 router.post("/auth/login", authController.login);
@@ -69,6 +75,7 @@ router.get("/users/editstatus/:uuid", masterController.editStatusUser);
 router.get("/users/delete/:uuid", masterController.deleteUser);
 
 router.post("/puskesmas/store", puskesmasController.storePuskesmas);
+router.post("/puskesmas/:id", puskesmasController.getPuskesmasById);
 router.post("/puskesmas/update/:uuid", puskesmasController.updatePuskesmas);
 router.get("/puskesmas/delete/:uuid", puskesmasController.deletePuskesmas);
 

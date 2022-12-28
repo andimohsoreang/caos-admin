@@ -1,16 +1,16 @@
 const model = require("../../models/index");
 
 module.exports = {
-  getAllPosyandu: async (req, res) => {
-    const data = await model.Posyandus.findAll();
+  getAllPuskesmas: async (req, res) => {
+    const data = await model.Puskesmas.findAll();
     res.status(200).json({
       status: "Success",
       message: "Fetch data berhasil",
       data,
     });
   },
-  getSpesificPosyandu: async (req, res) => {
-    const data = await model.Posyandus.findOne({
+  getSpesificPuskesmas: async (req, res) => {
+    const data = await model.Puskesmas.findOne({
       where: {
         uuid: req.params.uuid,
       },

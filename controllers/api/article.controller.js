@@ -1,16 +1,16 @@
 const model = require("../../models/index");
 
 module.exports = {
-  getAllPosyandu: async (req, res) => {
-    const data = await model.Posyandus.findAll();
+  getAllArticle: async (req, res) => {
+    const data = await model.Article.findAll();
     res.status(200).json({
       status: "Success",
       message: "Fetch data berhasil",
       data,
     });
   },
-  getSpesificPosyandu: async (req, res) => {
-    const data = await model.Posyandus.findOne({
+  getSpesificArticle: async (req, res) => {
+    const data = await model.Article.findOne({
       where: {
         uuid: req.params.uuid,
       },

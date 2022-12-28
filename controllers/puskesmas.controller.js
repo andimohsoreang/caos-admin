@@ -5,7 +5,14 @@ module.exports = {
     const data = await model.Puskesmas.findAll({
       attributes: ["uuid", "nama", "alamat"],
     });
-    res.render("./pages/puskesmas", { data });
+    const posyandu = await model.Posyandus.findAll({
+      attributes: ["id_puskesmas", "nama", "alamat"],
+    });
+
+    res.render("./pages/puskesmas", { data, posyandu });
+  },
+  getPuskesmasById: async (req, res) => {
+    console.log("oke");
   },
   storePuskesmas: async (req, res) => {
     const { nama, alamat } = req.body;

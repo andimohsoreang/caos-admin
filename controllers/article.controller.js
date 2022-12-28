@@ -13,7 +13,9 @@ module.exports = {
     //image setting
     const ext = path.extname(image.name);
     const fileName = image.md5 + Math.floor(Date.now() / 1000) + ext;
-    const image_url = `${req.protocol}://${req.get("host")}/images/${fileName}`;
+    const image_url = `${req.protocol}://${req.get(
+      "host"
+    )}/images/uploads/${fileName}`;
     const newpath = `${__dirname}/../public/images/uploads/${fileName}`;
     await image.mv(newpath);
 
@@ -153,21 +155,22 @@ module.exports = {
   editArticlePut: async (req, res) => {
     const { title, body, category } = req.body;
     let imageFix;
-    const image = req.files.foto;
-    const ext = path.extname(image.name);
-    const fileName = image.md5 + Math.floor(Date.now() / 1000) + ext;
-    const newpath = `${__dirname}/../public/images/uploads/${fileName}`;
-    await image.mv(newpath);
 
     const data = await model.Article.findOne({
       where: {
         slug: req.params.slug,
       },
     });
-    if (!image) {
+    if (!req.files) {
       imageFix = data.image_name;
+    } else {
+      const image = req.files.foto;
+      const ext = path.extname(image.name);
+      const fileName = image.md5 + Math.floor(Date.now() / 1000) + ext;
+      const newpath = `${__dirname}/../public/images/uploads/${fileName}`;
+      await image.mv(newpath);
+      imageFix = fileName;
     }
-    imageFix = fileName;
     const url = `${req.protocol}://${req.get("host")}/images/${imageFix}`;
     await model.Article.update(
       {
