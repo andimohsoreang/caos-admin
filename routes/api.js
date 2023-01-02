@@ -4,6 +4,8 @@ const growthController = require("../controllers/api/growth.controller.js");
 const puskesmasController = require("../controllers/api/puskesmas.controller.js");
 const posyanduController = require("../controllers/api/posyandu.controller.js");
 const articleController = require("../controllers/api/article.controller.js");
+const toddlersController = require("../controllers/api/toddlers.controller.js");
+const measurementsController = require("../controllers/api/measurements.controller.js");
 
 // router.post('/user/store', userMiddleware.validateUserStore, userController.userStore)
 // Growth
@@ -20,5 +22,16 @@ router.get("/posyandu/:uuid", posyanduController.getSpesificPosyandu);
 //article
 router.get("/article", articleController.getAllArticle);
 router.get("/article/:uuid", articleController.getSpesificArticle);
+
+// toddlers
+router.get("/toddlers", toddlersController.getAllToddlers);
+router.get("/toddlers/:uuid", toddlersController.getSpesicificToddler);
+router.post("/toddlers/", toddlersController.storeToddler);
+router.put("/toddlers/:uuid", toddlersController.editToddler);
+
+//measurement
+router.get("/measurement", measurementsController.getAllMeasurements);
+router.get("/measurement/:uuid", measurementsController.getDetailMeasurements);
+router.post("/measurement", measurementsController.storeMeasurement);
 
 module.exports = router;
