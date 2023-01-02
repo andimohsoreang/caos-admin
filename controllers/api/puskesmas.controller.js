@@ -2,7 +2,13 @@ const model = require("../../models/index");
 
 module.exports = {
   getAllPuskesmas: async (req, res) => {
-    const data = await model.Puskesmas.findAll();
+    const data = await model.Puskesmas.findAll({
+      include: {
+        model: model.Posyandus,
+        attributes: ["nama", "uuid", "alamat", "createdAt", "updatedAt"],
+      },
+      attributes: ["nama", "uuid", "alamat", "createdAt", "updatedAt"],
+    });
     res.status(200).json({
       status: "Success",
       message: "Fetch data berhasil",
@@ -11,6 +17,11 @@ module.exports = {
   },
   getSpesificPuskesmas: async (req, res) => {
     const data = await model.Puskesmas.findOne({
+      include: {
+        model: model.Posyandus,
+        attributes: ["nama", "uuid", "alamat", "createdAt", "updatedAt"],
+      },
+      attributes: ["nama", "uuid", "alamat", "createdAt", "updatedAt"],
       where: {
         uuid: req.params.uuid,
       },

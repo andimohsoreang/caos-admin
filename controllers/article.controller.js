@@ -43,14 +43,23 @@ module.exports = {
       },
     });
 
+    const idCategory = await model.Category.findOne({
+      where: {
+        name: category,
+      },
+    });
+
+    console.log(idCategory);
+
     await model.Article.create({
       title,
       category,
+      categoryId: idCategory.id,
       body: bodyArticle,
       image_name: fileName,
       url: image_url,
       slug: finalSlug,
-      id_user: data.id,
+      userId: data.id,
     })
       .then((result) => {
         req.flash("alert", {

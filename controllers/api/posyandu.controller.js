@@ -2,7 +2,13 @@ const model = require("../../models/index");
 
 module.exports = {
   getAllPosyandu: async (req, res) => {
-    const data = await model.Posyandus.findAll();
+    const data = await model.Posyandus.findAll({
+      include: {
+        model: model.Puskesmas,
+        attributes: ["nama", "uuid", "alamat", "createdAt", "updatedAt"],
+      },
+      attributes: ["nama", "uuid", "alamat", "createdAt", "updatedAt"],
+    });
     res.status(200).json({
       status: "Success",
       message: "Fetch data berhasil",

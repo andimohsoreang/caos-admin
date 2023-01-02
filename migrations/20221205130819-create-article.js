@@ -1,4 +1,5 @@
 "use strict";
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -30,7 +31,7 @@ module.exports = {
       body: {
         type: Sequelize.TEXT("medium"),
       },
-      id_user: {
+      userId: {
         type: Sequelize.INTEGER,
       },
       createdAt: {
@@ -40,6 +41,9 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
+      },
+      categoryId: {
+        type: Sequelize.INTEGER,
       },
     });
   },

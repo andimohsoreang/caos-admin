@@ -205,17 +205,25 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <% posyandu.forEach(data=> { %>
 
-                                                                <tr>
-                                                                    <td>
-                                                                        <%= data.nama %>
-                                                                    </td>
-                                                                    <td>
-                                                                        <%= data.alamat %>
-                                                                    </td>
-                                                                </tr>
-                                                                <% }) %>
+
+                                                            <tr>
+                                                                <td>
+                                                                    <% for (const posyandu of data) { %>
+                                                                        <% if (posyandu.uuid===user.uuid) { %>
+                                                                            <%= posyandu.nama%>
+                                                                                <% } %>
+                                                                                    <% } %>
+                                                                </td>
+                                                                <td>
+                                                                    <% for (const posyandu of data) { %>
+                                                                        <% if (posyandu.uuid===user.uuid) { %>
+                                                                            <%= posyandu.alamat%>
+                                                                                <% } %>
+                                                                                    <% } %>
+                                                                </td>
+                                                            </tr>
+
                                                         </tbody>
                                                     </table>
                                                 </div>

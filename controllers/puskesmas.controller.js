@@ -3,13 +3,19 @@ const model = require("../models/index");
 module.exports = {
   getPuskesmas: async (req, res) => {
     const data = await model.Puskesmas.findAll({
+      include: model.Posyandus,
       attributes: ["uuid", "nama", "alamat"],
-    });
-    const posyandu = await model.Posyandus.findAll({
-      attributes: ["id_puskesmas", "nama", "alamat"],
+      // where: {
+      //   uuid: model.Posyandus.uuid,
+      // },
     });
 
-    res.render("./pages/puskesmas", { data, posyandu });
+    // console.log(JSON.parse(data));
+    const posyandu = await model.Posyandus.findAll({
+      attributes: ["puskesmaId", "nama", "alamat"],
+    });
+
+    res.render("./pages/puskesmas", { data });
   },
   getPuskesmasById: async (req, res) => {
     console.log("oke");
