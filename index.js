@@ -33,6 +33,7 @@ app.use((req, res, next) => {
     res.locals.alert = req.flash("alert");
     res.locals.message = req.flash("message");
     baseUrl = `${req.protocol}://${req.headers.host}`
+    dirName = __dirname
     next();
 });
 

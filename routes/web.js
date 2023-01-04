@@ -10,6 +10,7 @@ const multipart = require("connect-multiparty");
 const articleController = require("../controllers/article.controller");
 const puskesmasController = require("../controllers/puskesmas.controller");
 const posyanduController = require("../controllers/posyandu.controller");
+const reportController = require("../controllers/report.controller");
 
 const multipartMiddleware = multipart();
 const userMiddleware = require("../middlewares/user.middleware");
@@ -27,6 +28,8 @@ router.get('/growth', adminController.growth)
 router.get('/growth/:uuid', adminController.growthDetail)
 router.get('/measurement', adminController.measurement)
 router.get('/measurement/:uuid', adminController.measurementDetail)
+router.get('/measurement/edit/:uuid', adminController.measurementEditPage)
+router.post('/measurement/edit/:uuid', adminController.measurementEdit)
 // ---master
 router.get('/users', masterController.users)
 router.get('/toddlers', masterController.toddlers)
@@ -89,5 +92,8 @@ router.get("/editarticle/:slug", articleController.editArticle);
 router.post("/editarticle/:slug", articleController.editArticlePut);
 
 router.post("/measurement/store", adminController.storeMeasurement);
+
+router.get("/report/measurement/:year", reportController.measurement);
+router.get("/report/accumulation/:month/:year", reportController.accumulation);
 
 module.exports = router;

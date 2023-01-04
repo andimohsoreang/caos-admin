@@ -33,6 +33,8 @@ module.exports = (sequelize, DataTypes) => {
     bbtb: DataTypes.STRING,
     zbbtb: DataTypes.FLOAT,
     rekombbtb: DataTypes.FLOAT,
+    lila: DataTypes.FLOAT,
+    lika: DataTypes.FLOAT,
     predict_proba_x: DataTypes.FLOAT,
     predict_proba_y: DataTypes.FLOAT,
     predict_result: DataTypes.FLOAT,

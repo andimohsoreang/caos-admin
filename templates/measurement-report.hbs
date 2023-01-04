@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan Register Penimbangan Balita Tahun {{year}}</title>
+    <style>
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      table, td, th {
+        border: 1px solid;
+      }
+
+      td {
+        padding: 5px;
+      }
+      h3 {
+        text-align: center;
+      }
+    </style>
+</head>
+<body>
+    <h3>Laporan Register Penimbangan Balita Tahun {{year}}</h3>
+    <table>
+        <thead>
+          <tr>
+            <th rowspan="4">No. KK</th>
+            <th rowspan="2">Nama Anak</th>
+            <th rowspan="4">Tanggal Lahir Anak</th>
+            <th rowspan="4">JK (L/P)</th>
+            <th rowspan="4">Anak Ke</th>
+            <th colspan="2">Nama Orang Tua</th>
+            <th rowspan="4">Jenis Pengukuran</th>
+            <th colspan="12">Hasil Pengukuran</th>
+          </tr>
+          <tr>
+            <th>Ayah</th>
+            <th>Ibu</th>
+            <th rowspan="2" colspan="12">Bulan</th>
+          </tr>
+          <tr>
+            <th>NIK</th>
+            <th>NIK</th>
+            <th>NIK</th>
+          </tr>
+          <tr>
+            <th>No. BPJS</th>
+            <th>No. BPJS</th>
+            <th>No. BPJS</th>
+            <th>1</th>
+            <th>2</th>
+            <th>3</th>
+            <th>4</th>
+            <th>5</th>
+            <th>6</th>
+            <th>7</th>
+            <th>8</th>
+            <th>9</th>
+            <th>10</th>
+            <th>11</th>
+            <th>12</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#if toddlers}}
+          {{#each toddlers as | toddler |}}
+          <tr>
+            <td rowspan="4">No KK</td>
+            <td rowspan="2">{{ toddler.name }}</td>
+            <td rowspan="4">Tanggal Lahir Anak</td>
+            <td rowspan="4">JK (L/P)</td>
+            <td rowspan="4">Anak Ke</td>
+            <td colspan="2">Nama Orang Tua</td>
+            <td>BB</td>
+            {{#each toddler.Measurements as | measure |}}
+              <td>{{ measure.bb }}</td>
+            {{/each}}
+          </tr>
+          <tr>
+            <td>Ayah</td>
+            <td>Ibu</td>
+            <td>TB</td>
+            {{#each toddler.Measurements as | measure |}}
+              <td>{{ measure.tb }}</td>
+            {{/each}}
+          </tr>
+          <tr>
+            <td>{{ toddler.nik }}</td>
+            <td>NIK</td>
+            <td>NIK</td>
+            <td>LK</td>
+            {{#each toddler.Measurements as | measure |}}
+              <td>{{ measure.lika }}</td>
+            {{/each}}
+          </tr>
+          <tr>
+            <td>No. BPJS</td>
+            <td>No. BPJS</td>
+            <td>No. BPJS</td>
+            <td>LiLa</td>
+            {{#each toddler.Measurements as | measure |}}
+              <td>{{ measure.lila }}</td>
+            {{/each}}
+          </tr>
+          {{/each}}
+          {{else}}
+          <tr>
+            <td colspan="20" style="text-align: center;">Data Tidak Ditemukan</td>
+          </tr>
+          {{/if}}
+        </tbody>
+      </table>
+</body>
+</html>

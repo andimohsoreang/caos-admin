@@ -10,7 +10,7 @@
     <div class="d-xxl-none d-block">
       <button class="btnCard btn btn-primary border mx-1 disabled" type="button" data-bs-toggle="collapse" data-bs-target="#tableCard" data-bs-parent="#measurementGroup">Daftar Pengukuran</button>
       <button class="btnCard btn btn-light border mx-1" type="button" data-bs-toggle="collapse" data-bs-target="#formCard" data-bs-parent="#measurementGroup">Tambah Data</button>
-      <button class="btnCard btn btn-light border mx-1" type="button" data-bs-toggle="collapse" data-bs-target="#submitReportCard" data-bs-parent="#measurementGroup">Submit Laporan</button>
+      <button class="btnCard btn btn-light border mx-1" type="button" data-bs-toggle="collapse" data-bs-target="#submitReportCard" data-bs-parent="#measurementGroup">Laporan</button>
     </div>
   </div>
   <section id="measurementGroup" class="section mt-xxl-0 mt-4">
@@ -91,8 +91,16 @@
                 <input type="number" class="form-control" name="tb" data-parsley-required="true" step="0.5">
               </div>
               <div class="mb-3">
+                <label class="form-label">LiLa</label>
+                <input type="number" class="form-control" name="lila" data-parsley-required="true" step="0.1">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">LiKa</label>
+                <input type="number" class="form-control" name="lika" data-parsley-required="true" step="0.1">
+              </div>
+              <!-- <div class="mb-3">
                 <label class="form-label">Cara Ukur Tinggi Badan</label>
-                <div>
+                <div class="form-group mandatory">
                   <input type="radio" class="btn-check" name="method" id="methodBerdiri" autocomplete="off" data-parsley-required="true" value="berdiri" />
                   <label class="btn btn-outline-dark" for="methodBerdiri">Berdiri</label>
                   <input type="radio" class="btn-check" name="method" id="Terlentang" autocomplete="off" value="telentang" />
@@ -106,6 +114,40 @@
                   <label class="btn btn-outline-dark" for="vitaminYa">Ya</label>
                   <input type="radio" class="btn-check" name="vitamin" id="Tidak" autocomplete="off" value="Tidak" />
                   <label class="btn btn-outline-dark" for="Tidak">Tidak</label>
+                </div>
+              </div> -->
+              <div class="mb-3">
+                <label class="form-label">Cara Ukur Tinggi Badan</label>
+                <div class="form-group mandatory">
+                  <div class="form-check me-4">
+                    <input class="form-check-input" type="radio" name="method" id="berdiri" value="berdiri" data-parsley-required="true"/>
+                    <label class="form-check-label" for="berdiri">
+                      Berdiri
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="method" id="telentang" value="telentang" />
+                    <label class="form-check-label" for="telentang">
+                      Telentang
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Vitamin A ()</label>
+                <div class="form-group mandatory">
+                  <div class="form-check me-4">
+                    <input class="form-check-input" type="radio" name="vitamin" id="vitaminYa" value="ya" data-parsley-required="true"/>
+                    <label class="form-check-label" for="vitaminYa">
+                      Ya
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="vitamin" id="vitaminTidak" value="tidak" />
+                    <label class="form-check-label" for="vitaminTidak">
+                      Tidak
+                    </label>
+                  </div>
                 </div>
               </div>
 
@@ -124,10 +166,10 @@
             <h5>Submit Laporan</h5>
           </div>
           <div class="card-body">
-            <div class="row">
+            <div class="row mb-5">
               <div class="col-6">
                 <label for="month" class="form-label">Bulan</label>
-                <select id="month" class="form-select">
+                <select id="month" class="form-select confirmReportBtn">
                   <option value="01" <%= month == '01' ? 'selected' : '' %> >Januari</option>
                   <option value="02" <%= month == '02' ? 'selected' : '' %> >Februari</option>
                   <option value="03" <%= month == '03' ? 'selected' : '' %> >Maret</option>
@@ -144,8 +186,136 @@
               </div>
               <div class="col-6">
                 <label for="year" class="form-label">Tahun</label>
-                <input id="year" type="number" class="form-control" value="<%= year %>">
+                <select id="year" class="form-select confirmReportBtn">
+                  <% for(i of decades) { %> 
+                  <option value="<%= i %>" <%= year == i ? 'selected' : '' %> ><%= i %></option>
+                  <% } %> 
+                </select>
               </div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <h5 id="measureReportTitle"  class="text-center">Laporan Register Penimbangan Balita Tahun <%= year %></h5>
+              <a href="<%= baseUrl %>/report/measurement/<%= year %>" id="measureReportLink" class="btn btn-primary">Lihat PDF</a>
+            </div>
+            <div class="table-responsive mb-4">
+              <table class="table text-center table-bordered tableBorderedCustom">
+                <thead>
+                  <tr>
+                    <th rowspan="4">No. KK</th>
+                    <th rowspan="2">Nama Anak</th>
+                    <th rowspan="4">Tanggal Lahir Anak</th>
+                    <th rowspan="4">JK (L/P)</th>
+                    <th rowspan="4">Anak Ke</th>
+                    <th colspan="2">Nama Orang Tua</th>
+                    <th rowspan="4">Jenis Pengukuran</th>
+                    <th colspan="12">Hasil Pengukuran</th>
+                  </tr>
+                  <tr>
+                    <th>Ayah</th>
+                    <th>Ibu</th>
+                    <th rowspan="2" colspan="12">Bulan</th>
+                  </tr>
+                  <tr>
+                    <th>NIK</th>
+                    <th>NIK</th>
+                    <th>NIK</th>
+                  </tr>
+                  <tr>
+                    <th>No. BPJS</th>
+                    <th>No. BPJS</th>
+                    <th>No. BPJS</th>
+                    <% for(let i=0; i<12; i++) { %> 
+                    <th><%= i+1 %></th>
+                    <% } %> 
+                  </tr>
+                </thead>
+                <tbody id="measureReportBody">
+                  <% if(measureReports.length == 0) { %> 
+                    <tr><td colspan="20">Data Tidak Ditemukan</td></tr>
+                  <% } %> 
+                  <% for(i of measureReports) { %> 
+                  <tr>
+                    <td rowspan="4">No. KK</td>
+                    <td rowspan="2"><%= i.name %></td>
+                    <td rowspan="4"><%= i.birth %></td>
+                    <td rowspan="4"><%= i.jk %></td>
+                    <td rowspan="4">Anak Ke</td>
+                    <td colspan="2">Nama Orang Tua</td>
+                    <td>BB</td>
+                    <% for(j of i.Measurements) { %> 
+                      <td><%= j.bb %></td>
+                    <% } %> 
+                  </tr>
+                  <tr>
+                    <td>Ayah</td>
+                    <td>Ibu</td>
+                    <td>TB</td>
+                    <% for(j of i.Measurements) { %> 
+                      <td><%= j.tb %></td>
+                    <% } %> 
+                  </tr>
+                  <tr>
+                    <td><%= i.nik %></td>
+                    <td>NIK</td>
+                    <td>NIK</td>
+                    <td>LK</td>
+                    <% for(j of i.Measurements) { %> 
+                      <td><%= j.lika %></td>
+                    <% } %> 
+                  </tr>
+                  <tr>
+                    <td>No. BPJS</td>
+                    <td>No. BPJS</td>
+                    <td>No. BPJS</td>
+                    <td>LiLa</td>
+                    <% for(j of i.Measurements) { %> 
+                      <td><%= j.lila %></td>
+                    <% } %> 
+                  </tr>
+                  <% } %> 
+                </tbody>
+              </table>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <h5 id="accumulationReportTitle" class="text-center">Laporan Akumulasi Bulan <%= month %> Tahun <%= year %></h5>
+              <a href="<%= baseUrl %>/report/accumulation/<%= month %>/<%= year %>" id="accumulationReportLink" class="btn btn-primary">Lihat PDF</a>
+            </div>
+            <div class="table-responsive mb-4">
+              <table class="table text-center tableBorderedCustom">
+                <thead>
+                  <tr>
+                    <th>Nama</th>
+                    <th>Tanggal Pengukuran</th>
+                    <th>Umur (Bulan)</th>
+                    <th>BB</th>
+                    <th>TB</th>
+                    <th>BB/U</th>
+                    <th>TB/U</th>
+                    <th>BB/TB</th>
+                    <th>LiLa</th>
+                    <th>LiKa</th>
+                  </tr>
+                </thead>
+                <tbody id="accumulationReportBody">
+                  <% if(accumulationReports.length == 0) { %> 
+                    <tr><td colspan="20">Data Tidak Ditemukan</td></tr>
+                  <% } %> 
+                  <% for(i of accumulationReports) { %> 
+                    <tr>
+                      <td><%= i.Toddler.name %></td>
+                      <td><%= i.date %></td>
+                      <td><%= i.current_age%></td>
+                      <td><%= i.bb %></td>
+                      <td><%= i.tb %></td>
+                      <td><%= i.bbu %></td>
+                      <td><%= i.tbu %></td>
+                      <td><%= i.bbtb %></td>
+                      <td><%= i.lila %></td>
+                      <td><%= i.lika %></td>
+                    </tr>
+                  <% } %> 
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -161,7 +331,99 @@
         .removeClass('btn-light')
         .siblings('.btnCard')
         .removeClass('btn-primary disabled')
-      console.log(e.target)
+    })
+    $('.confirmReportBtn').on('change', (e) => {
+      $("#measureReportBody").html(`<tr><td colspan="20"><div class="spinner-border"></div></td><tr>`);
+      $("#accumulationReportBody").html(`<tr><td colspan="20"><div class="spinner-border"></div></td><tr>`);
+      const mm = $('#month').find(':selected').val()
+      const yyyy = $('#year').find(':selected').val()
+      $('#measureReportTitle').html(`Laporan Register Penimbangan Balita Tahun ${yyyy}`)
+      $('#measureReportLink').attr('href', `<%= baseUrl %>/report/measurement/${yyyy}`)
+      $('#accumulationReportTitle').html(`Laporan Akumulasi Bulan ${mm} Tahun ${yyyy}`)
+      $('#accumulationReportLink').attr('href', `<%= baseUrl %>/report/accumulation/${mm}/${yyyy}`)
+      $.ajax({
+        url: `<%= baseUrl %>/api/measurement-report`,
+        method: "GET",
+        data: { yyyy },
+        success: (res) => {
+          let rows
+          for (const i of res.data) {
+            let tr1, tr2, tr3, tr4
+            for (const j of i.Measurements) {
+              tr1 += `<td>${j.bb}</td>`
+              tr2 += `<td>${j.tb}</td>`
+              tr3 += `<td>${j.lika}</td>`
+              tr4 += `<td>${j.lila}</td>`
+            }
+            rows += `
+              <tr>
+                <td rowspan="4">No. KK</td>
+                <td rowspan="2">${i.name}</td>
+                <td rowspan="4">${i.birth}</td>
+                <td rowspan="4">${i.jk}</td>
+                <td rowspan="4">Anak Ke</td>
+                <td colspan="2">Nama Orang Tua</td>
+                <td>BB</td>
+                ${tr1}
+              </tr>
+              <tr>
+                <td>Ayah</td>
+                <td>Ibu</td>
+                <td>TB</td>
+                ${tr2}
+              </tr>
+              <tr>
+                <td>${i.nik}</td>
+                <td>NIK</td>
+                <td>NIK</td>
+                <td>LK</td>
+                ${tr3}
+              </tr>
+              <tr>
+                <td>No. BPJS</td>
+                <td>No. BPJS</td>
+                <td>No. BPJS</td>
+                <td>LiLa</td> 
+                ${tr4}
+              </tr>
+            `
+          }
+          $("#measureReportBody").html(rows);
+        },
+        error: (xhr) => {
+          console.log(xhr.responseJSON)
+          $("#measureReportBody").html(`<tr><td colspan="20">Data Tidak Ditemukan</td><tr>`);
+        }
+      })
+      $.ajax({
+        url: `<%= baseUrl %>/api/accumulation-report`,
+        method: "GET",
+        data: { mm, yyyy },
+        success: (res) => {
+          let rows
+          for (const i of res.data) {
+            rows += `
+                <tr>
+                  <td>${i.Toddler.name}</td>
+                  <td>${i.date}</td>
+                  <td>${i.current_age}</td>
+                  <td>${i.bb}</td>
+                  <td>${i.tb}</td>
+                  <td>${i.bbu}</td>
+                  <td>${i.tbu}</td>
+                  <td>${i.bbtb}</td>
+                  <td>${i.lila}</td>
+                  <td>${i.lika}</td>
+                </tr>
+            `
+          }
+          $("#accumulationReportBody").html(rows);
+        },
+        error: (xhr) => {
+          console.log(xhr.responseJSON)
+          $("#accumulationReportBody").html(`<tr><td colspan="20">Data Tidak Ditemukan</td><tr>`);
+        }
+      })
     })
   </script>
 </div>

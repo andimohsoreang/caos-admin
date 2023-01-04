@@ -48,6 +48,12 @@ module.exports = {
       rekombbtb: {
         type: Sequelize.FLOAT
       },
+      lila: {
+        type: Sequelize.FLOAT
+      },
+      lika: {
+        type: Sequelize.FLOAT
+      },
       method: {
         type: Sequelize.STRING
       },

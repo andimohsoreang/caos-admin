@@ -1,4 +1,5 @@
 const dirname = `${__dirname}/..`
+const { Op } = require("sequelize")
 const { existsSync, writeFile } = require('fs')
 const xlsx = require('xlsx')
 const datasetConfig = require(`${__dirname}/../config/dataset.json`)
@@ -439,16 +440,68 @@ module.exports = {
         res.render('./pages/growthDetail', { name, uuid })
     },
     measurement: async (req, res) => {
-        const date = new Date().toLocaleDateString().split('/')
-        const month = date[0]
+        const date = new Date().toLocaleDateString('id', { day: '2-digit', month: '2-digit', year: 'numeric'}).split('/')
+        const month = date[1]
         const year = date[2]
+        let decades = []
+        for (let i = 2015; i < 2030; i++) {
+            decades.push(i+1)
+        }
         const data = await model.Measurement.findAll({
             attributes: ['uuid' ,'date', 'current_age', 'bb', 'tb', 'bbu', 'zbbu', 'tbu', 'ztbu', 'bbtb', 'zbbtb']
         })
         const toddlers = await model.Toddler.findAll({
             attributes: ['uuid' ,'name', 'jk']
         })
-        res.render('./pages/measurement', { data, toddlers, month, year })
+        const startYear = new Date(`01/01/${year}`)
+        const endYear = new Date(`01/01/${+year + 1}`)
+        const startMonth = new Date(`${month}/01/${year}`)
+        const endMonth = new Date(new Date().setDate(startMonth.getDate() + 29));
+        let measureReports = await model.Toddler.findAll({
+            attributes: ['nik', 'name', 'jk', 'birth'],
+            include: [{
+                model: model.Measurement,
+                attributes: ['bb', 'tb', 'date', 'lila', 'lika'],
+                where: {
+                    date: {
+                        [Op.between]: [startYear, endYear]
+                    }
+                }
+            }]
+        })
+        if(measureReports.length > 0) {
+            measureReports = JSON.parse(JSON.stringify(measureReports))
+            for (let i = 0; i < measureReports.length; i++) {
+                const e = measureReports[i].Measurements
+                for (let j = 0; j < 12; j++) {
+                    if(!e[j]) {
+                        e.push({bb: '-', tb: '-', lila: '-', lika: '-', date: null})
+                    }
+                }
+                for (let j = 0; j < e.length; j++) {
+                    if(e[j].date != null) {
+                        const newIndex = +e[j].date.split('-')[1] - 1
+                        if(j != newIndex) {
+                            e[newIndex] = e[j]
+                            e[j] = {bb: '-', tb: '-', lila: '-', lika: '-', date: null}
+                        }
+                    }
+                }
+            }
+        }
+        let accumulationReports = await model.Measurement.findAll({
+            attributes: ['date', 'bb', 'tb', 'current_age', 'bbu', 'tbu', 'bbtb', 'lila', 'lika'],
+            where: {
+                date: {
+                    [Op.between]: [startMonth, endMonth]
+                }
+            },
+            include: [{
+                model: model.Toddler,
+                attributes: ['name'],
+            }]
+        })
+        res.render('./pages/measurement', { data, toddlers, month, year, decades, measureReports, accumulationReports })
     },
     measurementDetail: async (req, res) => {
         const uuid = req.params.uuid
@@ -457,10 +510,58 @@ module.exports = {
             include: model.Toddler
         })
         res.render('./pages/measurementDetail', { data })
-        
+    },
+    measurementEditPage: async (req, res) => {
+        const uuid = req.params.uuid
+        const data = await model.Measurement.findOne({
+            where: { uuid },
+            include: model.Toddler
+        })
+        res.render('./pages/measurementEdit', { data })
+    },
+    measurementEdit: async (req, res) => {
+        const uuid = req.params.uuid
+        const { uuid_toddler, date, age, bb, tb, method, vitamin, lila, lika } = req.body
+        const { jk } = await model.Toddler.findOne({ where: { uuid: uuid_toddler } })
+        if ((age < 24 && method === 'berdiri') || (age > 24 && method === 'telentang')) {
+            req.flash('alert', {hex: '#f3616d', color: 'danger', status: 'Failed'})
+            req.flash('message', 'Terjadi kesalahan dalam pengukuran!')
+            return res.redirect(`${baseUrl}/measurement/edit/${uuid}`)
+        }
+        const bbu = getZscore('BBU', +age, +bb, +tb, method, jk)
+        const tbu = getZscore('TBU', +age, +bb, +tb, method, jk)
+        const bbtb = getZscore('BBTB', +age, +bb, +tb, method, jk)
+        const { predict_result, predict_accuracy, predict_proba_x, predict_proba_y } = await algorithm.prediction(+bb, +tb, +age, jk == 'L' ? 1 : 0, splitData(readFileDataset()))
+        await model.Measurement.update({
+            date, bb, tb,
+            bbu: bbu.status,
+            tbu: tbu.status,
+            bbtb: bbtb.status,
+            zbbu: bbu.zs,
+            ztbu: tbu.zs,
+            zbbtb: bbtb.zs,
+            rekombbu: bbu.rekom,
+            rekomtbu: tbu.rekom,
+            rekombbtb: bbtb.rekom,
+            method, vitamin, lila, lika,
+            current_age: age,
+            predict_result,
+            predict_accuracy,
+            predict_proba_x,
+            predict_proba_y 
+        }, { where: { uuid: uuid }
+        }).then(() => {
+            req.flash('alert', {hex: '#28ab55', color: 'success', status: 'Success'})
+            req.flash('message', 'Data berhasil diedit!')
+        }).catch((err) => {
+            console.log(err)
+            req.flash('alert', {hex: '#f3616d', color: 'danger', status: 'Failed'})
+            req.flash('message', 'Gagal mengedit data!')
+        })
+        res.redirect(`${baseUrl}/measurement/edit/${uuid}`)
     },
     storeMeasurement: async (req, res) => {
-        const { uuid, date, age, bb, tb, method, vitamin } = req.body
+        const { uuid, date, age, bb, tb, method, vitamin, lila, lika } = req.body
         const { id, jk } = await model.Toddler.findOne({ where: { uuid: uuid } })
         if ((age < 24 && method === 'berdiri') || (age > 24 && method === 'telentang')) {
             req.flash('alert', {hex: '#f3616d', color: 'danger', status: 'Failed'})
@@ -482,7 +583,7 @@ module.exports = {
             rekombbu: bbu.rekom,
             rekomtbu: tbu.rekom,
             rekombbtb: bbtb.rekom,
-            method, vitamin,
+            method, vitamin, lila, lika,
             current_age: age,
             id_toddler: id,
             predict_result,
