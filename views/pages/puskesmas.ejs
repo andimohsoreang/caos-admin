@@ -205,24 +205,25 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
+                                                            <% var idPuskesmas=user.uuid ; %>
+                                                                <% var posyandus=[]; %>
+                                                                    <% for (var i=0; i < data.length; i++) { if
+                                                                        (data[i].uuid===idPuskesmas) { for (var j=0; j <
+                                                                        data[i].Posyandus.length; j++) {
+                                                                        posyandus.push({ nama:
+                                                                        data[i].Posyandus[j].nama, alamat:
+                                                                        data[i].Posyandus[j].alamat }); } } } %>
+                                                                        <% posyandus.forEach(data=> { %>
+                                                                            <tr>
+                                                                                <td>
+                                                                                    <%= data. nama%>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <%= data. alamat%>
 
-
-                                                            <tr>
-                                                                <td>
-                                                                    <% for (const posyandu of data) { %>
-                                                                        <% if (posyandu.uuid===user.uuid) { %>
-                                                                            <%= posyandu.nama%>
-                                                                                <% } %>
-                                                                                    <% } %>
-                                                                </td>
-                                                                <td>
-                                                                    <% for (const posyandu of data) { %>
-                                                                        <% if (posyandu.uuid===user.uuid) { %>
-                                                                            <%= posyandu.alamat%>
-                                                                                <% } %>
-                                                                                    <% } %>
-                                                                </td>
-                                                            </tr>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <% }) %>
 
                                                         </tbody>
                                                     </table>
