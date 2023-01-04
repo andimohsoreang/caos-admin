@@ -30,9 +30,6 @@
                         <div class="form-group">
                             <label for="basicInput">Kategori</label>
                             <select name="category" id="category" class="form-control" step="0.1">
-                                <option value="<%= data.category %>">
-                                    <%= data.category %>
-                                </option>
                                 <% for(i of categories) { %>
                                     <option value="<%= i.name %>">
                                         <%= i.name %>
@@ -47,7 +44,7 @@
                         <p>Silahkan Masukan Artikel</p>
                         <textarea name="body" id="summernote" value>
                                     <%- data.body %> 
-                                </textarea> 
+                                </textarea>
                         <div class="mt-4 d-flex justify-content-between">
                             <a href="/getarticle" class="btn btn-secondary">
                                 <i class="bi bi-arrow-left-square me-1"></i>
