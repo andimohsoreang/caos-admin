@@ -98,6 +98,12 @@ module.exports = {
   },
   getDetailArticle: async (req, res) => {
     const data = await model.Article.findAll({
+      include: [
+        {
+          model: model.User,
+          attributes: ["name"],
+        },
+      ],
       where: {
         slug: req.params.slug,
       },
@@ -155,9 +161,6 @@ module.exports = {
     const categories = await model.Category.findAll({
       attributes: ["name"],
     });
-    // console.log(category);
-    res.locals.category = "asd";
-    console.log(res.locals.category);
     res.render("./pages/editArticle", { data, categories });
   },
 

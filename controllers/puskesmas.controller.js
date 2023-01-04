@@ -5,15 +5,19 @@ module.exports = {
     const data = await model.Puskesmas.findAll({
       include: model.Posyandus,
       attributes: ["uuid", "nama", "alamat"],
-      // where: {
-      //   uuid: model.Posyandus.uuid,
-      // },
     });
 
-    // console.log(JSON.parse(data));
-    const posyandu = await model.Posyandus.findAll({
-      attributes: ["puskesmaId", "nama", "alamat"],
-    });
+    // var posyandus = [];
+
+    // for (var i = 0; i < data.length; i++) {
+    //   for (var j = 0; j < data[i].Posyandus.length; j++) {
+    //     posyandus.push({
+    //       uuid: data[i].Posyandus[j].uuid,
+    //       nama: data[i].Posyandus[j].nama,
+    //       alamat: data[i].Posyandus[j].alamat,
+    //     });
+    //   }
+    // }
 
     res.render("./pages/puskesmas", { data });
   },

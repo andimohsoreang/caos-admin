@@ -9,25 +9,28 @@ module.exports = {
     res.render("./pages/users", { data });
   },
   storeUsers: async (req, res) => {
+    console.log("wleo");
     let { name, email, role, password } = req.body;
 
     if (password === null) password = /(\w+)@/g.exec(email)[1];
 
-    bcrypt
-      .hash(password, 10, async (err, hash) => {
-        if (err) {
-          return req.flash("alert", {
-            hex: "#f3616d",
-            color: "danger",
-            status: "Failed",
-          });
-        }
-        await model.User.create({
-          name: name,
-          email: email,
-          role: role,
-          password: hash,
-        }).then((result) => {
+    bcrypt.hash(password, 10, async (err, hash) => {
+      if (err) {
+        return req.flash("alert", {
+          hex: "#f3616d",
+          color: "danger",
+          status: "Failed",
+        });
+      }
+
+      console.log("asdhaoidhawoidhawiodhawoidhawoidhaohd");
+      await model.User.create({
+        name: name,
+        email: email,
+        role: role,
+        password: hash,
+      })
+        .then((result) => {
           req.flash("alert", {
             hex: "#28ab55",
             color: "success",
@@ -35,18 +38,18 @@ module.exports = {
           });
           req.flash("message", `User baru berhasil ditambahkan`);
           res.status(201);
+          res.redirect("/users");
+        })
+        .catch((err) => {
+          console.log(err);
+          req.flash("alert", {
+            hex: "#f3616d",
+            color: "danger",
+            status: "Gagal Menambahkan users baru",
+          });
+          res.redirect("/users");
         });
-        res.render("./pages/users", { data });
-      })
-      .catch((err) => {
-        console.log(err);
-        req.flash("alert", {
-          hex: "#f3616d",
-          color: "danger",
-          status: "Gagal Menambahkan users baru",
-        });
-      });
-    res.redirect("/users");
+    });
   },
   categories: async (req, res) => {
     const data = await model.Category.findAll({
