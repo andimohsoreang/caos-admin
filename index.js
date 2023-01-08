@@ -37,18 +37,19 @@ app.use((req, res, next) => {
     next();
 });
 
-
-const web = require('./routes/web.js')
-app.use('/', web)
+const web = require("./routes/web.js");
+app.use("/", web);
 
 const api = require("./routes/api.js");
 app.use("/api", api);
 
 app.use((req, res, next) => {
-    res.status(404);
-    if (req.accepts('html')) {
-      return res.render('./errors/404', { baseUrl });
-    }
-})
+  res.status(404);
+  if (req.accepts("html")) {
+    return res.render("./errors/404", { baseUrl });
+  }
+});
 
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`))
+app.listen(PORT, () =>
+  console.log(`Server running on http://localhost:${PORT}`)
+);

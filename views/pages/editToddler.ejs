@@ -1,103 +1,166 @@
 <%- include('../partials/header'); %> <%- include('../partials/sidebar'); %>
-<div id="main">
-  <header class="mb-3">
-    <a href="#" class="burger-btn d-block d-xl-none">
-      <i class="bi bi-justify fs-3"></i>
-    </a>
-  </header>
-  <div class="page-heading">
-    <h3>Edit Data</h3>
-    <h6><%= data.name %></h6>
-  </div>
-  <section class="section">
-    <div class="card">
-      <div class="card-body">
-        <form action="<%= baseUrl %>/toddler/edit/<%= data.uuid %>" method="post" data-parsley-validate>
-          <div class="mb-3">
-            <label class="form-label">NIK</label>
-            <input type="text" class="form-control" name="nik" data-parsley-required="true" data-parsley-length="[16, 16]" data-parsley-type="number" value="<%= data.nik %>">
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Nama Balita</label>
-            <input type="text" class="form-control" name="name" data-parsley-required="true" value="<%= data.name %>">
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Jenis Kelamin</label>
-            <select class="form-select" name="jk" id="jk" data-parsley-maxLength="1" data-parsley-error-message="Pilih Jenis Kelamin">
-              <option value="00" hidden></option>
-              <option value="L" <%= data.jk == 'L' ? 'selected' : '' %> >Laki-laki</option>
-              <option value="P" <%= data.jk == 'P' ? 'selected' : '' %> >Perempuan</option>
-            </select>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Tanggal Lahir</label>
-            <input type="date" class="form-control" name="birth" data-parsley-required="true" value="<%= data.birth %>">
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Alamat</label>
-            <textarea name="address" class="form-control" rows="3" data-parsley-required="true"><%= data.address %></textarea>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Provinsi</label>
-            <select class="form-select" name="prov" data-parsley-required="true">
-            <option value="<%= idProv %>">Gorontalo</option>
-            </select>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Kabupaten</label>
-            <select class="form-select" name="kab" id="kab" data-parsley-minLength="2" data-parsley-error-message="Pilih Kabupaten">
-              <option value="0" hidden></option>
-              <% for(regency of regencies) { %>
-                <option value="<%= regency.id %>" <%= data.kab == regency.name ? 'selected' : '' %> > <%= regency.name %> </option>
-              <% } %>
-            </select>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Kecamatan</label>
-            <select class="form-select" name="kec" id="kec" data-parsley-minLength="2" data-parsley-error-message="Pilih Kecamatan">
-              <option value="<%= data.kec %>"><%= data.kec %></option>
-            </select>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Puskesmas</label>
-            <select class="form-select" name="puskesmas" data-parsley-minLength="2" data-parsley-error-message="Pilih Puskesmas">
-              <option value="0"></option>
-              <% for(i of puskesmas) { %>
-                <option value="<%= i.nama %>" <%= data.puskesmas == i.nama ? 'selected' : '' %> > <%= i.nama %> </option>
-              <% } %>
-            </select>
-          </div>
+    <div id="main">
+      <header class="mb-3">
+        <a href="#" class="burger-btn d-block d-xl-none">
+          <i class="bi bi-justify fs-3"></i>
+        </a>
+      </header>
+      <div class="page-heading">
+        <h3>Edit Data</h3>
+        <h6>
+          <%= data.name %>
+        </h6>
+      </div>
+      <section class="section">
+        <div class="card">
+          <div class="card-body">
+            <form action="<%= baseUrl %>/toddler/edit/<%= data.uuid %>" method="post" data-parsley-validate>
+              <div class="mb-3">
+                <label class="form-label">Nomor Kartu Keluarga</label>
+                <input type="text" class="form-control" name="noKk" data-parsley-required="true"
+                  data-parsley-length="[16, 16]" data-parsley-type="number" value="<%=data.no_kk%>">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">NIK</label>
+                <input type="text" class="form-control" name="nik" data-parsley-required="true"
+                  data-parsley-length="[16, 16]" data-parsley-type="number" value="<%= data.nik %>">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Nomor BPJS</label>
+                <input type="text" class="form-control" name="noBpjs" data-parsley-required="true"
+                  data-parsley-type="number" value="<%= data.no_bpjs %>">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Nama Balita</label>
+                <input type="text" class="form-control" name="name" data-parsley-required="true"
+                  value="<%= data.name %>">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Jenis Kelamin</label>
+                <select class="form-select" name="jk" id="jk" data-parsley-maxLength="1"
+                  data-parsley-error-message="Pilih Jenis Kelamin">
+                  <option value="00" hidden></option>
+                  <option value="L" <%=data.jk=='L' ? 'selected' : '' %> >Laki-laki</option>
+                  <option value="P" <%=data.jk=='P' ? 'selected' : '' %> >Perempuan</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Tanggal Lahir</label>
+                <input type="date" class="form-control" name="birth" data-parsley-required="true"
+                  value="<%= data.birth %>">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Anak Ke</label>
+                <input type="text" class="form-control" name="anakKe" data-parsley-required="true"
+                  value="<%= data.anak_ke %>">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">NIK Ayah</label>
+                <input type="text" class="form-control" name="nikAyah" data-parsley-required="true"
+                  value="<%= data.nik_ayah %>">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Nama Ayah</label>
+                <input type="text" class="form-control" name="namaAyah" data-parsley-required="true"
+                  value="<%= data.nama_ayah %>">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Nomor BPJS Ayah</label>
+                <input type="text" class="form-control" name="noBpjsAyah" data-parsley-required="true"
+                  value="<%= data.no_bpjs_ayah %>">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">NIK Ibu</label>
+                <input type="text" class="form-control" name="nikIbu" data-parsley-required="true"
+                  value="<%= data.nik_ibu %>">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Nama Ibu</label>
+                <input type="text" class="form-control" name="namaIbu" data-parsley-required="true"
+                  value="<%= data.nama_ibu %>">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Nomor BPJS Ibu</label>
+                <input type="text" class="form-control" name="noBpjsIbu" data-parsley-required="true"
+                  value="<%= data.no_bpjs_ibu %>">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Alamat</label>
+                <textarea name="address" class="form-control" rows="3"
+                  data-parsley-required="true"><%= data.address %></textarea>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Provinsi</label>
+                <select class="form-select" name="prov" data-parsley-required="true">
+                  <option value="<%= idProv %>">Gorontalo</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Kabupaten</label>
+                <select class="form-select" name="kab" id="kab" data-parsley-minLength="2"
+                  data-parsley-error-message="Pilih Kabupaten">
+                  <option value="0" hidden></option>
+                  <% for(regency of regencies) { %>
+                    <option value="<%= regency.id %>" <%=data.kab==regency.name ? 'selected' : '' %> > <%= regency.name
+                        %>
+                    </option>
+                    <% } %>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Kecamatan</label>
+                <select class="form-select" name="kec" id="kec" data-parsley-minLength="2"
+                  data-parsley-error-message="Pilih Kecamatan">
+                  <option value="<%= data.kec %>">
+                    <%= data.kec %>
+                  </option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Puskesmas</label>
+                <select class="form-select" name="puskesmas" data-parsley-minLength="2"
+                  data-parsley-error-message="Pilih Puskesmas">
+                  <option value="0"></option>
+                  <% for(i of puskesmas) { %>
+                    <option value="<%= i.nama %>" <%=data.puskesmas==i.nama ? 'selected' : '' %> > <%= i.nama %>
+                    </option>
+                    <% } %>
+                </select>
+              </div>
 
-          <div class="mb-3">
-            <label class="form-label">Posyandu</label>
-            <select class="form-select" name="posyandu" data-parsley-minLength="2" data-parsley-error-message="Pilih Posyandu">
-              <option value="0"></option>
-              <% for(i of posyandu) { %>
-                <option value="<%= i.nama %>" <%= data.posyandu == i.nama ? 'selected' : '' %> > <%= i.nama %> </option>
-              <% } %>
-            </select>
+              <div class="mb-3">
+                <label class="form-label">Posyandu</label>
+                <select class="form-select" name="posyandu" data-parsley-minLength="2"
+                  data-parsley-error-message="Pilih Posyandu">
+                  <option value="0"></option>
+                  <% for(i of posyandu) { %>
+                    <option value="<%= i.nama %>" <%=data.posyandu==i.nama ? 'selected' : '' %> > <%= i.nama %>
+                    </option>
+                    <% } %>
+                </select>
+              </div>
+              <div class="text-end">
+                <button type="submit" class="btn btn-primary">
+                  <span class="d-none d-sm-block">Submit</span>
+                </button>
+              </div>
+            </form>
           </div>
-          <div class="text-end">
-            <button type="submit" class="btn btn-primary">
-              <span class="d-none d-sm-block">Submit</span>
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </section>
-  <div class="modal fade" id="addToddler" tabindex="-1" role="dialog" aria-labelledby="addToddlerTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="addToddlerTitle">Tambah Data Balita</h5>
-          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-            <i data-feather="x"></i>
-          </button>
         </div>
-        
+      </section>
+      <div class="modal fade" id="addToddler" tabindex="-1" role="dialog" aria-labelledby="addToddlerTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="addToddlerTitle">Tambah Data Balita</h5>
+              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                <i data-feather="x"></i>
+              </button>
+            </div>
+
+          </div>
+        </div>
       </div>
-    </div>  
-  </div>
-  <%- include('../partials/footer'); %>
-</div>
+      <%- include('../partials/footer'); %>
+    </div>

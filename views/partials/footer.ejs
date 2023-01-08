@@ -64,7 +64,6 @@
       url: `https://fachiri.github.io/api-wilayah-indonesia/api/districts/${idKab}.json`,
       method: "GET",
       success: (result) => {
-        console.log(result);
         let rows = []
         for (const i of result) {
           rows.push(`<option value='${i.id}'>${i.name}</option>`)

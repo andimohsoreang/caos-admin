@@ -34,7 +34,7 @@ module.exports = {
     await model.Posyandus.create({
       nama,
       alamat,
-      id_puskesmas: idPuskes,
+      puskesmaId: idPuskes,
     })
       .then(() => {
         req.flash("alert", {

@@ -8,12 +8,13 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // Article.hasOne(models.Category, {
-      //   foreignKey: "id_category",
-      // });
-      // Article.belongsTo(models.Category, {
-      //   foreignKey: "id_category",
-      // });
+      Article.belongsTo(models.Category, {
+        foreignKey: "categoryId",
+      });
+
+      Article.belongsTo(models.User, {
+        foreignKey: "userId",
+      });
     }
   }
   Article.init(
@@ -29,11 +30,13 @@ module.exports = (sequelize, DataTypes) => {
       image_name: DataTypes.STRING,
       url: DataTypes.STRING,
       body: DataTypes.TEXT("medium"),
-      id_user: DataTypes.INTEGER,
+      categoryId: DataTypes.INTEGER,
+      userId: DataTypes.INTEGER,
     },
     {
       sequelize,
       modelName: "Article",
+      // freezeTableName: true,
     }
   );
   return Article;
