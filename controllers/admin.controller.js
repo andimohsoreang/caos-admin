@@ -171,8 +171,27 @@ const getCategoty = (type, quotient) => {
 }
 
 module.exports = {
-    dashboard: (req, res) => {
-        res.render('./pages/dashboard')
+    dashboard: async (req, res) => {
+        const now = new Date().toLocaleDateString()
+        const user = await model.User.findOne({ where: { uuid: req.session.userid } })
+        const users = await model.User.findAndCountAll({
+            attributes: ['name', 'email'],
+            order: [['id', 'DESC']],
+            limit: 3
+        })
+        const measures = await model.Measurement.findAll({
+            attributes: ['date', 'bb', 'tb'],
+            order: [['id', 'DESC']],
+            limit: 3,
+            include: [{
+                model: model.Toddler,
+                attributes: ['name']
+            }]
+        })
+        const toddlers_count = await model.Toddler.count()
+        const puskesmas_count = await model.Puskesmas.count()
+        const posyandu_count = await model.Posyandus.count()
+        res.render('./pages/dashboard', { user, users, toddlers_count, puskesmas_count, posyandu_count, now, measures })
     },
     dataprocessing: (req, res) => {
         const data = readFileDataset()

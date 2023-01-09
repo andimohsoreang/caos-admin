@@ -100,7 +100,8 @@
                   <label for="basicInput">Role</label>
                   <select name="role" id="role" class="form-select" data-parsley-required="true" step="0.1">
                     <option value=""></option>
-                    <option value="admin">Admin</option>
+                    <option value="admin_puskesmas">Admin Puskesmas</option>
+                    <option value="admin_posyandu">Admin Posyandu</option>
                     <option value="masyarakat">Masyarakat</option>
 
                   </select>
@@ -126,7 +127,7 @@
       </div>
       <!-- modal edit -->
       <% for(user of data) { %>
-        <div class="modal fade" id="editUsersModal<%= user.uuid %>" tabindex=" -1" role="dialog"
+        <div class="modal fade" id="editUsersModal<%= user.uuid %>" tabindex="-1" role="dialog"
           aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered modal-dialog-centered modal-dialog-scrollable" role="document">
             <div class="modal-content">
@@ -152,9 +153,9 @@
                     <label for="basicInput">Role</label>
                     <select name="role" id="role" class="form-control" step="0.1">
                       <option value="<%= user.role%>"></option>
-                      <option value="admin">Admin</option>
+                      <option value="admin_puskesmas">Admin Puskesmas</option>
+                      <option value="admin_posyandu">Admin Posyandu</option>
                       <option value="masyarakat">Masyarakat</option>
-
                     </select>
                   </div>
                   <div class="mb-3">
