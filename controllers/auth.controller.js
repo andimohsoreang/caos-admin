@@ -73,9 +73,15 @@ module.exports = {
         });
     },
     loginPage: (req, res) => {
-        res.render('./pages/login')
+        const page = {
+            title: "Login"
+        }
+        res.render('./pages/login', { page })
     },
     registerPage: (req, res) => {
-        res.render('./pages/register')
+        const page = {
+            title: "Register"
+        }
+        res.render('./pages/register', { page })
     }
 }
