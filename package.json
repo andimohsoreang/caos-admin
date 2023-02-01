@@ -32,6 +32,7 @@
     "express-session": "^1.17.3",
     "formidable": "^2.0.1",
     "handlebars": "^4.7.7",
+    "jsonwebtoken": "^9.0.0",
     "ml-naivebayes": "^4.0.0",
     "mysql": "^2.18.1",
     "mysql2": "^2.3.3",

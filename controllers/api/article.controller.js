@@ -2,16 +2,17 @@ const model = require("../../models/index");
 
 module.exports = {
   getAllArticle: async (req, res) => {
-    const data = await model.Article.findAll({
+    await model.Article.findAll({
       attributes: [
-        "title",
         "uuid",
+        "title",
+        "slug",
         "category",
         "image_name",
         "url",
+        "body",
         "createdAt",
         "updatedAt",
-        "body",
       ],
       include: [
         {
@@ -23,12 +24,21 @@ module.exports = {
           attributes: ["name"],
         },
       ],
-    });
-    res.status(200).json({
-      status: "Success",
-      message: "Fetch data berhasil",
-      data,
-    });
+    })
+    .then((result) => {
+      res.status(200).json({
+        status: "Success",
+        message: "Fetch data berhasil",
+        data: result
+      })
+    })
+    .catch((err) => {
+      res.status(400).json({
+        status: "Failed",
+        message: "Terjadi kesalahan",
+        error: err
+      })
+    })
   },
   getSpesificArticle: async (req, res) => {
     const data = await model.Article.findOne({
