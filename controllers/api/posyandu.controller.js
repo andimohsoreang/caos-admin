@@ -20,6 +20,7 @@ module.exports = {
       where: {
         uuid: req.params.uuid,
       },
+      attributes: ["nama", "uuid", "alamat", "createdAt", "updatedAt"],
     });
 
     if (!data)
