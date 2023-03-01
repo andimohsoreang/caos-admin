@@ -8,7 +8,9 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      
+      Posyandu.belongsTo(models.Puskesmas, {
+        foreignKey: "puskesmaId",
+      });
     }
   }
   Posyandu.init(
@@ -20,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       nama: DataTypes.STRING,
       alamat: DataTypes.STRING,
-      id_puskesmas: DataTypes.INTEGER,
+      puskesmaId: DataTypes.INTEGER,
     },
     {
       sequelize,

@@ -1,3 +1,4 @@
 node_modules
 config/config.json
 public/images/uploads/*
+package-lock.json

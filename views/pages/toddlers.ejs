@@ -1,133 +1,239 @@
 <%- include('../partials/header'); %> <%- include('../partials/sidebar'); %>
-<div id="main">
-  <header class="mb-3">
-    <a href="#" class="burger-btn d-block d-xl-none">
-      <i class="bi bi-justify fs-3"></i>
-    </a>
-  </header>
-  <div class="page-heading">
-    <h3>Balita</h3>
-  </div>
-  <section class="section mt-4">
-    <div class="position-relative">
-      <div class="d-flex align-items-center" style="position: absolute; top: -2.8rem;">
-        <a id="tableCardBtn" class="bg-white text-dark px-3 py-2 rounded cursor-pointer border border-bottom-0"><span class="fs-6 fw-bold">Daftar Balita</span></a>
-        <a id="formCardBtn" class="bg-white text-dark px-3 py-2 rounded opacity-50 cursor-pointer"><span class="fs-6 fw-bold">Tambah Data</span></a>
+    <div id="main">
+      <header class="mb-3">
+        <a href="#" class="burger-btn d-block d-xl-none">
+          <i class="bi bi-justify fs-3"></i>
+        </a>
+      </header>
+      <div class="page-heading">
+        <h3>Balita</h3>
       </div>
-      <div id="tableCard" class="card">
-        <div class="card-body">
-          <table class="table table-striped" id="table1">
-            <thead>
-              <tr>
-                <th>Nama</th>
-                <th>Tanggal Lahir</th>
-                <th>Puskesmas</th>
-                <th>Posyandu</th>
-                <th>Aksi</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% for(toddler of data) { %>
-                <tr>
-                  <td><%= toddler.name %></td>
-                  <td><%= toddler.birth %></td>
-                  <td><%= toddler.puskesmas %></td>
-                  <td><%= toddler.posyandu %></td>
-                  <td>
-                      <a href="#" class="btn icon btn-info">
+      <section class="section mt-4">
+        <div class="position-relative">
+          <div class="d-flex align-items-center" style="position: absolute; top: -2.8rem;">
+            <a id="tableCardBtn"
+              class="bg-white text-dark px-3 py-2 rounded cursor-pointer border border-bottom-0"><span
+                class="fs-6 fw-bold">Daftar Balita</span></a>
+            <a id="formCardBtn" class="bg-white text-dark px-3 py-2 rounded opacity-50 cursor-pointer"><span
+                class="fs-6 fw-bold">Tambah Data</span></a>
+          </div>
+          <div id="tableCard" class="card">
+            <div class="card-body">
+              <table class="table table-striped" id="table1">
+                <thead>
+                  <tr>
+                    <th>Nama</th>
+                    <th>Tanggal Lahir</th>
+                    <th>Puskesmas</th>
+                    <th>Posyandu</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% for(toddler of data) { %>
+                    <tr>
+                      <td>
+                        <%= toddler.name %>
+                      </td>
+                      <td>
+                        <%= toddler.birth %>
+                      </td>
+                      <td>
+                        <%= toddler.puskesmas %>
+                      </td>
+                      <td>
+                        <%= toddler.posyandu %>
+                      </td>
+                      <td>
+                        <a href="#" class="btn icon btn-info">
                           <i class="bi bi-info-circle"></i>
-                      </a>
-                      <a href="#" class="btn icon btn-success">
+                        </a>
+                        <a href="toddler/edit/<%= toddler.uuid %>" class="btn icon btn-success">
                           <i class="bi bi-pencil-square"></i>
-                      </a>
-                      <a href="#" class="btn icon btn-danger">
+                        </a>
+                        <button class="btn icon btn-danger" data-bs-toggle="modal"
+                          data-bs-target="#deleteModalCenter<%= toddler.uuid %>">
                           <i class="bi bi-trash"></i>
-                      </a>
-                  </td>
-                </tr>              
-              <% } %>
-            </tbody>
-          </table>
+                        </button>
+                      </td>
+                    </tr>
+                    <% } %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div id="formCard" class="card d-none">
+            <div class="card-body">
+              <form action="toddler/store" method="post" data-parsley-validate>
+                <div class="mb-3">
+                  <label class="form-label">Nomor Kartu Keluarga</label>
+                  <input type="text" class="form-control" name="noKk" data-parsley-required="true"
+                    data-parsley-length="[16, 16]" data-parsley-type="number">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">NIK</label>
+                  <input type="text" class="form-control" name="nik" data-parsley-required="true"
+                    data-parsley-length="[16, 16]" data-parsley-type="number">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Nomor BPJS</label>
+                  <input type="text" class="form-control" name="noBpjs" data-parsley-required="true"
+                    data-parsley-type="number">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Nama Balita</label>
+                  <input type="text" class="form-control" name="name" data-parsley-required="true">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Jenis Kelamin</label>
+                  <select class="form-select" name="jk" id="jk" data-parsley-maxLength="1"
+                    data-parsley-error-message="Pilih Jenis Kelamin">
+                    <option value="00" hidden></option>
+                    <option value="L">Laki-laki</option>
+                    <option value="P">Perempuan</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Tanggal Lahir</label>
+                  <input type="date" class="form-control" name="birth" data-parsley-required="true">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Anak Ke</label>
+                  <input type="text" class="form-control" name="anakKe" data-parsley-required="true">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">NIK Ayah</label>
+                  <input type="text" class="form-control" name="nikAyah" data-parsley-required="true">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Nama Ayah</label>
+                  <input type="text" class="form-control" name="namaAyah" data-parsley-required="true">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Nomor BPJS Ayah</label>
+                  <input type="text" class="form-control" name="noBpjsAyah" data-parsley-required="true">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">NIK Ibu</label>
+                  <input type="text" class="form-control" name="nikIbu" data-parsley-required="true">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Nama Ibu</label>
+                  <input type="text" class="form-control" name="namaIbu" data-parsley-required="true">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Nomor BPJS Ibu</label>
+                  <input type="text" class="form-control" name="noBpjsIbu" data-parsley-required="true">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Alamat</label>
+                  <textarea name="address" class="form-control" rows="3" data-parsley-required="true"></textarea>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Provinsi</label>
+                  <select class="form-select" name="prov" data-parsley-required="true">
+                    <option value="<%= idProv %>">Gorontalo</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Kabupaten</label>
+                  <select class="form-select" name="kab" id="kab" data-parsley-minLength="2"
+                    data-parsley-error-message="Pilih Kabupaten">
+                    <option value="0" hidden></option>
+                    <% for(regency of regencies) { %>
+                      <option value="<%= regency.id %>">
+                        <%= regency.name %>
+                      </option>
+                      <% } %>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Kecamatan</label>
+                  <select class="form-select" name="kec" id="kec" data-parsley-minLength="2"
+                    data-parsley-error-message="Pilih Kecamatan">
+                    <option value="0"></option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Puskesmas</label>
+                  <select class="form-select" name="puskesmas" data-parsley-minLength="2"
+                    data-parsley-error-message="Pilih Puskesmas">
+                    <option value="0"></option>
+                    <% for(i of puskesmas) { %>
+                      <option value="<%= i.nama %>">
+                        <%= i.nama %>
+                      </option>
+                      <% } %>
+                  </select>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label">Posyandu</label>
+                  <select class="form-select" name="posyandu" data-parsley-minLength="2"
+                    data-parsley-error-message="Pilih Posyandu">
+                    <option value="0"></option>
+                    <% for(i of posyandu) { %>
+                      <option value="<%= i.nama %>">
+                        <%= i.nama %>
+                      </option>
+                      <% } %>
+                  </select>
+                </div>
+                <div class="text-end">
+                  <button type="submit" class="btn btn-primary">
+                    <span class="d-none d-sm-block">Submit</span>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
-      </div>
-      <div id="formCard" class="card d-none">
-        <div class="card-body">
-          <form action="toddler/store" method="post" data-parsley-validate>
-            <div class="mb-3">
-              <label class="form-label">NIK</label>
-              <input type="text" class="form-control" name="nik" data-parsley-required="true" data-parsley-length="[16, 16]" data-parsley-type="number">
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Nama Balita</label>
-              <input type="text" class="form-control" name="name" data-parsley-required="true">
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Tanggal Lahir</label>
-              <input type="date" class="form-control" name="birth" data-parsley-required="true">
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Alamat</label>
-              <textarea name="address" class="form-control" rows="3" data-parsley-required="true"></textarea>
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Provinsi</label>
-              <select class="form-select" name="prov" data-parsley-required="true">
-              <option value="<%= idProv %>">Gorontalo</option>
-              </select>
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Kabupaten</label>
-              <select class="form-select" name="kab" id="kab" data-parsley-minLength="2" data-parsley-error-message="Pilih Kabupaten">
-                <option value="0" hidden></option>
-                <% for(regency of regencies) { %>
-                  <option value="<%= regency.id %>"> <%= regency.name %> </option>
-                <% } %>
-              </select>
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Kecamatan</label>
-              <select class="form-select" name="kec" id="kec" data-parsley-minLength="2" data-parsley-error-message="Pilih Kecamatan">
-                <option value="0"></option>
-              </select>
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Puskesmas</label>
-              <select class="form-select" name="puskesmas" data-parsley-minLength="2" data-parsley-error-message="Pilih Puskesmas">
-                <option value="0"></option>
-                <option value="Puskes A">Puskes A</option>
-                <option value="Puskes B">Puskes B</option>
-              </select>
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Posyandu</label>
-              <select class="form-select" name="posyandu" data-parsley-minLength="2" data-parsley-error-message="Pilih Posyandu">
-                <option value="0"></option>
-                <option value="Posyandu A">Posyandu A</option>
-                <option value="Posyandu B">Posyandu B</option>
-              </select>
-            </div>
-            <div class="text-end">
-              <button type="submit" class="btn btn-primary">
-                <span class="d-none d-sm-block">Submit</span>
+      </section>
+      <div class="modal fade" id="addToddler" tabindex="-1" role="dialog" aria-labelledby="addToddlerTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="addToddlerTitle">Tambah Data Balita</h5>
+              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                <i data-feather="x"></i>
               </button>
             </div>
-          </form>
+
+          </div>
         </div>
       </div>
+      <% for(toddler of data) { %>
+        <div class="modal fade" id="deleteModalCenter<%= toddler.uuid %>" tabindex=" -1" role="dialog"
+          aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-dialog-centered modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">
+                  Hapus Balita
+                </h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                  <i data-feather="x"></i>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="mb-3">
+                  <p>Apakah Anda Yakin Menghapus Balita Ini?</p>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                  <i class="bx bx-x d-block d-sm-none"></i>
+                  <span class="d-none d-sm-block">Close</span>
+                </button>
+                <button type="submit" class="btn btn-primary ml-1">
+                  <i class="bx bx-check d-block d-sm-none"></i>
+                  <a href="/toddlers/delete/<%= toddler.uuid %>" class="d-none d-sm-block text-white">Accept</a>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% } %>
+          <%- include('../partials/footer'); %>
     </div>
-  </section>
-  <div class="modal fade" id="addToddler" tabindex="-1" role="dialog" aria-labelledby="addToddlerTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="addToddlerTitle">Tambah Data Balita</h5>
-          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-            <i data-feather="x"></i>
-          </button>
-        </div>
-        
-      </div>
-    </div>  
-  </div>
-  <%- include('../partials/footer'); %>
-</div>

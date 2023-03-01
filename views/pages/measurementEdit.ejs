@@ -1,0 +1,92 @@
+<%- include('../partials/header'); %>
+<%- include('../partials/sidebar'); %>
+<div id="main">
+  <header class="mb-3">
+    <a href="#" class="burger-btn d-block d-xl-none">
+      <i class="bi bi-justify fs-3"></i>
+    </a>
+  </header>
+  <div class="page-heading">
+    <h3>Edit Pengukuran</h3>
+    <h5><%= data.Toddler.name %> (<%= data.Toddler.jk %>)</h5>
+  </div>
+  <section class="section mt-4">
+    <div class="card">
+      <div class="card-body">
+        <form action="<%= baseUrl %>/measurement/edit/<%= data.uuid %>" method="post" data-parsley-validate>
+          <div class="mb-3">
+            <label class="form-label">Pilih Balita</label>
+            <input type="text" class="form-control" value="<%= data.Toddler.name %>" readonly/>
+            <input type="hidden" name="uuid_toddler" value="<%= data.Toddler.uuid %>">
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Tanggal Pengukuran</label>
+            <input type="date" class="form-control" name="date" data-parsley-required="true" value="<%= data.date %>">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Umur</label>
+            <input type="number" class="form-control" name="age" data-parsley-required="true" value="<%= data.current_age %>">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Berat Badan</label>
+            <input type="number" class="form-control" name="bb" data-parsley-required="true" step="0.1" value="<%= data.bb %>">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Tinggi Badan</label>
+            <input type="number" class="form-control" name="tb" data-parsley-required="true" step="0.5" value="<%= data.tb %>">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">LiLa</label>
+            <input type="number" class="form-control" name="lila" data-parsley-required="true" step="0.1" value="<%= data.lila %>">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">LiKa</label>
+            <input type="number" class="form-control" name="lika" data-parsley-required="true" step="0.1" value="<%= data.lika %>">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Cara Ukur Tinggi Badan</label>
+            <div class="form-group mandatory">
+              <div class="form-check me-4">
+                <input class="form-check-input" type="radio" name="method" id="berdiri" value="berdiri" data-parsley-required="true" <%= data.method == 'berdiri' ? 'checked' : '' %>/>
+                <label class="form-check-label" for="berdiri">
+                  Berdiri
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="method" id="telentang" value="telentang" <%= data.method == 'telentang' ? 'checked' : '' %>/>
+                <label class="form-check-label" for="telentang">
+                  Telentang
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Vitamin A ()</label>
+            <div class="form-group mandatory">
+              <div class="form-check me-4">
+                <input class="form-check-input" type="radio" name="vitamin" id="vitaminYa" value="ya" data-parsley-required="true" <%= data.vitamin == 'ya' ? 'checked' : '' %>/>
+                <label class="form-check-label" for="vitaminYa">
+                  Ya
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="vitamin" id="vitaminTidak" value="tidak" <%= data.vitamin == 'tidak' ? 'checked' : '' %>/>
+                <label class="form-check-label" for="vitaminTidak">
+                  Tidak
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="text-end">
+            <button type="submit" class="btn btn-primary">
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+  <%- include('../partials/footer'); %>
+</div>

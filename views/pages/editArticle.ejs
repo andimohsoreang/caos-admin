@@ -29,10 +29,12 @@
                         </div>
                         <div class="form-group">
                             <label for="basicInput">Kategori</label>
-                            <select name="category" id="category" class="form-control" step="0.1" disabled>
-                                <option value="" readonly>
-                                    <%= data.category %>
-                                </option>
+                            <select name="category" id="category" class="form-control" step="0.1">
+                                <% for(i of categories) { %>
+                                    <option value="<%= i.name %>">
+                                        <%= i.name %>
+                                    </option>
+                                    <% } %>
                             </select>
                         </div>
                         <div class="form-group">

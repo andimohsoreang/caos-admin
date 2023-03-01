@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan Akumulasi Penimbangan Balita Bulan {{month}} Tahun {{year}}</title>
+    <style>
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      table, td, th {
+        border: 1px solid;
+      }
+
+      td {
+        padding: 5px;
+      }
+      h3 {
+        text-align: center;
+      }
+    </style>
+</head>
+<body>
+    <h3>Laporan Akumulasi Penimbangan Balita Bulan {{month}} Tahun {{year}}</h3>
+    <table>
+        <thead>
+          <tr>
+            <th>Nama</th>
+            <th>Tanggal Pengukuran</th>
+            <th>Umur (Bulan)</th>
+            <th>BB</th>
+            <th>TB</th>
+            <th>BB/U</th>
+            <th>TB/U</th>
+            <th>BB/TB</th>
+            <th>LiLa</th>
+            <th>LiKa</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#if measures}}
+            {{#each measures as | measure |}}
+              <tr>
+                <td>{{measure.[Toddler.name]}}</td>
+                <td>{{measure.date }}</td>
+                <td>{{measure.current_age}}</td>
+                <td>{{measure.bb}}</td>
+                <td>{{measure.tb}}</td>
+                <td>{{measure.bbu}}</td>
+                <td>{{measure.tbu}}</td>
+                <td>{{measure.bbtb}}</td>
+                <td>{{measure.lila}}</td>
+                <td>{{measure.lika}}</td>
+              </tr>
+            {{/each}}
+          {{else}}
+          <tr>
+            <td colspan="20" style="text-align: center;">Data Tidak Ditemukan</td>
+          </tr>
+          {{/if}}
+        </tbody>
+      </table>
+</body>
+</html>

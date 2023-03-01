@@ -5,6 +5,7 @@ const flash = require("connect-flash");
 const bodyParser = require("body-parser");
 const fileUpload = require("express-fileupload");
 const PORT = process.env.PORT || 3000;
+const HOSTIP = process.env.HOSTIP || 'localhost';
 
 app.use(fileUpload());
 app.use(express.static(__dirname + "/public"));
@@ -30,9 +31,11 @@ app.use(
 );
 app.use(flash());
 app.use((req, res, next) => {
-  res.locals.alert = req.flash("alert");
-  res.locals.message = req.flash("message");
-  next();
+    res.locals.alert = req.flash("alert");
+    res.locals.message = req.flash("message");
+    baseUrl = `${req.protocol}://${req.headers.host}`
+    dirName = __dirname
+    next();
 });
 
 const web = require("./routes/web.js");
@@ -42,11 +45,12 @@ const api = require("./routes/api.js");
 app.use("/api", api);
 
 app.use((req, res, next) => {
-    res.status(404);
-    if (req.accepts('html')) {
-      const baseUrl = `${req.protocol}://${req.headers.host}`
-      return res.render('./errors/404', { baseUrl });
-    }
-})
+  res.status(404);
+  if (req.accepts("html")) {
+    return res.render("./errors/404", { baseUrl });
+  }
+});
 
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`))
+app.listen(PORT, () =>
+  console.log(`Server running on http://${HOSTIP}:${PORT}`)
+);

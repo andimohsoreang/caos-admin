@@ -3,9 +3,26 @@ const model = require("../models/index");
 module.exports = {
   getPuskesmas: async (req, res) => {
     const data = await model.Puskesmas.findAll({
+      include: model.Posyandus,
       attributes: ["uuid", "nama", "alamat"],
     });
+
+    // var posyandus = [];
+
+    // for (var i = 0; i < data.length; i++) {
+    //   for (var j = 0; j < data[i].Posyandus.length; j++) {
+    //     posyandus.push({
+    //       uuid: data[i].Posyandus[j].uuid,
+    //       nama: data[i].Posyandus[j].nama,
+    //       alamat: data[i].Posyandus[j].alamat,
+    //     });
+    //   }
+    // }
+
     res.render("./pages/puskesmas", { data });
+  },
+  getPuskesmasById: async (req, res) => {
+    console.log("oke");
   },
   storePuskesmas: async (req, res) => {
     const { nama, alamat } = req.body;

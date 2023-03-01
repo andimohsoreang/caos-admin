@@ -13,7 +13,9 @@ module.exports = {
     //image setting
     const ext = path.extname(image.name);
     const fileName = image.md5 + Math.floor(Date.now() / 1000) + ext;
-    const image_url = `${req.protocol}://${req.get("host")}/images/${fileName}`;
+    const image_url = `${req.protocol}://${req.get(
+      "host"
+    )}/images/uploads/${fileName}`;
     const newpath = `${__dirname}/../public/images/uploads/${fileName}`;
     await image.mv(newpath);
 
@@ -41,14 +43,23 @@ module.exports = {
       },
     });
 
+    const idCategory = await model.Category.findOne({
+      where: {
+        name: category,
+      },
+    });
+
+    console.log(idCategory);
+
     await model.Article.create({
       title,
       category,
+      categoryId: idCategory.id,
       body: bodyArticle,
       image_name: fileName,
       url: image_url,
       slug: finalSlug,
-      id_user: data.id,
+      userId: data.id,
     })
       .then((result) => {
         req.flash("alert", {
@@ -87,6 +98,12 @@ module.exports = {
   },
   getDetailArticle: async (req, res) => {
     const data = await model.Article.findAll({
+      include: [
+        {
+          model: model.User,
+          attributes: ["name"],
+        },
+      ],
       where: {
         slug: req.params.slug,
       },
@@ -141,35 +158,37 @@ module.exports = {
         slug: req.params.slug,
       },
     });
-    // console.log(category);
-    res.locals.category = "asd";
-    console.log(res.locals.category);
-    res.render("./pages/editArticle", { data });
+    const categories = await model.Category.findAll({
+      attributes: ["name"],
+    });
+    res.render("./pages/editArticle", { data, categories });
   },
 
   editArticlePut: async (req, res) => {
-    const { title, body } = req.body;
+    const { title, body, category } = req.body;
     let imageFix;
-    const image = req.files.foto;
-    const ext = path.extname(image.name);
-    const fileName = image.md5 + Math.floor(Date.now() / 1000) + ext;
-    const newpath = `${__dirname}/../public/images/uploads/${fileName}`;
-    await image.mv(newpath);
 
     const data = await model.Article.findOne({
       where: {
         slug: req.params.slug,
       },
     });
-    if (!image) {
+    if (!req.files) {
       imageFix = data.image_name;
+    } else {
+      const image = req.files.foto;
+      const ext = path.extname(image.name);
+      const fileName = image.md5 + Math.floor(Date.now() / 1000) + ext;
+      const newpath = `${__dirname}/../public/images/uploads/${fileName}`;
+      await image.mv(newpath);
+      imageFix = fileName;
     }
-    imageFix = fileName;
     const url = `${req.protocol}://${req.get("host")}/images/${imageFix}`;
     await model.Article.update(
       {
         title,
         body,
+        category,
         image_name: imageFix,
         image_url: url,
       },
