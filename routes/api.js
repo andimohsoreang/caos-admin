@@ -4,7 +4,10 @@ const {
   authController, 
   articleController, 
   puskesmasController, 
-  posyanduController 
+  posyanduController,
+  measurementController,
+  growthController,
+  measurementsController
 } = require("../controllers/api")
 const { authMiddleware } = require("../middlewares/api")
 
@@ -35,12 +38,13 @@ router.get("/puskesmas/:uuid", puskesmasController.getSpesificPuskesmas);
 router.get("/posyandu", posyanduController.getAllPosyandu);
 router.get("/posyandu/:uuid", posyanduController.getSpesificPosyandu);
 
-// // Growth
-// router.get("/growth/:uuid", growthController.growthDetail);
+// Growth
+router.get("/growth/:uuid", growthController.growthDetail);
 
-// // measurement
-// router.get("/measurement-report", measurementController.measurementReport);
-// router.get("/accumulation-report", measurementController.accumulationReport);
+// measurement
+router.get("/measurement-report", measurementController.measurementReport);
+router.get("/accumulation-report", measurementController.accumulationReport);
+
 // router.get("/posyandu/:uuid", posyanduController.getSpesificPosyandu);
 
 // // toddlers
@@ -50,9 +54,8 @@ router.get("/posyandu/:uuid", posyanduController.getSpesificPosyandu);
 // router.put("/toddlers/:uuid", toddlersController.editToddler);
 
 // //measurement
-// router.get("/measurement", measurementsController.getAllMeasurements);
-// router.get("/measurement/:uuid", measurementsController.getDetailMeasurements);
-// router.post("/measurement", measurementsController.storeMeasurement);
-
+router.get("/measurement", measurementsController.getAllMeasurements);
+router.get("/measurement/:uuid", measurementsController.getDetailMeasurements);
+router.post("/measurement", measurementsController.storeMeasurement);
 
 module.exports = router;

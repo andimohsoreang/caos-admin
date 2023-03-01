@@ -9,10 +9,10 @@ module.exports = {
     const startYear = new Date(`01/01/${req.params.year}`)
     const endYear = new Date(`01/01/${+req.params.year + 1}`)
     await model.Toddler.findAll({
-      attributes: ['nik', 'name'],
+      // attributes: ['nik', 'name']name,
       include: [{
         model: model.Measurement,
-        attributes: ['bb', 'tb', 'date', 'lila', 'lika'],
+        attributes: ['bb', 'tb', 'date', 'lila', 'lika', 'bbu', 'tbu', 'bbtb'],
         where: {
             date: {
                 [Op.between]: [startYear, endYear]
@@ -26,7 +26,7 @@ module.exports = {
         const e = toddlers[i].Measurements
         for (let j = 0; j < 12; j++) {
             if(!e[j]) {
-                e.push({bb: '-', tb: '-', lila: '-', lika: '-', date: null})
+                e.push({bb: '-', tb: '-', lila: '-', lika: '-', bbu: '-', tbu: '-', bbtb: '-', date: null})
             }
         }
         for (let j = 0; j < e.length; j++) {
@@ -34,7 +34,7 @@ module.exports = {
                 const newIndex = +e[j].date.split('-')[1] - 1
                 if(j != newIndex) {
                     e[newIndex] = e[j]
-                    e[j] = {bb: '-', tb: '-', lila: '-', lika: '-', date: null}
+                    e[j] = {bb: '-', tb: '-', lila: '-', lika: '-', bbu: '-', tbu: '-', bbtb: '-', date: null}
                 }
             }
         }
@@ -62,7 +62,7 @@ module.exports = {
         path: `${dirName}/public/report/Laporan Register Penimbangan Balita Tahun ${req.params.year}.pdf`,
         margin: { top: '100px', right: '50px', bottom: '100px', left: '50px' },
         printBackground: true,
-        format: 'A4',
+        format: 'legal',
         landscape: true
       });
   

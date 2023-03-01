@@ -477,10 +477,10 @@ module.exports = {
         const startMonth = new Date(`${month}/01/${year}`)
         const endMonth = new Date(new Date().setDate(startMonth.getDate() + 29));
         let measureReports = await model.Toddler.findAll({
-            attributes: ['nik', 'name', 'jk', 'birth'],
+            // attributes: ['nik', 'name', 'jk', 'birth'],
             include: [{
                 model: model.Measurement,
-                attributes: ['bb', 'tb', 'date', 'lila', 'lika'],
+                attributes: ['bb', 'tb', 'date', 'lila', 'lika', 'bbu', 'tbu', 'bbtb'],
                 where: {
                     date: {
                         [Op.between]: [startYear, endYear]
@@ -494,7 +494,7 @@ module.exports = {
                 const e = measureReports[i].Measurements
                 for (let j = 0; j < 12; j++) {
                     if(!e[j]) {
-                        e.push({bb: '-', tb: '-', lila: '-', lika: '-', date: null})
+                        e.push({bb: '-', tb: '-', lila: '-', lika: '-', bbu: '-', tbu: '-', bbtb: '-', date: null})
                     }
                 }
                 for (let j = 0; j < e.length; j++) {
@@ -502,7 +502,7 @@ module.exports = {
                         const newIndex = +e[j].date.split('-')[1] - 1
                         if(j != newIndex) {
                             e[newIndex] = e[j]
-                            e[j] = {bb: '-', tb: '-', lila: '-', lika: '-', date: null}
+                            e[j] = {bb: '-', tb: '-', lila: '-', lika: '-', bbu: '-', tbu: '-', bbtb: '-', date: null}
                         }
                     }
                 }
@@ -582,6 +582,12 @@ module.exports = {
     storeMeasurement: async (req, res) => {
         const { uuid, date, age, bb, tb, method, vitamin, lila, lika } = req.body
         const { id, jk } = await model.Toddler.findOne({ where: { uuid: uuid } })
+        const measure = await model.Measurement.findOne({ where: { id_toddler: id, current_age: age } })
+        if(measure) {
+            req.flash('alert', {hex: '#f3616d', color: 'danger', status: 'Failed'})
+            req.flash('message', 'Pengukuran telah dilakukan!')
+            return res.redirect(`${baseUrl}/measurement`)
+        }
         if ((age < 24 && method === 'berdiri') || (age > 24 && method === 'telentang')) {
             req.flash('alert', {hex: '#f3616d', color: 'danger', status: 'Failed'})
             req.flash('message', 'Terjadi kesalahan dalam pengukuran!')

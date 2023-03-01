@@ -24,95 +24,119 @@
     </style>
 </head>
 <body>
-    <h3>Laporan Register Penimbangan Balita Tahun {{year}}</h3>
-    <table>
-        <thead>
-          <tr>
-            <th rowspan="4">No. KK</th>
-            <th rowspan="2">Nama Anak</th>
-            <th rowspan="4">Tanggal Lahir Anak</th>
-            <th rowspan="4">JK (L/P)</th>
-            <th rowspan="4">Anak Ke</th>
-            <th colspan="2">Nama Orang Tua</th>
-            <th rowspan="4">Jenis Pengukuran</th>
-            <th colspan="12">Hasil Pengukuran</th>
-          </tr>
-          <tr>
-            <th>Ayah</th>
-            <th>Ibu</th>
-            <th rowspan="2" colspan="12">Bulan</th>
-          </tr>
-          <tr>
-            <th>NIK</th>
-            <th>NIK</th>
-            <th>NIK</th>
-          </tr>
-          <tr>
-            <th>No. BPJS</th>
-            <th>No. BPJS</th>
-            <th>No. BPJS</th>
-            <th>1</th>
-            <th>2</th>
-            <th>3</th>
-            <th>4</th>
-            <th>5</th>
-            <th>6</th>
-            <th>7</th>
-            <th>8</th>
-            <th>9</th>
-            <th>10</th>
-            <th>11</th>
-            <th>12</th>
-          </tr>
-        </thead>
-        <tbody>
-          {{#if toddlers}}
-          {{#each toddlers as | toddler |}}
-          <tr>
-            <td rowspan="4">No KK</td>
-            <td rowspan="2">{{ toddler.name }}</td>
-            <td rowspan="4">Tanggal Lahir Anak</td>
-            <td rowspan="4">JK (L/P)</td>
-            <td rowspan="4">Anak Ke</td>
-            <td colspan="2">Nama Orang Tua</td>
-            <td>BB</td>
-            {{#each toddler.Measurements as | measure |}}
-              <td>{{ measure.bb }}</td>
-            {{/each}}
-          </tr>
-          <tr>
-            <td>Ayah</td>
-            <td>Ibu</td>
-            <td>TB</td>
-            {{#each toddler.Measurements as | measure |}}
-              <td>{{ measure.tb }}</td>
-            {{/each}}
-          </tr>
-          <tr>
-            <td>{{ toddler.nik }}</td>
-            <td>NIK</td>
-            <td>NIK</td>
-            <td>LK</td>
-            {{#each toddler.Measurements as | measure |}}
-              <td>{{ measure.lika }}</td>
-            {{/each}}
-          </tr>
-          <tr>
-            <td>No. BPJS</td>
-            <td>No. BPJS</td>
-            <td>No. BPJS</td>
-            <td>LiLa</td>
-            {{#each toddler.Measurements as | measure |}}
-              <td>{{ measure.lila }}</td>
-            {{/each}}
-          </tr>
-          {{/each}}
-          {{else}}
-          <tr>
-            <td colspan="20" style="text-align: center;">Data Tidak Ditemukan</td>
-          </tr>
-          {{/if}}
-        </tbody>
-      </table>
+  <h3>Laporan Register Penimbangan Balita Tahun {{year}}</h3>
+  <table>
+    <thead>
+      <tr>
+        <th rowspan="7">No. KK</th>
+        <th rowspan="3">Nama Anak</th>
+        <th rowspan="7">Tanggal Lahir Anak</th>
+        <th rowspan="7">JK (L/P)</th>
+        <th rowspan="7">Anak Ke</th>
+        <th colspan="2">Orang Tua</th>
+        <th rowspan="7">Jenis Pengukuran</th>
+        <th rowspan="3" colspan="12">Hasil Pengukuran</th>
+      </tr>
+      <tr>
+        <th rowspan="2">Nama Ayah</th>
+        <th rowspan="2">Nama Ibu</th>
+      </tr>
+      <tr>
+      </tr>
+      <tr>
+        <th rowspan="2">NIK</th>
+        <th rowspan="2">NIK Ayah</th>
+        <th rowspan="2">NIK Ibu</th>
+        <th rowspan="2" colspan="12">Bulan</th>
+      </tr>
+      <tr>
+      </tr>
+      <tr>
+        <th rowspan="2">No. BPJS</th>
+        <th rowspan="2">No. BPJS Ayah</th>
+        <th rowspan="2">No. BPJS Ibu</th>
+        <th>1</th>
+        <th>2</th>
+        <th>3</th>
+        <th>4</th>
+        <th>5</th>
+        <th>6</th>
+        <th>7</th>
+        <th>8</th>
+        <th>9</th>
+        <th>10</th>
+        <th>11</th>
+        <th>12</th> 
+      </tr>
+      <tr>
+      </tr>
+    </thead>
+    <tbody>
+      {{#if toddlers}}
+      {{#each toddlers as | toddler |}}
+      <tr>
+        <td rowspan="7">{{ toddler.no_kk }}</td>
+        <td rowspan="3">{{ toddler.name }}</td>
+        <td rowspan="7">{{ toddler.birth }}</td>
+        <td rowspan="7">{{ toddler.jk }}</td>
+        <td rowspan="7">{{ toddler.anak_ke }}</td>
+        <td colspan="2">Orang Tua</td>
+        <td>BB</td>
+        {{#each toddler.Measurements as | measure |}}
+          <td>{{ measure.bb }}</td>
+        {{/each}}
+      </tr>
+      <tr>
+        <td rowspan="2">{{ toddler.nama_ayah }}</td>
+        <td rowspan="2">{{ toddler.nama_ibu }}</td>
+        <td>TB</td>
+        {{#each toddler.Measurements as | measure |}}
+          <td>{{ measure.tb }}</td>
+        {{/each}}
+      </tr>
+      <tr>
+        <td>LK</td>
+        {{#each toddler.Measurements as | measure |}}
+          <td>{{ measure.lika }}</td>
+        {{/each}}
+      </tr>
+      <tr>
+        <td rowspan="2">{{ toddler.nik }}</td>
+        <td rowspan="2">{{ toddler.nik_ayah }}</td>
+        <td rowspan="2">{{ toddler.nik_ibu }}</td>
+        <td>LiLa</td>
+        {{#each toddler.Measurements as | measure |}}
+          <td>{{ measure.lila }}</td>
+        {{/each}}
+      </tr>
+      <tr>
+        <td>BB/U</td>
+        {{#each toddler.Measurements as | measure |}}
+          <td>{{ measure.bbu }}</td>
+        {{/each}}
+      </tr>
+      <tr>
+        <td rowspan="2">{{ toddler.no_bpjs }}</td>
+        <td rowspan="2">{{ toddler.no_bpjs_ayah }}</td>
+        <td rowspan="2">{{ toddler.no_bpjs_ibu }}</td>
+        <td>TB/U</td>
+        {{#each toddler.Measurements as | measure |}}
+          <td>{{ measure.tbu }}</td>
+        {{/each}}
+      </tr>
+      <tr>
+        <td>BB/TB</td>
+        {{#each toddler.Measurements as | measure |}}
+          <td>{{ measure.bbtb }}</td>
+        {{/each}}
+      </tr>
+      {{/each}}
+      {{else}}
+      <tr>
+        <td colspan="20" style="text-align: center;">Data Tidak Ditemukan</td>
+      </tr>
+      {{/if}}
+    </tbody>
+  </table>
 </body>
 </html>

@@ -7,10 +7,10 @@ module.exports = {
         // const endYear = new Date(new Date().setFullYear(startYear.getFullYear() + 1));
         const endYear = new Date(`12/30/${req.query.yyyy}`)
         await model.Toddler.findAll({
-            attributes: ['nik', 'name', 'birth', 'jk'],
+            // attributes: ['nik', 'name', 'birth', 'jk'],
             include: [{
                 model: model.Measurement,
-                attributes: ['bb', 'tb', 'date', 'lila', 'lika'],
+                attributes: ['bb', 'tb', 'date', 'lila', 'lika', 'bbu', 'tbu', 'bbtb'],
                 where: {
                     date: {
                         [Op.between]: [startYear, endYear]
@@ -30,7 +30,7 @@ module.exports = {
                     const e = toddlers[i].Measurements
                     for (let j = 0; j < 12; j++) {
                         if(!e[j]) {
-                            e.push({bb: '-', tb: '-', lila: '-', lika: '-', date: null})
+                            e.push({bb: '-', tb: '-', lila: '-', lika: '-', bbu: '-', tbu: '-', bbtb: '-', date: null})
                         }
                     }
                     for (let j = 0; j < e.length; j++) {
@@ -38,7 +38,7 @@ module.exports = {
                             const newIndex = +e[j].date.split('-')[1] - 1
                             if(j != newIndex) {
                                 e[newIndex] = e[j]
-                                e[j] = {bb: '-', tb: '-', lila: '-', lika: '-', date: null}
+                                e[j] = {bb: '-', tb: '-', lila: '-', lika: '-', bbu: '-', tbu: '-', bbtb: '-', date: null}
                             }
                         }
                     }

@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs')
 const model = require('../../models/index')
 const jwt = require('jsonwebtoken')
+const config = require('../../config/config.json')
 
 module.exports = {
   register: async (req, res) => {
@@ -59,7 +60,7 @@ module.exports = {
                 uuid: userData.uuid,
                 email: userData.email
               }
-              const secret = 'SECRETKEY'
+              const secret = config.secret_key
               const options = {
                   expiresIn: '7d'
               }

@@ -199,32 +199,38 @@
               <table class="table text-center table-bordered tableBorderedCustom">
                 <thead>
                   <tr>
-                    <th rowspan="4">No. KK</th>
-                    <th rowspan="2">Nama Anak</th>
-                    <th rowspan="4">Tanggal Lahir Anak</th>
-                    <th rowspan="4">JK (L/P)</th>
-                    <th rowspan="4">Anak Ke</th>
-                    <th colspan="2">Nama Orang Tua</th>
-                    <th rowspan="4">Jenis Pengukuran</th>
-                    <th colspan="12">Hasil Pengukuran</th>
+                    <th rowspan="7">No. KK</th>
+                    <th rowspan="3">Nama Anak</th>
+                    <th rowspan="7">Tanggal Lahir Anak</th>
+                    <th rowspan="7">JK (L/P)</th>
+                    <th rowspan="7">Anak Ke</th>
+                    <th colspan="2">Orang Tua</th>
+                    <th rowspan="7">Jenis Pengukuran</th>
+                    <th rowspan="3" colspan="12">Hasil Pengukuran</th>
                   </tr>
                   <tr>
-                    <th>Ayah</th>
-                    <th>Ibu</th>
+                    <th rowspan="2">Nama Ayah</th>
+                    <th rowspan="2">Nama Ibu</th>
+                  </tr>
+                  <tr>
+                  </tr>
+                  <tr>
+                    <th rowspan="2">NIK</th>
+                    <th rowspan="2">NIK Ayah</th>
+                    <th rowspan="2">NIK Ibu</th>
                     <th rowspan="2" colspan="12">Bulan</th>
                   </tr>
                   <tr>
-                    <th>NIK</th>
-                    <th>NIK</th>
-                    <th>NIK</th>
                   </tr>
                   <tr>
-                    <th>No. BPJS</th>
-                    <th>No. BPJS</th>
-                    <th>No. BPJS</th>
+                    <th rowspan="2">No. BPJS</th>
+                    <th rowspan="2">No. BPJS Ayah</th>
+                    <th rowspan="2">No. BPJS Ibu</th>
                     <% for(let i=0; i<12; i++) { %> 
-                    <th><%= i+1 %></th>
+                    <th rowspan="2"><%= i+1 %></th>
                     <% } %> 
+                  </tr>
+                  <tr>
                   </tr>
                 </thead>
                 <tbody id="measureReportBody">
@@ -233,41 +239,59 @@
                   <% } %> 
                   <% for(i of measureReports) { %> 
                   <tr>
-                    <td rowspan="4">No. KK</td>
-                    <td rowspan="2"><%= i.name %></td>
-                    <td rowspan="4"><%= i.birth %></td>
-                    <td rowspan="4"><%= i.jk %></td>
-                    <td rowspan="4">Anak Ke</td>
-                    <td colspan="2">Nama Orang Tua</td>
+                    <td rowspan="7"><%= i.no_kk %></td>
+                    <td rowspan="3"><%= i.name %></td>
+                    <td rowspan="7"><%= i.birth %></td>
+                    <td rowspan="7"><%= i.jk %></td>
+                    <td rowspan="7"><%= i.anak_ke %></td>
+                    <td colspan="2">Orang Tua</td>
                     <td>BB</td>
                     <% for(j of i.Measurements) { %> 
                       <td><%= j.bb %></td>
                     <% } %> 
                   </tr>
                   <tr>
-                    <td>Ayah</td>
-                    <td>Ibu</td>
+                    <td rowspan="2"><%= i.nama_ayah %></td>
+                    <td rowspan="2"><%= i.nama_ibu %></td>
                     <td>TB</td>
                     <% for(j of i.Measurements) { %> 
                       <td><%= j.tb %></td>
                     <% } %> 
                   </tr>
                   <tr>
-                    <td><%= i.nik %></td>
-                    <td>NIK</td>
-                    <td>NIK</td>
                     <td>LK</td>
                     <% for(j of i.Measurements) { %> 
                       <td><%= j.lika %></td>
                     <% } %> 
                   </tr>
                   <tr>
-                    <td>No. BPJS</td>
-                    <td>No. BPJS</td>
-                    <td>No. BPJS</td>
+                    <td rowspan="2"><%= i.nik %></td>
+                    <td rowspan="2"><%= i.nik_ayah %></td>
+                    <td rowspan="2"><%= i.nik_ibu %></td>
                     <td>LiLa</td>
                     <% for(j of i.Measurements) { %> 
                       <td><%= j.lila %></td>
+                    <% } %> 
+                  </tr>
+                  <tr>
+                    <td>BB/U</td>
+                    <% for(j of i.Measurements) { %> 
+                      <td><%= j.bbu %></td>
+                    <% } %> 
+                  </tr>
+                  <tr>
+                    <td rowspan="2"><%= i.no_bpjs %></td>
+                    <td rowspan="2"><%= i.no_bpjs_ayah %></td>
+                    <td rowspan="2"><%= i.no_bpjs_ibu %></td>
+                    <td>TB/U</td>
+                    <% for(j of i.Measurements) { %> 
+                      <td><%= j.tbu %></td>
+                    <% } %> 
+                  </tr>
+                  <tr>
+                    <td>BB/TB</td>
+                    <% for(j of i.Measurements) { %> 
+                      <td><%= j.bbtb %></td>
                     <% } %> 
                   </tr>
                   <% } %> 
@@ -346,43 +370,58 @@
         success: (res) => {
           let rows
           for (const i of res.data) {
-            let tr1, tr2, tr3, tr4
+            let tr1, tr2, tr3, tr4, tr5, tr6, tr7
             for (const j of i.Measurements) {
               tr1 += `<td>${j.bb}</td>`
               tr2 += `<td>${j.tb}</td>`
               tr3 += `<td>${j.lika}</td>`
               tr4 += `<td>${j.lila}</td>`
+              tr5 += `<td>${j.bbu}</td>`
+              tr6 += `<td>${j.tbu}</td>`
+              tr7 += `<td>${j.bbtb}</td>`
             }
             rows += `
               <tr>
-                <td rowspan="4">No. KK</td>
-                <td rowspan="2">${i.name}</td>
-                <td rowspan="4">${i.birth}</td>
-                <td rowspan="4">${i.jk}</td>
-                <td rowspan="4">Anak Ke</td>
-                <td colspan="2">Nama Orang Tua</td>
+                <td rowspan="7">${i.no_kk}</td>
+                <td rowspan="3">${i.name}</td>
+                <td rowspan="7">${i.birth}</td>
+                <td rowspan="7">${i.jk}</td>
+                <td rowspan="7">${i.anak_ke}</td>
+                <td colspan="2">Orang Tua</td>
                 <td>BB</td>
                 ${tr1}
               </tr>
               <tr>
-                <td>Ayah</td>
-                <td>Ibu</td>
+                <td rowspan="2">${i.nama_ayah}</td>
+                <td rowspan="2">${i.nama_ibu}</td>
                 <td>TB</td>
                 ${tr2}
               </tr>
               <tr>
-                <td>${i.nik}</td>
-                <td>NIK</td>
-                <td>NIK</td>
                 <td>LK</td>
                 ${tr3}
               </tr>
               <tr>
-                <td>No. BPJS</td>
-                <td>No. BPJS</td>
-                <td>No. BPJS</td>
-                <td>LiLa</td> 
+                <td rowspan="2">${i.nik}</td>
+                <td rowspan="2">${i.nik_ayah}</td>
+                <td rowspan="2">${i.nik_ibu}</td>
+                <td>LiLa</td>
                 ${tr4}
+              </tr>
+              <tr>
+                <td>BB/U</td>
+                ${tr5}
+              </tr>
+              <tr>
+                <td rowspan="2">${i.no_bpjs}</td>
+                <td rowspan="2">${i.no_bpjs_ayah}</td>
+                <td rowspan="2">${i.no_bpjs_ibu}</td>
+                <td>TB/U</td>
+                ${tr6}
+              </tr>
+              <tr>
+                <td>BB/TB</td>
+                ${tr7}
               </tr>
             `
           }
